@@ -4,6 +4,7 @@ title:  "Probability Theory"
 date:   2014-03-31 20:30:18
 categories: probability theory
 ---
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 # Probability Theory
 $$a^2 + b^2 = c^2$$
