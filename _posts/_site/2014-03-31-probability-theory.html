@@ -1,0 +1,47 @@
+<h1 id="probability_theory">Probability Theory</h1>
+
+<h2 id="why">Why?</h2>
+
+<p>Probability theory provides tools to reason with - i.e. infer properties of, do calculations with - values which are uncertain. Uncertainty can stem from randomness; by definition, it is impossible to say with certainty what will result from a truly random physical process. Probability is not limited to true randomness howeer, it allows us to model processes which may be determintic but for all intents and purposes behave randomly, such as rolling a die. Probability theory also allows us to model processes which we may not think of as random at all, but over which there may still be uncertainity due to our limited acccess to information, or limited resources to compute.</p>
+
+<h2 id="basic_definitions">Basic Definitions</h2>
+
+<p>It can be difficult for non-mathematicians to get to grips with probability theory. While some of this difficulty surely stems from concepts which are counter intuitive or irreducibly difficult to grasp, more often confusing naming, notation and an unspecified enroachment of interpretation are to blame.</p>
+
+<p>Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer</p>
+
+<h3 id="">{}</h3>
+
+<p>We must first define some objects which will allow us to model a random process. We’ll say we run a random experiment to get soem outcome outcome $\omega$. $\Omega$, the sample space, is the set of all possible outcomes.</p>
+
+<p>Example</p>
+
+<pre class="Haskell"><code class="Haskell">
+let omega = [1, 2, 3, 4, 5, 6]
+</code></pre>
+
+<p>Often we will want to reason about sets of possible outcomes, for instance - how likely it is that a thrown die lands on an even number. Hence it will be useful to define a set of all subsets of omega, i.e. it’s power-set.</p>
+
+<pre><code>
+events :: Num t =&gt; [[t]]
+let events = power-set omega
+</code></pre>
+
+<p>A probability measure is a measurable function which assigns probabilities to events</p>
+
+<pre><code>
+measure :: Fractional a =&gt; a -&gt; a
+measure x = 1 / x
+</code></pre>
+
+<p>An E-valued random variable $X$ is a function from the sample space to $E$. $X:\Omega \rightarrow E$. Random variables are typically given uppercase characters, and are often seen in confusing notation. As stated, a random variable is a function, not a variable.</p>
+
+<pre><code>
+num- :: Omega -&gt; 
+</code></pre>
+
+<h2 id="what_is_a_distribution_exactly">What is a distribution, exactly?</h2>
+
+<p>There are all kinds of distributions - uniform distributions, gaussian distributions, bernoulli distributions, and so on. But when we talk about <em>a</em> distribution, what is that thing exactly, and is it different to something which <em>follows</em> some distribution, e.g. the grades were uniformly distributed.</p>
+
+<p>A probability distribution is simply the probability measure which assigns probabilities to events.</p>
