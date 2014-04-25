@@ -58,3 +58,18 @@ There are all kinds of distributions - uniform distributions, gaussian distribut
 But when we talk about *a* distribution, what is that thing exactly, and is it different to something which *follows* some distribution, e.g. the grades were uniformly distributed.
 
 A probability distribution is simply the probability measure which assigns probabilities to events.
+
+## Random Variables
+Often we need   
+
+
+## Transformations on Random Variables
+Often phenomena are best modeled by complex probability distributions.
+Complexity here derives from composing simpler distributions, which more formally we can think of as the result of applying functions or transformations to distributions.
+
+Suppose $$X:\Omega \to E$$ is a random variable defined on some probability space $$(\Omega, \mathcal{F}, \mathbb{P})$$.
+Our transformation $$g:E \to F$$ is a function and whose domain is the set which supports $$X$$ and range is an arbitrary set.
+Typically when one speaks of random variables they refer to real valued variables, and hence $$E$$ and $$F$$ are both $$\mathbb{R}$$
+
+### Sums of Independent Random Variables
+If $$X$$ and $$Y$$ are independent random variables with distribution functions $$\mathbb{P}_1(x)$$ and $$\mathbb{P}_2(x)$$, we want to determine the distribution function $$Z = X + Y$$.  (Comment: What do we mean by determine, don't we mean define?)
