@@ -9,9 +9,7 @@ categories: probability programming
 ## Bayesian Inference using Data Flow Anaylsis
 This paper explicitly shares our motivation for probabilstic programming: to define probabilstic models using programs and perform Bayesian inference.
 
-The language *BernoulliProb*
-
-
+The language *BernoulliProb* a simple imperative language which contains 
 
 ## Why?
 Probability theory provides tools to reason with - i.e. infer properties of, do calculations with - values which are uncertain.

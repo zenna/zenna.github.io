@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: classic
 title:  "Probability Theory"
 date:   2014-03-31 20:30:18
 categories: probability theory
@@ -14,12 +14,12 @@ Uncertainty can stem from randomness; by definition, it is impossible to say wit
 Probability is not limited to true randomness however, it allows us to model processes which may be deterministic but for all intents and purposes behave randomly, such as rolling a die.
 Probability theory also allows us to model processes which we may not think of as random at all, but over which there may still be uncertainty due to our limited access to information, or limited resources to compute.
 
-## Basic Definitions
+## Basic Definitionsa
 It can be difficult for non-mathematicians to get to grips with probability theory.
 While some of this difficulty surely stems from concepts which are counter intuitive or irreducibly difficult to grasp, more often confusing naming,  notation and an unspecified encroachment of interpretation are to blame.
 
 Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer 
-
+cd  
 ###
 We must first define some objects which will allow us to model a random process.
 We'll say we run a random experiment to get some outcome outcome $$\omega$$.
@@ -65,11 +65,13 @@ Often we need
 
 ## Transformations on Random Variables
 Often phenomena are best modeled by complex probability distributions.
-Complexity here derives from composing simpler distributions, which more formally we can think of as the result of applying functions or transformations to distributions.
+Complexity here derives from composing simpler distributions, which msore formally we can think of as the result of applying functions or transformations to distributioInnferns.
 
 Suppose $$X:\Omega \to E$$ is a random variable defined on some probability space $$(\Omega, \mathcal{F}, \mathbb{P})$$.
 Our transformation $$g:E \to F$$ is a function and whose domain is the set which supports $$X$$ and range is an arbitrary set.
 Typically when one speaks of random variables they refer to real valued variables, and hence $$E$$ and $$F$$ are both $$\mathbb{R}$$
+
+
 
 ### Sums of Independent Random Variables
 If $$X$$ and $$Y$$ are independent random variables with distribution functions $$\mathbb{P}_1(x)$$ and $$\mathbb{P}_2(x)$$, we want to determine the distribution function $$Z = X + Y$$.  (Comment: What do we mean by determine, don't we mean define?)

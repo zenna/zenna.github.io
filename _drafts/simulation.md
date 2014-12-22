@@ -1,28 +1,79 @@
 ---
-layout: classic
+layout: post
 title:  "Simulation Review"
 date:   2014-03-31 20:30:18
 categories: simulation physical
 ---
-# Simulation for physical inference
+Physical Simulation
+===================
+We would like to know how humans reason about the physical world.  This report will detail what this means.  In particular we will consider:
+
+1. What is the physical world? (How) Does our mind differentiate between physical and non-physical reasoning tasks.
+2. What mechanisms are used for reasoning.
+3. What representations are used for reasoning.
+
+## What is physical reasoning?
+There is a clear phenomenological difference between reasoning about the dynamics of a billiard ball, and performing electricity calculations.
+
+Physical reasoning involves the ability to pose and answer questions about the physical world.  Since one could argue againt the existance of any non-physical, typically the physics under consideration is that of "every-day": rigid and soft bodies, fluids, etc.
+
+Of course we can reason about (at least some subset of) physics we do not encounter in typical life.
+
+The second question is what is reasoning exactly?
+Prediction - Statin
+
+## Is Time Special?
+
+## Are there multiple mechanisms?
+
+
+
+# Physical Simulation
+The most literal simulation hypothesis is that humans posses posses a mental program which approximates the physical world.
+
+
+# Paper Summaries
+## Paper: Physical predictions over time - Kevin Smith, Eyal, Ed Vul.
+__Motivation:__ investigate how people update physical judgments over time.
+
+__Hypothesis:__ Peoples judgments over the time evolution of a 2D physical scene can modeled as functions over a large number of physical simulations.
+
+__Experimental Method__
+
+1. Participants watched ball bouncing around in environment with rectangular obstacles and elastic collisions
+2. Participants given 400 trials. 370 randomly (how randomy?) generated, 30 where *qualitative*: one target was difficult for the ball to get to, but the other was unreachable
+2. Environment also had a red region and a green region 
+2. Participants asked to hold down key indicating whether they thought ball would reach red or green region (or neither) as simulation progressed
+
+__Model__:
+
+1. Physical simulation of scene - 500 runs
+2. Each run returns proportion which hit red or green target (or if 10 seconds has expired)
+3. Decision policy of whether any were hit $$P(Any) = \frac{Sim(Red or Green)^\alpha + \gamma}{Sim(Red or Green)^\alpha + Sim(Uncertain)^\alpha + \gamma}$$
+
+__Result__
+
+Model matched predictions well, except when:
+1. *On qualitative trials* when Reasoning could be solved using reasoning about containment - "It's not possible for the ball to reach the red"
+2. 
 
 ## Simulation as an engine of physical scene understanding - Peter W. Battaglia, Hessica B. Hamrick, Joshua B. Tenenbaum.
 Authors want to explain how humans make inferences about the physical world.
-They distinguish their approach from earlier literature in that they focus on
+They distinguish their approach from earlier literature with focus on
 
 1. More realistic scenes composed of large numbers of interacting objects
-2. Deal with geometric
+2. Deal with numerical, geometric Newtonian physics calculations - instead of symbolic propositional computations
 2. Short-term prediction
 3. Approximate answers.
-4. Numerical, geometric computations as opposed to symbolic propositional reasoning.
 
 Their central claim is that aproximate probabilstic simulation is key to human capacity for physical scene understanding, can explain how people make rich inferences in a diverse range of setting.
-__My comment: heuristic account 
+ 
 1. Humans possess an intuitive physics engine (IPE) akin to that used in video games
 2. IPE performs prediction by simulation i.e. the engine is run through as a sequential program.  This is in contrast to attempting to analytically solve the problem.
 3. IPE incorporates uncertainty by making these simulations stochastic - at various points in the simulation random choices are made.
+4. Reasoning is formulated in terms functions on conditional samples - for instance, given that the blocks fall down
 
-Implementation
+###Implementation
 The IPE is based on Open Dynamics ENgine which performs rigid-body simulations over objects represented as polyhedra and mass distribution by inertial tensors.
 
 1. Sample object scene (object positions)
@@ -43,7 +94,7 @@ They suggest three possible places to approximate:
 2. the scene
 3. the probabilities
 
-### The Scope and Limits of Simulation in Automated Reasoning. Ernest David and Gary Marcus
+## The Scope and Limits of Simulation in Automated Reasoning. Ernest David and Gary Marcus
 
 Claim simulation is deceptively appealing, works well in some situations, not at all in others, and not as effective as alternatives in many.
 They define simulation as
@@ -57,21 +108,180 @@ Simulations contain many fine tuned parameters to get good results in the limite
 Many theories of physics, especially more complex ones involving fluids and temperature are significantly incomplete.
 __Zenna__ I Am not sure what the argument here is. That because we don't have a full formal theory of all of physics our brains can't simulate it? This is as specious as claiming that defiencies in our knowledge in formal kinematics prevent us from walking.
 
-1. __Time Discretisation:__ Poor discretisation can lead to problems of self intersection.
-2. __Dependendence on initial conditions__: i.c.s can strongly affect output.  Can not strongly
+1. __Time Discretisation:__ Poor discretisation can lead to problems of self intersection. __Zenna:__ *It is true that poor discretisation and bugs can lead to conclusions based on this data which are very unlikely to be seen in humans - e.g. increasing energy, objects passing through each other.  However, fundamentally this is a issue with the model of computation (von neumann machine with floating point numbers) and/or approximations used - the brains architecture is different and will suffer from different approximation problems.  Perhaps the interesting point to extract from this is that the brain's physical models tend to be more robust, even if less precise.* 
+2. __Dependendence on initial conditions__: i.c.s can strongly affect output.  Can not strongly.  __Zenna__:* Same argument above AND this is also the nature of many physical systems.*
 3. __Choosing idealisation__: Different physics engines vary, and within any one engine there are numerous parameters which change how a physical scene is modeled.  *I Suppose the argument here is that from a modelling perspective it is difficult to decide which one to choose?*
-4. __How to rapdily draw easy inferences__: Simulations always produce precise (if not accurate) result.  Many tasks do not require precise simulation of dynamics.  Example: reasoning that after shaking marbles in box they are still in the box.  You can answer this question through application of a simple rule - That "An object in a closed container remains in the container".
-5. __Extra-physical information__: We can reason about things which depend on things not thought of as physical, e.g. the mental states of other agents, mechanics, interfaces.
-6. __Incomplete Information__ : Simulation engines require precise specifications, yet humans can reason with only partially or uncertainly specified information.  For instance we can reason that we cannot cycle with a dining table without knowing the particular geometry of the dining table.
+4. __How to rapidly draw easy inferences__: Simulations always produce precise (if not accurate) result.  Many tasks do not require precise simulation of dynamics.  Example: reasoning that after shaking marbles in box they are still in the box.  You can answer this question through application of a simple rule - That "An object in a closed container remains in the container".
+5. __Extra-physical information__: We can reason about things which depend on things not thought of as physical, e.g. the mental states of other agents, mechanics, interfaces. __Zenna__: *This is an important point that needs to be elaborated.  The difficult part seems to be how do we do this kind of symbolic (for lack of a better term) reasoning, and how to combine it with the subsymbolic representations (if this is something we actually do). Also under this heading are mechanisms. Much of our physical understanding comes from interacting with mechanisms - turning levels, pressing buttons, unscrewing caps, unfolding glasses, extending headphones, adjusting straps.  We do not need geometric knowledge of the mechanism in order to use reason about its use or function*
+6. __Incomplete Information__ : Simulation engines require precise specifications, yet humans can reason with only partially or uncertainly specified information.  For instance we can reason that we cannot cycle with a dining table without knowing the particular geometry of the dining table. __Zenna:__ *Again an important point, partly related to the previous one. I can reason about objects without access to detailed geometric knowledge.*
 7. __Limits to Monte Carlo__: MC makes sense if we know the shape of an object and we just have some noise over in some standard form.  But what if we have imperfect knowledge of the *shape*. No natural probability distribution over the class of all shapes. __Zenna__: *this is just poorly informed. Secondly, it is hard to compute conditional probabiltiies given some conditions.  E.g. if I observe a nut in a bolt and have uncertain information about the occluded geometry.  If I want to compute some proposition about the dynamics conditioned on the bolt being in the nut, it will be very hard to satisfy this constraint. __Zenna__: Or will it?
 8. __Physical dynamics of unknown entities__: Things can have unknown dynamics..
-9. __Irrelevant Information__: Humans are able to reason physically while ignoring information irrelevant to the task.  Pouring lemon at a theme park is no more than pouring it in a vacuum.  Etching some engravings onto the bolt does not make the reasoning task harder.
-10. __Polaris__: I don't get hte point here
-11. __Non-applicabiltiy to many reasoning domains__: Planning) Sample space too vast 
-12. __Frame problem (or bastardisation of))__: Picture two towers far apart, two scenes with two towers far apart.  Physics engine would have to keep simulating dynamics of tower B even though we are only interacting with tower A.  __Zenna__: *This is not true even in current day physics engine*.
+9. __Irrelevant Information__: Humans are able to reason physically while ignoring information irrelevant to the task.  Pouring lemon at a theme park is no more than pouring it in a vacuum.  Etching some engravings onto the bolt does not make the reasoning task harder. __Zenna__:*This seems to be a question of a attention.  Moreoever it point to a lack of generality in simulation model claims, i.e. what role does simulation play in the continuous existence of a human.  Is the brain continuously simulating everything a few steps ahead, is simulation a function to be called upon when necessary for a task?*
+10. __Polaris__: I don't get the point here
+11. __Non-applicabiltiy to many reasoning domains__: Simulation can't for example infer physical properties/shape of an object from its physical behavior, e.g. bucket has hole from dripping. Or, be used in the design of objects. Can't address all parts of design problem, where given some design spec a human derives physical constraints on solution before design and geometric dimensions. Can't pose comparative questions, which can be answered without concrete knowledge, e.g. Suppose I make a hammer heavier will it cause more or less damage.__Zenna__: *More general view of simulation as inference can account for inferring physical properties 2) Does not address all of constraint generation problem, but it never claimed to 3) Comparative questions are interesting: can these be framed as sigma program?*
+12. __Frame problem (or bastardisation of))__: Picture two towers far apart, two scenes with two towers far apart.  1) Human (and not simulators) could easily tell if towers are sufficiently far apart that they could not interact 2) Physics engine would have to keep simulating dynamics of tower B even though we are only interacting with tower A.  __Zenna__: *1) Physics engines could tell this 2) This is not true even in current day physics engine.  *.
+
+## Slick Framework
+
+Objective is to tackle the egg-cracking problem, a common-sense reasoning problem:
+
+<blockquote>
+A cook is cracking a raw egg against a glass bowl. Properly performed, the impact of the egg against the edge of the bowl will crack the eggshell in half. Holding the egg over the bowl, the cook will then separate the two halves of the shell with his fingers, enlarging the crack, and the contents of the egg will fall gently into the bowl. The end result is that the entire contents of the egg will be in the bowl, with the yolk unbroken, and that the two halves of the shell are held in the cook's fingers.
+</blockquote>
+
+Variants: 
+What happens if: The cook brings the egg to impact very quickly? Very slowly? The cook lays the egg in the bowl and exerts steady pressure with his hand? The cook, having cracked the egg, attempts to peel it off its contents like a hard-boiled egg? The bowl is made of looseleaf paper? of soft clay? The bowl is smaller than the egg? The bowl is upside down? The cook tries this procedure with a hard-boiled egg? With a coconut? With an M & M?
+
+Most approaches based on formalising this in terms of logic.
+Proposed framework Slick, is based on physical simulation.
+Slick outline
+1. Designed as sub component of larger host system
+2. Composed of i) Control language ii) Database 3) constraint solver
+3. 
+
+## Qualitative Physics, Past, Present, and Future - Forbus
+Physical theories allow creation of models with great explanatory power.
+They are often guided by drives to formalise common sense models and intuitions.
+The goal is to find a framework to express these intuitions
+
+For common sense reasoning tasks which involve physics, an approach based on solving axiomatic physics is untenable, because
+
+1. Much of physics not axiomatised: there is no single (set of) equations to describe physical evolution
+2. Humans do not need explicit knowledge of equations to reason about the world
+3. Realistic equations rarely permit tractable or any closed-form analytic solutions
+4. Numerical solution is intractable (*this was the 70s*), and required searching for correct values of unknown parameters
+5. Output of simulation needs interpretation
+6. Often we want to capture possible behaviours (rare-event challenge of sample based simulation)
+7. Often we want rough and rapid estimate of what is possible (not precise predictions of each time step).
+
+Key task of qualitative physics is to represent continuous world with discrete symbols.
+Various (not equally good) quantisation approaches exist; but they should (and typically don't) satisfy *relevance principle: The distinctions made by a quantisation must be relevant to the kind of reasoning performed*. *__Zenna: This seems to be related to my idea of guided approximation__*
+
+Qualitative models sought (in the context of many hand-build expert systems) domain models which had:
+
+1. Wide-coverage: a single model covered a wide variety of systems, and could be concretised to any particular system through setting parameter values
+2. multi-purpose - could support a variety of inference questions.
+
+__Qualitative Reasoning History:__
+
+- Hayes *histories*: events are spatially bounded but temporally extended pieces of space-time
+
+Qualitative dynamics roughly divided into three areas:
+
+1. Qualitative dynamics
+2. qualitative kinematics
+3. styles of reasoning
+
+__Qualitative Dynamics:__ How physical systems change; qualitative representations of differential equations.
+*Numbers* e.g. deriviatives can be abstracted as to signs (0/+ve/-ve), which are simple.  For instance knowing the sign
+
+## My Observations
+__What is simulation?:__ Perhaps many of the purported challenges facing a simulation argument stem from a narrowness in scope of its definition.
+Simulation here is defined as a discrete time process which repeatedly computes a new state of the world as a function of the current state until some termination condition is met.
+
+
+__Shortcomings of physics engines:__
+Many of Marcus's arguments can be phrased as 'Physics engines are deficient at X'.  Exceptional, and physically incorrect behaviour can derive from the discretisation of time, bugs in the software.
+The relevance of this is not clear.  Perhaps the argument is that humans never make inferences that exhibit common errors found in physics engines, and hence are cannot be modelled by them.
+These problems are known issues in simulation and software engineering in general,  Many of the time discretisation problems can be mitigated or eliminated if sufficient computational resources are given through various approaches.  For example 
+
+Perhaps the argument is stronger - that these issues are fundamental to physical simulation (not current simulators)
+If the argument is that 
+At a basic level, von neumann based machines discretise all continuous values.
+
+## Open Questions
+
+__One model or many?__
+
+__Is time special?__
+
+__Are non-deterministic choices subsumed under probabilistic theory?__
+Imagine a simple puzzle, of two men, one is wearing a hat, the other is not. Man A is wearing a hat, is Man B?
+One could model this as a generative program, e.g.
+
+{% highlight clojure %}
+(defn whos-wearing-hat []
+  [(flip 0.5) (flip 0.5)])
+
+(condition (whos-wearing-hat) #(and (= 1 (count-true %))
+                                    (true? (first %)))) 
+{% endhighlight %}
+
+
+This reflects our question closely, the condition distribution will correctly put all the mass on man-b.
+But we've __added__ probabilistic information which did not exist in the problem formulation, we've defined a (uniform) distribution over whether any particular man has a hat.
+Since our choice gives non-zero probability to both choices the final distribution is correct, but somehow we have deviated from the problem.  
+
+Moreover suppose we had a slight variation on the problem:
+Imagine a simple puzzle of two men which can wear hats or not. Man B is wearing a hat, is Man A?
+A human can reason that the problem is unconstrained, there is no way to know whether man-a is wearing a hat or not; except that it is possible: 
+
+1. Often a human who asserts they don't know but would still be surprised if the unobserved became observed.  This suggests in some cases a distribution may exist but be hidden
+
+__Is lack of information subsumed under uncertainty?__
+Consider the mental representation of 3D geometry, when looking at a statue perhaps.  The following  statements have subjective qualitative differences:
+
+1. I am uncertain over the geometry of the hidden side of image - I have a distribution over possible geometries
+2. I have no belief (uncertain or otherwise) over the occluded geometry
+
+__Can/should/does stepwise simulation use/derive form/inherit the same model as that of logical reasoning__:
+A human can, from observing the dynamics of a system over time:
+
+1. Predict, to an extent, future evolution of the system.
+2. Infer qualitative information about the system.
+
+If we assume the human achieves this through manipulating a model of the system, we wish to know whether there is a single or multiple models, what form do these models come in, and whether these different tasks utilise different kind of models.  This leads to a few hypotheses over model types:
+
+1. Dynamical system: a program which represents time *implicitly*.  The system represents objects in the program and updates to attributes (e.g. position)
+2. A full logical specification of the problem
+3. Partial specification: e.g constraints
+
+And:
+
+1. There is a single model, all inferences derive from this model
+2. There are multiple models which derive from and influence each other.
+
+Assumptions:
+
+1. Models are involved at all
+
+__General vs Specialised: Is the hypothesised Intuitive Physics Engine specialised (e.g. to different kinds of objects, different scenarios) or general?__
+
+__How to bridge symbolic with non-symbolic knowledge?__
 
 
 
-### My Points
-1. They say the resulting judgements are largely independent of details of particular collisions
-## Bataglia 
+## Examples of Physical Reasoning Tasks
+__Qualitative reasoning in ball motion task (Smith et al.)__
+The goal is to reason qualitatively that some proposition must or must not be true.
+In contrast (or in addition) to stepwise simulation, the reasoner should derive from the logical constraints of the model that the proposition must be true, or false.
+Domains would be two dimensional mazes with balls and rectangular obstacles, posed.  Examples of problems could be
+
+1. Imagine a long tunnel not much narrower than a ball moving down it, will it reach the end of the tunnel?
+2. Imagine a ball contained within a region, can it reach a region outside of the ball
+
+__What's required:__
+- quasi physical 2D simulator
+- 
+
+
+__Infer object properties from dynamics__
+The goal is to demonstrate reasoning other than those based on prediction.Consider an object at rest and an unobserved* object supporting it. Infer the properties of the object supporting it.
+
+1. Unobserved means we know the existence and number of points of an unmovable object, infer its location and position.
+2. Relax above assumptions (extra object may not even exist)
+3. Infer facts about A (constraints on its geometry)
+
+Repeat above three now considering that object A is in motion across an object B.
+
+__Easy inference__
+- Infer that interacting with one towers will not cause the other to fall apart
+
+__Reasoning with incomplete information__
+- Infer that a ball will remain within a container
+
+__Model building__
+Learn model from data.
+
+
+__Interaction Task__
