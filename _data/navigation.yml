@@ -1,9 +1,6 @@
 # Site navigation links
 
-- title: About
-  url: /about/
-
-- title: All Posts
+- title: Blog Posts
   url: /posts/
 
 - title: Projects

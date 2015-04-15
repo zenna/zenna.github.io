@@ -8,7 +8,7 @@ comments: true
 
 I am a Ph.D candidate in the both the department of Brain and Cognitive Sciences and the Computer Science and Artificial Intelligence Lab at MIT.  I work in the [Computer Aided Programming Group](http://groups.csail.mit.edu/cap/) under supervision of [Armando Solar Lezama](http://people.csail.mit.edu/asolar/), and am associated with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).
 
-I am from London, I have two older brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio (Factory Fifteen)(http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://vimeo.com/user19682881).
+I am from London, I have two older brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://vimeo.com/user19682881).
 
 # What do I do (for the researchers)
 I am generally interested in how to represent knowledge about the world, in all its complexity and uncertainty, and how to efficiently derive conclusions and inferences from such knowledge.  Concretely, I work primarily on algorithms for inference in probabilistic programs using formal methods from program analysis and constraint solving.  These ideas are embodied in a probabilistic prgraomming langauge [Sigma.jl](https://github.com/zenna/Sigma.jl).
