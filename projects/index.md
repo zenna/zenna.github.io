@@ -12,7 +12,7 @@ comments: true
 
 # Ouroborus
 
-[Ouroborus](https://github.com/zenna/Ouroboros.jl) is a reinforcement learning which learns to learn.
+[Ouroborus](https://github.com/zenna/Ouroboros.jl) is a reinforcement learning algorithm which learns to learn.
 
 # mdlatex
 
