@@ -12,9 +12,9 @@ comments: true
 
 # Ouroborus
 
-[Ouroborus](https://github.com/zenna/Ouroboros.jl) is a reinforcement learning algorithm which learns to learn.
+[Ouroborus.jl](https://github.com/zenna/Ouroboros.jl) is a reinforcement learning algorithm which learns to learn.
 
-# Software Engineering
+# Software Tools
 
 ## dReal
 
@@ -22,7 +22,7 @@ comments: true
 
 ## AbstractDomains
 
-[AbstractDomains](https://github.com/zenna/AbstractDomains.jl) is a Julia package for abstract interpretation.
+[AbstractDomains.jl](https://github.com/zenna/AbstractDomains.jl) is a Julia package for abstract interpretation.
 
 ## Lens
 
