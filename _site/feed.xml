@@ -4,13 +4,642 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-04-16T14:35:27-04:00</updated>
+<updated>2015-05-03T20:15:51-04:00</updated>
 <id>/</id>
 <author>
   <name>Zenna Tavares</name>
   <uri>/</uri>
   <email>zenna@mit.edu</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Satisfiability Basics]]></title>
+  <link rel="alternate" type="text/html" href="/2015-01-01-sat-basics/" />
+  <id>/2015-01-01-sat-basics</id>
+  <published>2015-05-03T20:18:44-04:00</published>
+  <updated>2015-05-03T20:18:44-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Having a physical unit named after you is a robust indicator that, as a physicist, you have finally made it.  Some major revision to our understanding of physics withstanding, our children’s children’s children will be taught about newtons in school, their children about Joules, and their children about Kelvin.
+While computer science and mathematics are rife with examples of algorithms, proofs, theories and sequences named after the peope who invented (or discovered) them, the basic units or types of things are often naturally named.
+Number descends, and natural numbers are those that occur naturally, i.e. in the real world (when was the last time you had a negative aount of things).
+However, there is one glaring exception: the Boolean, named after&lt;/p&gt;
+
+&lt;p&gt;All cepSAT problems begin with a formula in propositional logic, which will look something like:&lt;/p&gt;
+
+&lt;p&gt;In SAT, our goal is to determine whether there is some assignment of values to variables which makes the formula true, or not.  Since the answer to this problem is yes or no, a SAT problem is called a &lt;a href=&quot;&quot;&gt;decision problem&lt;/a&gt;.  More often that not we are interested in not just answering the decision problem, but actually retrieving an example of a satisfying assignment.  Of course this only makes sense when the problem is satisfiable.&lt;/p&gt;
+
+&lt;p&gt;Since each variable can only take on a finite number of values (two,to be precise: true or false), the number of possible assignments of values to variables is finite, and hence the number of satisfiable formula is also then finite.  Whenever there are a finite number of solutions to a problem, there is always a tried and trusted algorithm to solve it: &lt;em&gt;brute-force enumeration&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;http://www.wikipedia.com/DPLL&quot;&gt;Davis Putnam Loveland&lt;/a&gt; algorithm is about 50 years old, but still forms the basis of the best performing solvers.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-julia&quot; data-lang=&quot;julia&quot;&gt;&lt;span class=&quot;k&quot;&gt;typealias&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt; Var&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typealias&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt; Clause&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Var&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typealias&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt; CNF&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Clause&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;typealias&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt; Assignment&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Dict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Bool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;SAT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;UNSAT&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Create empty cnf/clause&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;empty_cnf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Vector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}[]&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;empty_clause&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;Int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Are any of the clauses empty?&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;has_empty_clause&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CNF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;isempty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2015-01-01-sat-basics/&quot;&gt;Satisfiability Basics&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on May 03, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[A Post with Images]]></title>
+  <link rel="alternate" type="text/html" href="/2013-05-22-sample-post-images/" />
+  <id>/2013-05-22-sample-post-images</id>
+  <published>2015-04-15T12:18:28-04:00</published>
+  <updated>2015-04-15T12:18:28-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Here are some examples of what a post with images might look like. If you want to display two or three images next to each other responsively use &lt;code&gt;figure&lt;/code&gt; with the appropriate &lt;code&gt;class&lt;/code&gt;. Each instance of &lt;code&gt;figure&lt;/code&gt; is auto-numbered and displayed in the caption.&lt;/p&gt;
+
+&lt;h3 id=&quot;figures-for-images-or-video&quot;&gt;Figures (for images or video)&lt;/h3&gt;
+
+&lt;h4 id=&quot;one-up&quot;&gt;One Up&lt;/h4&gt;
+
+&lt;figure&gt;
+	&lt;a href=&quot;http://farm9.staticflickr.com/8426/7758832526_cc8f681e48_b.jpg&quot;&gt;&lt;img src=&quot;http://farm9.staticflickr.com/8426/7758832526_cc8f681e48_c.jpg&quot; /&gt;&lt;/a&gt;
+	&lt;figcaption&gt;&lt;a href=&quot;http://www.flickr.com/photos/80901381@N04/7758832526/&quot; title=&quot;Morning Fog Emerging From Trees by A Guy Taking Pictures, on Flickr&quot;&gt;Morning Fog Emerging From Trees by A Guy Taking Pictures, on Flickr&lt;/a&gt;.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;Vero laborum commodo occupy. Semiotics voluptate mumblecore pug. Cosby sweater ullamco quinoa ennui assumenda, sapiente occupy delectus lo-fi. Ea fashion axe Marfa cillum aliquip. Retro Bushwick keytar cliche. Before they sold out sustainable gastropub Marfa readymade, ethical Williamsburg skateboard brunch qui consectetur gentrify semiotics. Mustache cillum irony, fingerstache magna pour-over keffiyeh tousled selfies.&lt;/p&gt;
+
+&lt;h4 id=&quot;two-up&quot;&gt;Two Up&lt;/h4&gt;
+
+&lt;p&gt;Apply the &lt;code&gt;half&lt;/code&gt; class like so to display two images side by side that share the same caption.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;figure&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;half&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-1-large.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-1.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-2-large.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-2.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;figcaption&amp;gt;&lt;/span&gt;Caption describing these two images.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figcaption&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figure&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And you’ll get something that looks like this:&lt;/p&gt;
+
+&lt;figure class=&quot;half&quot;&gt;
+	&lt;a href=&quot;http://placehold.it/1200x600.JPG&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; /&gt;&lt;/a&gt;
+	&lt;a href=&quot;http://placehold.it/1200x600.jpeg&quot;&gt;&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; /&gt;&lt;/a&gt;
+	&lt;figcaption&gt;Two images.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h4 id=&quot;three-up&quot;&gt;Three Up&lt;/h4&gt;
+
+&lt;p&gt;Apply the &lt;code&gt;third&lt;/code&gt; class like so to display three images side by side that share the same caption.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;figure&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;third&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-1.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-2.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;img&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;/images/image-filename-3.jpg&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span class=&quot;nt&quot;&gt;&amp;lt;figcaption&amp;gt;&lt;/span&gt;Caption describing these three images.&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figcaption&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/figure&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;And you’ll get something that looks like this:&lt;/p&gt;
+
+&lt;figure class=&quot;third&quot;&gt;
+	&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; /&gt;
+	&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; /&gt;
+	&lt;img src=&quot;http://placehold.it/600x300.jpg&quot; /&gt;
+	&lt;figcaption&gt;Three images.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2013-05-22-sample-post-images/&quot;&gt;A Post with Images&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Author Override]]></title>
+  <link rel="alternate" type="text/html" href="/2014-07-31-author-override/" />
+  <id>/2014-07-31-author-override</id>
+  <published>2015-04-15T08:45:05-04:00</published>
+  <updated>2015-04-15T08:45:05-04:00</updated>
+  <author>
+    <name>Billy Rick</name>
+    <uri></uri>
+    <email>billy@rick.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;For those of you who may have content written by multiple authors on your site you can now assign different authors to each post if desired.&lt;/p&gt;
+
+&lt;p&gt;Previously the theme used a global author for the entire site and those attributes would be used in all bylines, social networking links, Twitter Card attribution, and Google Authorship. These &lt;code&gt;owner&lt;/code&gt; variables were defined in &lt;code&gt;config.yml&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Start by modifying or creating a new &lt;code&gt;authors.yml&lt;/code&gt; file in the &lt;code&gt;_data&lt;/code&gt; folder and add your authors using the following format.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# Authors&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;billy_rick&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Billy Rick&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;http://thewhip.com&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;billy@rick.com&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bio&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;What&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;you&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;want,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;jewels?&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;am&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;very&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;extravagant&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;man.&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;avatar&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bio-photo-2.jpg&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;extravagantman&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;google&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;plus&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;BillyRick&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;cornelius_fiddlebone&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Cornelius Fiddlebone&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cornelius@thewhip.com&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bio&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;I&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ordered&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;what?&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;avatar&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bio-photo.jpg&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;twitter&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;rhymeswithsackit&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;google&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;plus&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;CorneliusFiddlebone&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To assign Billy Rick as an author for our post. You’d add the following YAML front matter to a post:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;author&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;billy_rick&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2014-07-31-author-override/&quot;&gt;Author Override&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Syntax Highlighting Post]]></title>
+  <link rel="alternate" type="text/html" href="/2013-08-16-code-highlighting-post/" />
+  <id>/2013-08-16-code-highlighting-post</id>
+  <updated>2014-09-14T00:00:00-00:00</updated>
+  <published>2015-04-15T08:45:05-04:00</published>
+  
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Syntax highlighting is a feature that displays source code, in different colors and fonts according to the category of terms. This feature facilitates writing in a structured language such as a programming language or a markup language as both structures and syntax errors are visually distinct. Highlighting does not affect the meaning of the text itself; it is intended only for human readers.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;pygments-code-blocks&quot;&gt;Pygments Code Blocks&lt;/h3&gt;
+
+&lt;p&gt;To modify styling and highlight colors edit &lt;code&gt;/_sass/_pygments.scss&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nf&quot;&gt;#container&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-240px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;nav&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;pagination&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;role=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;navigation&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    {% if page.previous %}
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{{ site.url }}{{ page.previous.url }}&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;btn&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{{ page.previous.title }}&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Previous article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    {% endif %}
+    {% if page.next %}
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{{ site.url }}{{ page.next.url }}&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;btn&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;{{ page.next.title }}&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Next article&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    {% endif %}
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/nav&amp;gt;&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- /.pagination --&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;TagIndex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Page&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@site&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@base&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;
+      &lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;index.html&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;process&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read_yaml&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;File&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;join&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;_layouts&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;tag_index.html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;tag&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;tag_title_prefix&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Tagged: &amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;tag_title_suffix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;site&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;tag_title_suffix&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;amp;#8211;&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;title&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag_title_prefix&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;description&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;An archive of posts tagged &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;.&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;standard-code-block&quot;&gt;Standard Code Block&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;nav class=&quot;pagination&quot; role=&quot;navigation&quot;&amp;gt;
+    {% if page.previous %}
+        &amp;lt;a href=&quot;{{ site.url }}{{ page.previous.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.previous.title }}&quot;&amp;gt;Previous article&amp;lt;/a&amp;gt;
+    {% endif %}
+    {% if page.next %}
+        &amp;lt;a href=&quot;{{ site.url }}{{ page.next.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.next.title }}&quot;&amp;gt;Next article&amp;lt;/a&amp;gt;
+    {% endif %}
+&amp;lt;/nav&amp;gt;&amp;lt;!-- /.pagination --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;fenced-code-blocks&quot;&gt;Fenced Code Blocks&lt;/h3&gt;
+
+&lt;p&gt;To modify styling and highlight colors edit &lt;code&gt;/_sass/_coderay.scss&lt;/code&gt;. Line numbers and a few other things can be modified in &lt;code&gt;_config.yml&lt;/code&gt;. Consult &lt;a href=&quot;http://jekyllrb.com/docs/configuration/&quot;&gt;Jekyll’s documentation&lt;/a&gt; for more information.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-css&quot;&gt;#container {
+    float: left;
+    margin: 0 -240px 0 0;
+    width: 100%;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-html&quot;&gt;&amp;lt;nav class=&quot;pagination&quot; role=&quot;navigation&quot;&amp;gt;
+    {% if page.previous %}
+        &amp;lt;a href=&quot;{{ site.url }}{{ page.previous.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.previous.title }}&quot;&amp;gt;Previous article&amp;lt;/a&amp;gt;
+    {% endif %}
+    {% if page.next %}
+        &amp;lt;a href=&quot;{{ site.url }}{{ page.next.url }}&quot; class=&quot;btn&quot; title=&quot;{{ page.next.title }}&quot;&amp;gt;Next article&amp;lt;/a&amp;gt;
+    {% endif %}
+&amp;lt;/nav&amp;gt;&amp;lt;!-- /.pagination --&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-ruby&quot;&gt;module Jekyll
+  class TagIndex &amp;lt; Page
+    def initialize(site, base, dir, tag)
+      @site = site
+      @base = base
+      @dir = dir
+      @name = 'index.html'
+      self.process(@name)
+      self.read_yaml(File.join(base, '_layouts'), 'tag_index.html')
+      self.data['tag'] = tag
+      tag_title_prefix = site.config['tag_title_prefix'] || 'Tagged: '
+      tag_title_suffix = site.config['tag_title_suffix'] || '&amp;amp;#8211;'
+      self.data['title'] = &quot;#{tag_title_prefix}#{tag}&quot;
+      self.data['description'] = &quot;An archive of posts tagged #{tag}.&quot;
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;github-gist-embed&quot;&gt;GitHub Gist Embed&lt;/h3&gt;
+
+&lt;p&gt;An example of a Gist embed below.&lt;/p&gt;
+
+&lt;script src=&quot;https://gist.github.com/mmistakes/6589546.js&quot;&gt; &lt;/script&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Syntax_highlighting&quot;&gt;http://en.wikipedia.org/wiki/Syntax_highlighting&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2013-08-16-code-highlighting-post/&quot;&gt;Syntax Highlighting Post&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Sample Link Post]]></title>
+  <link rel="alternate" type="text/html" href="/2013-08-12-sample-link-post/" />
+  <id>/2013-08-12-sample-link-post</id>
+  <published>2015-04-15T08:45:05-04:00</published>
+  <updated>2015-04-15T08:45:05-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;This theme supports &lt;strong&gt;link posts&lt;/strong&gt;, made famous by John Gruber. To use, just add &lt;code&gt;link: http://url-you-want-linked&lt;/code&gt; to the post’s YAML front matter and you’re done.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;And this is how a quote looks.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Some &lt;a href=&quot;http://www.mademistakes.com&quot;&gt;link&lt;/a&gt; can also be shown.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2013-08-12-sample-link-post/&quot;&gt;Sample Link Post&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Post with Large Feature Image and Text]]></title>
+  <link rel="alternate" type="text/html" href="/2013-05-23-readability-feature-post/" />
+  <id>/2013-05-23-readability-feature-post</id>
+  <published>2015-04-15T08:45:05-04:00</published>
+  <updated>2015-04-15T08:45:05-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;This is a sample post with a large feature image&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; up top and tons of text. Odio ad blue bottle vinyl, 90’s narwhal commodo bitters pour-over nostrud. Ugh est hashtag in, fingerstache adipisicing laboris esse Pinterest shabby chic Portland. Shoreditch bicycle rights anim, flexitarian laboris put a bird on it vinyl cupidatat narwhal. Hashtag artisan skateboard, flannel Bushwick nesciunt salvia aute fixie do plaid post-ironic dolor McSweeney’s. Cliche pour-over chambray nulla four loko skateboard sapiente hashtag.&lt;/p&gt;
+
+&lt;p&gt;Vero laborum commodo occupy. Semiotics voluptate mumblecore pug. Cosby sweater ullamco quinoa ennui assumenda, sapiente occupy delectus lo-fi. Ea fashion axe Marfa cillum aliquip. Retro Bushwick keytar cliche. Before they sold out sustainable gastropub Marfa readymade, ethical Williamsburg skateboard brunch qui consectetur gentrify semiotics. Mustache cillum irony, fingerstache magna pour-over keffiyeh tousled selfies.&lt;/p&gt;
+
+&lt;h2 id=&quot;cupidatat-90s-lo-fi-authentic-try-hard&quot;&gt;Cupidatat 90’s lo-fi authentic try-hard&lt;/h2&gt;
+
+&lt;p&gt;In pug Portland incididunt mlkshk put a bird on it vinyl quinoa. Terry Richardson shabby chic +1, scenester Tonx excepteur tempor fugiat voluptate fingerstache aliquip nisi next level. Farm-to-table hashtag Truffaut, Odd Future ex meggings gentrify single-origin coffee try-hard 90’s.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sartorial hoodie&lt;/li&gt;
+  &lt;li&gt;Labore viral forage&lt;/li&gt;
+  &lt;li&gt;Tote bag selvage&lt;/li&gt;
+  &lt;li&gt;DIY exercitation et id ugh tumblr church-key&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Incididunt umami sriracha, ethical fugiat VHS ex assumenda yr irure direct trade. Marfa Truffaut bicycle rights, kitsch placeat Etsy kogi asymmetrical. Beard locavore flexitarian, kitsch photo booth hoodie plaid ethical readymade leggings yr.&lt;/p&gt;
+
+&lt;p&gt;Aesthetic odio dolore, meggings disrupt qui readymade stumptown brunch Terry Richardson pour-over gluten-free. Banksy american apparel in selfies, biodiesel flexitarian organic meh wolf quinoa gentrify banjo kogi. Readymade tofu ex, scenester dolor umami fingerstache occaecat fashion axe Carles jean shorts minim. Keffiyeh fashion axe nisi Godard mlkshk dolore. Lomo you probably haven’t heard of them eu non, Odd Future Truffaut pug keytar meggings McSweeney’s Pinterest cred. Etsy literally aute esse, eu bicycle rights qui meggings fanny pack. Gentrify leggings pug flannel duis.&lt;/p&gt;
+
+&lt;h2 id=&quot;forage-occaecat-cardigan-qui&quot;&gt;Forage occaecat cardigan qui&lt;/h2&gt;
+
+&lt;p&gt;Fashion axe hella gastropub lo-fi kogi 90’s aliquip +1 veniam delectus tousled. Cred sriracha locavore gastropub kale chips, iPhone mollit sartorial. Anim dolore 8-bit, pork belly dolor photo booth aute flannel small batch. Dolor disrupt ennui, tattooed whatever salvia Banksy sartorial roof party selfies raw denim sint meh pour-over. Ennui eu cardigan sint, gentrify iPhone cornhole.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Whatever velit occaecat quis deserunt gastropub, leggings elit tousled roof party 3 wolf moon kogi pug blue bottle ea. Fashion axe shabby chic Austin quinoa pickled laborum bitters next level, disrupt deep v accusamus non fingerstache.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Tote bag asymmetrical elit sunt. Occaecat authentic Marfa, hella McSweeney’s next level irure veniam master cleanse. Sed hoodie letterpress artisan wolf leggings, 3 wolf moon commodo ullamco. Anim occupy ea labore Terry Richardson. Tofu ex master cleanse in whatever pitchfork banh mi, occupy fugiat fanny pack Austin authentic. Magna fugiat 3 wolf moon, labore McSweeney’s sustainable vero consectetur. Gluten-free disrupt enim, aesthetic fugiat jean shorts trust fund keffiyeh magna try-hard.&lt;/p&gt;
+
+&lt;h2 id=&quot;hoodie-duis&quot;&gt;Hoodie Duis&lt;/h2&gt;
+
+&lt;p&gt;Actually salvia consectetur, hoodie duis lomo YOLO sunt sriracha. Aute pop-up brunch farm-to-table odio, salvia irure occaecat. Sriracha small batch literally skateboard. Echo Park nihil hoodie, aliquip forage artisan laboris. Trust fund reprehenderit nulla locavore. Stumptown raw denim kitsch, keffiyeh nulla twee dreamcatcher fanny pack ullamco 90’s pop-up est culpa farm-to-table. Selfies 8-bit do pug odio.&lt;/p&gt;
+
+&lt;h3 id=&quot;thundercats-ho&quot;&gt;Thundercats Ho!&lt;/h3&gt;
+
+&lt;p&gt;Fingerstache thundercats Williamsburg, deep v scenester Banksy ennui vinyl selfies mollit biodiesel duis odio pop-up. Banksy 3 wolf moon try-hard, sapiente enim stumptown deep v ad letterpress. Squid beard brunch, exercitation raw denim yr sint direct trade. Raw denim narwhal id, flannel DIY McSweeney’s seitan. Letterpress artisan bespoke accusamus, meggings laboris consequat Truffaut qui in seitan. Sustainable cornhole Schlitz, twee Cosby sweater banh mi deep v forage letterpress flannel whatever keffiyeh. Sartorial cred irure, semiotics ethical sed blue bottle nihil letterpress.&lt;/p&gt;
+
+&lt;p&gt;Occupy et selvage squid, pug brunch blog nesciunt hashtag mumblecore skateboard yr kogi. Ugh small batch swag four loko. Fap post-ironic qui tote bag farm-to-table american apparel scenester keffiyeh vero, swag non pour-over gentrify authentic pitchfork. Schlitz scenester lo-fi voluptate, tote bag irony bicycle rights pariatur vero Vice freegan wayfarers exercitation nisi shoreditch. Chambray tofu vero sed. Street art swag literally leggings, Cosby sweater mixtape PBR lomo Banksy non in pitchfork ennui McSweeney’s selfies. Odd Future Banksy non authentic.&lt;/p&gt;
+
+&lt;p&gt;Aliquip enim artisan dolor post-ironic. Pug tote bag Marfa, deserunt pour-over Portland wolf eu odio intelligentsia american apparel ugh ea. Sunt viral et, 3 wolf moon gastropub pug id. Id fashion axe est typewriter, mlkshk Portland art party aute brunch. Sint pork belly Cosby sweater, deep v mumblecore kitsch american apparel. Try-hard direct trade tumblr sint skateboard. Adipisicing bitters excepteur biodiesel, pickled gastropub aute veniam.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Texture image courtesty of &lt;a href=&quot;http://www.lovetextures.com/&quot;&gt;Lovetextures&lt;/a&gt; &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2013-05-23-readability-feature-post/&quot;&gt;Post with Large Feature Image and Text&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Testing Readability with a Bunch of Text]]></title>
+  <link rel="alternate" type="text/html" href="/2012-05-22-readability-post/" />
+  <id>/2012-05-22-readability-post</id>
+  <published>2015-04-15T08:45:05-04:00</published>
+  <updated>2015-04-15T08:45:05-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Portland in shoreditch Vice, labore typewriter pariatur hoodie fap sartorial Austin. Pinterest literally occupy Schlitz forage. Odio ad blue bottle vinyl, 90’s narwhal commodo bitters pour-over nostrud. Ugh est hashtag in, fingerstache adipisicing laboris esse Pinterest shabby chic Portland. Shoreditch bicycle rights anim, flexitarian laboris put a bird on it vinyl cupidatat narwhal. Hashtag artisan skateboard, flannel Bushwick nesciunt salvia aute fixie do plaid post-ironic dolor McSweeney’s. Cliche pour-over chambray nulla four loko skateboard sapiente hashtag.&lt;/p&gt;
+
+&lt;p&gt;Vero laborum commodo occupy. Semiotics voluptate mumblecore pug. Cosby sweater ullamco quinoa ennui assumenda, sapiente occupy delectus lo-fi. Ea fashion axe Marfa cillum aliquip. Retro Bushwick keytar cliche. Before they sold out sustainable gastropub Marfa readymade, ethical Williamsburg skateboard brunch qui consectetur gentrify semiotics. Mustache cillum irony, fingerstache magna pour-over keffiyeh tousled selfies.&lt;/p&gt;
+
+&lt;h2 id=&quot;cupidatat-90s-lo-fi-authentic-try-hard&quot;&gt;Cupidatat 90’s lo-fi authentic try-hard&lt;/h2&gt;
+
+&lt;p&gt;In pug Portland incididunt mlkshk put a bird on it vinyl quinoa. Terry Richardson shabby chic +1, scenester Tonx excepteur tempor fugiat voluptate fingerstache aliquip nisi next level. Farm-to-table hashtag Truffaut, Odd Future ex meggings gentrify single-origin coffee try-hard 90’s.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sartorial hoodie&lt;/li&gt;
+  &lt;li&gt;Labore viral forage&lt;/li&gt;
+  &lt;li&gt;Tote bag selvage&lt;/li&gt;
+  &lt;li&gt;DIY exercitation et id ugh tumblr church-key&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Incididunt umami sriracha, ethical fugiat VHS ex assumenda yr irure direct trade. Marfa Truffaut bicycle rights, kitsch placeat Etsy kogi asymmetrical. Beard locavore flexitarian, kitsch photo booth hoodie plaid ethical readymade leggings yr.&lt;/p&gt;
+
+&lt;p&gt;Aesthetic odio dolore, meggings disrupt qui readymade stumptown brunch Terry Richardson pour-over gluten-free. Banksy american apparel in selfies, biodiesel flexitarian organic meh wolf quinoa gentrify banjo kogi. Readymade tofu ex, scenester dolor umami fingerstache occaecat fashion axe Carles jean shorts minim. Keffiyeh fashion axe nisi Godard mlkshk dolore. Lomo you probably haven’t heard of them eu non, Odd Future Truffaut pug keytar meggings McSweeney’s Pinterest cred. Etsy literally aute esse, eu bicycle rights qui meggings fanny pack. Gentrify leggings pug flannel duis.&lt;/p&gt;
+
+&lt;h2 id=&quot;forage-occaecat-cardigan-qui&quot;&gt;Forage occaecat cardigan qui&lt;/h2&gt;
+
+&lt;p&gt;Fashion axe hella gastropub lo-fi kogi 90’s aliquip +1 veniam delectus tousled. Cred sriracha locavore gastropub kale chips, iPhone mollit sartorial. Anim dolore 8-bit, pork belly dolor photo booth aute flannel small batch. Dolor disrupt ennui, tattooed whatever salvia Banksy sartorial roof party selfies raw denim sint meh pour-over. Ennui eu cardigan sint, gentrify iPhone cornhole.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Whatever velit occaecat quis deserunt gastropub, leggings elit tousled roof party 3 wolf moon kogi pug blue bottle ea. Fashion axe shabby chic Austin quinoa pickled laborum bitters next level, disrupt deep v accusamus non fingerstache.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Tote bag asymmetrical elit sunt. Occaecat authentic Marfa, hella McSweeney’s next level irure veniam master cleanse. Sed hoodie letterpress artisan wolf leggings, 3 wolf moon commodo ullamco. Anim occupy ea labore Terry Richardson. Tofu ex master cleanse in whatever pitchfork banh mi, occupy fugiat fanny pack Austin authentic. Magna fugiat 3 wolf moon, labore McSweeney’s sustainable vero consectetur. Gluten-free disrupt enim, aesthetic fugiat jean shorts trust fund keffiyeh magna try-hard.&lt;/p&gt;
+
+&lt;h2 id=&quot;hoodie-duis&quot;&gt;Hoodie Duis&lt;/h2&gt;
+
+&lt;p&gt;Actually salvia consectetur, hoodie duis lomo YOLO sunt sriracha. Aute pop-up brunch farm-to-table odio, salvia irure occaecat. Sriracha small batch literally skateboard. Echo Park nihil hoodie, aliquip forage artisan laboris. Trust fund reprehenderit nulla locavore. Stumptown raw denim kitsch, keffiyeh nulla twee dreamcatcher fanny pack ullamco 90’s pop-up est culpa farm-to-table. Selfies 8-bit do pug odio.&lt;/p&gt;
+
+&lt;h3 id=&quot;thundercats-ho&quot;&gt;Thundercats Ho!&lt;/h3&gt;
+
+&lt;p&gt;Fingerstache thundercats Williamsburg, deep v scenester Banksy ennui vinyl selfies mollit biodiesel duis odio pop-up. Banksy 3 wolf moon try-hard, sapiente enim stumptown deep v ad letterpress. Squid beard brunch, exercitation raw denim yr sint direct trade. Raw denim narwhal id, flannel DIY McSweeney’s seitan. Letterpress artisan bespoke accusamus, meggings laboris consequat Truffaut qui in seitan. Sustainable cornhole Schlitz, twee Cosby sweater banh mi deep v forage letterpress flannel whatever keffiyeh. Sartorial cred irure, semiotics ethical sed blue bottle nihil letterpress.&lt;/p&gt;
+
+&lt;p&gt;Occupy et selvage squid, pug brunch blog nesciunt hashtag mumblecore skateboard yr kogi. Ugh small batch swag four loko. Fap post-ironic qui tote bag farm-to-table american apparel scenester keffiyeh vero, swag non pour-over gentrify authentic pitchfork. Schlitz scenester lo-fi voluptate, tote bag irony bicycle rights pariatur vero Vice freegan wayfarers exercitation nisi shoreditch. Chambray tofu vero sed. Street art swag literally leggings, Cosby sweater mixtape PBR lomo Banksy non in pitchfork ennui McSweeney’s selfies. Odd Future Banksy non authentic.&lt;/p&gt;
+
+&lt;p&gt;Aliquip enim artisan dolor post-ironic. Pug tote bag Marfa, deserunt pour-over Portland wolf eu odio intelligentsia american apparel ugh ea. Sunt viral et, 3 wolf moon gastropub pug id. Id fashion axe est typewriter, mlkshk Portland art party aute brunch. Sint pork belly Cosby sweater, deep v mumblecore kitsch american apparel. Try-hard direct trade tumblr sint skateboard. Adipisicing bitters excepteur biodiesel, pickled gastropub aute veniam.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2012-05-22-readability-post/&quot;&gt;Testing Readability with a Bunch of Text&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Sample Post]]></title>
+  <link rel="alternate" type="text/html" href="/2011-03-10-sample-post/" />
+  <id>/2011-03-10-sample-post</id>
+  <updated>2013-05-31T00:00:00-00:00</updated>
+  <published>2015-04-15T08:45:05-04:00</published>
+  
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;section id=&quot;table-of-contents&quot; class=&quot;toc&quot;&gt;
+  &lt;header&gt;
+    &lt;h3&gt;Overview&lt;/h3&gt;
+  &lt;/header&gt;
+&lt;div id=&quot;drawer&quot;&gt;
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#html-elements&quot; id=&quot;markdown-toc-html-elements&quot;&gt;HTML Elements&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#heading-1&quot; id=&quot;markdown-toc-heading-1&quot;&gt;Heading 1&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#heading-2&quot; id=&quot;markdown-toc-heading-2&quot;&gt;Heading 2&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#heading-3&quot; id=&quot;markdown-toc-heading-3&quot;&gt;Heading 3&lt;/a&gt;            &lt;ul&gt;
+              &lt;li&gt;&lt;a href=&quot;#heading-4&quot; id=&quot;markdown-toc-heading-4&quot;&gt;Heading 4&lt;/a&gt;                &lt;ul&gt;
+                  &lt;li&gt;&lt;a href=&quot;#heading-5&quot; id=&quot;markdown-toc-heading-5&quot;&gt;Heading 5&lt;/a&gt;                    &lt;ul&gt;
+                      &lt;li&gt;&lt;a href=&quot;#heading-6&quot; id=&quot;markdown-toc-heading-6&quot;&gt;Heading 6&lt;/a&gt;&lt;/li&gt;
+                    &lt;/ul&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#body-text&quot; id=&quot;markdown-toc-body-text&quot;&gt;Body text&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#blockquotes&quot; id=&quot;markdown-toc-blockquotes&quot;&gt;Blockquotes&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#list-types&quot; id=&quot;markdown-toc-list-types&quot;&gt;List Types&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#ordered-lists&quot; id=&quot;markdown-toc-ordered-lists&quot;&gt;Ordered Lists&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#unordered-lists&quot; id=&quot;markdown-toc-unordered-lists&quot;&gt;Unordered Lists&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#tables&quot; id=&quot;markdown-toc-tables&quot;&gt;Tables&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#code-snippets&quot; id=&quot;markdown-toc-code-snippets&quot;&gt;Code Snippets&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#buttons&quot; id=&quot;markdown-toc-buttons&quot;&gt;Buttons&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#notices&quot; id=&quot;markdown-toc-notices&quot;&gt;Notices&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+  &lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- /#table-of-contents --&gt;
+
+&lt;h2 id=&quot;html-elements&quot;&gt;HTML Elements&lt;/h2&gt;
+
+&lt;p&gt;Below is just about everything you’ll need to style in the theme. Check the source code to see the many embedded elements within paragraphs.&lt;/p&gt;
+
+&lt;h1 id=&quot;heading-1&quot;&gt;Heading 1&lt;/h1&gt;
+
+&lt;h2 id=&quot;heading-2&quot;&gt;Heading 2&lt;/h2&gt;
+
+&lt;h3 id=&quot;heading-3&quot;&gt;Heading 3&lt;/h3&gt;
+
+&lt;h4 id=&quot;heading-4&quot;&gt;Heading 4&lt;/h4&gt;
+
+&lt;h5 id=&quot;heading-5&quot;&gt;Heading 5&lt;/h5&gt;
+
+&lt;h6 id=&quot;heading-6&quot;&gt;Heading 6&lt;/h6&gt;
+
+&lt;h3 id=&quot;body-text&quot;&gt;Body text&lt;/h3&gt;
+
+&lt;p&gt;Lorem ipsum dolor sit amet, test link adipiscing elit. &lt;strong&gt;This is strong&lt;/strong&gt;. Nullam dignissim convallis est. Quisque aliquam.&lt;/p&gt;
+
+&lt;p class=&quot;image-pull-right&quot;&gt;&lt;img src=&quot;/images/3953273590_704e3899d5_m.jpg&quot; alt=&quot;Smithsonian Image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;This is emphasized&lt;/em&gt;. Donec faucibus. Nunc iaculis suscipit dui. 53 = 125. Water is H2O. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl. The New York Times (That’s a citation). Underline.Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus.&lt;/p&gt;
+
+&lt;p&gt;HTML and CSS are our tools. Mauris a ante. Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc. Morbi imperdiet augue quis tellus. Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.&lt;/p&gt;
+
+&lt;h3 id=&quot;blockquotes&quot;&gt;Blockquotes&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Lorem ipsum dolor sit amet, test link adipiscing elit. Nullam dignissim convallis est. Quisque aliquam.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;list-types&quot;&gt;List Types&lt;/h2&gt;
+
+&lt;h3 id=&quot;ordered-lists&quot;&gt;Ordered Lists&lt;/h3&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Item one
+    &lt;ol&gt;
+      &lt;li&gt;sub item one&lt;/li&gt;
+      &lt;li&gt;sub item two&lt;/li&gt;
+      &lt;li&gt;sub item three&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Item two&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;unordered-lists&quot;&gt;Unordered Lists&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Item one&lt;/li&gt;
+  &lt;li&gt;Item two&lt;/li&gt;
+  &lt;li&gt;Item three&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tables&quot;&gt;Tables&lt;/h2&gt;
+
+&lt;table rules=&quot;groups&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Header1&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Header2&lt;/th&gt;
+      &lt;th style=&quot;text-align: right&quot;&gt;Header3&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell3&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;cell4&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;cell5&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;cell6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;tfoot&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Foot1&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;Foot2&lt;/td&gt;
+      &lt;td style=&quot;text-align: right&quot;&gt;Foot3&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tfoot&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;code-snippets&quot;&gt;Code Snippets&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;nf&quot;&gt;#container&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-240px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;100%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;buttons&quot;&gt;Buttons&lt;/h2&gt;
+
+&lt;p&gt;Make any link standout more when applying the &lt;code&gt;.btn&lt;/code&gt; class.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;#&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;btn btn-success&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Success Button&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn&quot;&gt;Primary Button&lt;/a&gt;&lt;/div&gt;
+&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn btn-success&quot;&gt;Success Button&lt;/a&gt;&lt;/div&gt;
+&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn btn-warning&quot;&gt;Warning Button&lt;/a&gt;&lt;/div&gt;
+&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn btn-danger&quot;&gt;Danger Button&lt;/a&gt;&lt;/div&gt;
+&lt;div&gt;&lt;a href=&quot;#&quot; class=&quot;btn btn-info&quot;&gt;Info Button&lt;/a&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;notices&quot;&gt;Notices&lt;/h2&gt;
+
+&lt;p class=&quot;notice&quot;&gt;&lt;strong&gt;Watch out!&lt;/strong&gt; You can also add notices by appending &lt;code&gt;{: .notice}&lt;/code&gt; to a paragraph.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2011-03-10-sample-post/&quot;&gt;Sample Post&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -30,6 +659,695 @@
     &lt;p&gt;Back to blogging.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/first-post/&quot;&gt;First Post&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on April 15, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Simulation Review]]></title>
+  <link rel="alternate" type="text/html" href="/simulation/physical/simulation/" />
+  <id>/simulation/physical/simulation</id>
+  <published>2014-03-31T16:30:18-04:00</published>
+  <updated>2014-03-31T16:30:18-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;h1 id=&quot;physical-simulation&quot;&gt;Physical Simulation&lt;/h1&gt;
+&lt;p&gt;We would like to know how humans reason about the physical world.  This report will detail what this means.  In particular we will consider:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;What is the physical world? (How) Does our mind differentiate between physical and non-physical reasoning tasks.&lt;/li&gt;
+  &lt;li&gt;What mechanisms are used for reasoning.&lt;/li&gt;
+  &lt;li&gt;What representations are used for reasoning.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;what-is-physical-reasoning&quot;&gt;What is physical reasoning?&lt;/h2&gt;
+&lt;p&gt;There is a clear phenomenological difference between reasoning about the dynamics of a billiard ball, and performing electricity calculations.&lt;/p&gt;
+
+&lt;p&gt;Physical reasoning involves the ability to pose and answer questions about the physical world.  Since one could argue againt the existance of any non-physical, typically the physics under consideration is that of “every-day”: rigid and soft bodies, fluids, etc.&lt;/p&gt;
+
+&lt;p&gt;Of course we can reason about (at least some subset of) physics we do not encounter in typical life.&lt;/p&gt;
+
+&lt;p&gt;The second question is what is reasoning exactly?
+Prediction - Statin&lt;/p&gt;
+
+&lt;h2 id=&quot;is-time-special&quot;&gt;Is Time Special?&lt;/h2&gt;
+
+&lt;h2 id=&quot;are-there-multiple-mechanisms&quot;&gt;Are there multiple mechanisms?&lt;/h2&gt;
+
+&lt;h1 id=&quot;physical-simulation-1&quot;&gt;Physical Simulation&lt;/h1&gt;
+&lt;p&gt;The most literal simulation hypothesis is that humans posses posses a mental program which approximates the physical world.&lt;/p&gt;
+
+&lt;h1 id=&quot;paper-summaries&quot;&gt;Paper Summaries&lt;/h1&gt;
+&lt;p&gt;## Paper: Physical predictions over time - Kevin Smith, Eyal, Ed Vul.
+&lt;strong&gt;Motivation:&lt;/strong&gt; investigate how people update physical judgments over time.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hypothesis:&lt;/strong&gt; Peoples judgments over the time evolution of a 2D physical scene can modeled as functions over a large number of physical simulations.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Experimental Method&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Participants watched ball bouncing around in environment with rectangular obstacles and elastic collisions&lt;/li&gt;
+  &lt;li&gt;Participants given 400 trials. 370 randomly (how randomy?) generated, 30 where &lt;em&gt;qualitative&lt;/em&gt;: one target was difficult for the ball to get to, but the other was unreachable&lt;/li&gt;
+  &lt;li&gt;Environment also had a red region and a green region&lt;/li&gt;
+  &lt;li&gt;Participants asked to hold down key indicating whether they thought ball would reach red or green region (or neither) as simulation progressed&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Model&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Physical simulation of scene - 500 runs&lt;/li&gt;
+  &lt;li&gt;Each run returns proportion which hit red or green target (or if 10 seconds has expired)&lt;/li&gt;
+  &lt;li&gt;Decision policy of whether any were hit &lt;script type=&quot;math/tex&quot;&gt;P(Any) = \frac{Sim(Red or Green)^\alpha + \gamma}{Sim(Red or Green)^\alpha + Sim(Uncertain)^\alpha + \gamma}&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Result&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Model matched predictions well, except when:
+1. &lt;em&gt;On qualitative trials&lt;/em&gt; when Reasoning could be solved using reasoning about containment - “It’s not possible for the ball to reach the red”
+2.&lt;/p&gt;
+
+&lt;h2 id=&quot;simulation-as-an-engine-of-physical-scene-understanding---peter-w-battaglia-hessica-b-hamrick-joshua-b-tenenbaum&quot;&gt;Simulation as an engine of physical scene understanding - Peter W. Battaglia, Hessica B. Hamrick, Joshua B. Tenenbaum.&lt;/h2&gt;
+&lt;p&gt;Authors want to explain how humans make inferences about the physical world.
+They distinguish their approach from earlier literature with focus on&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;More realistic scenes composed of large numbers of interacting objects&lt;/li&gt;
+  &lt;li&gt;Deal with numerical, geometric Newtonian physics calculations - instead of symbolic propositional computations&lt;/li&gt;
+  &lt;li&gt;Short-term prediction&lt;/li&gt;
+  &lt;li&gt;Approximate answers.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Their central claim is that aproximate probabilstic simulation is key to human capacity for physical scene understanding, can explain how people make rich inferences in a diverse range of setting.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Humans possess an intuitive physics engine (IPE) akin to that used in video games&lt;/li&gt;
+  &lt;li&gt;IPE performs prediction by simulation i.e. the engine is run through as a sequential program.  This is in contrast to attempting to analytically solve the problem.&lt;/li&gt;
+  &lt;li&gt;IPE incorporates uncertainty by making these simulations stochastic - at various points in the simulation random choices are made.&lt;/li&gt;
+  &lt;li&gt;Reasoning is formulated in terms functions on conditional samples - for instance, given that the blocks fall down&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;implementation&quot;&gt;Implementation&lt;/h3&gt;
+&lt;p&gt;The IPE is based on Open Dynamics ENgine which performs rigid-body simulations over objects represented as polyhedra and mass distribution by inertial tensors.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Sample object scene (object positions)&lt;/li&gt;
+  &lt;li&gt;Use this sample with a normal physics engine as a black box sense&lt;/li&gt;
+  &lt;li&gt;Repeat 1 and 2 some large number of times&lt;/li&gt;
+  &lt;li&gt;Use the resulting samples as a distribution, to compute answers to questions from.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The sampling is based on three parameters
+theta - gaussian noise over object positions&lt;/p&gt;
+
+&lt;p&gt;When the task requires an accurate simulation, IPE fails to replicate human findings.  Simple heuristics more informative.&lt;/p&gt;
+
+&lt;h3 id=&quot;possible-appoximations&quot;&gt;Possible appoximations&lt;/h3&gt;
+&lt;p&gt;The authors emphasise that such simulations are approximate; they posit will take trade fidelity for speed, moreover they will aggressively favour the latter.
+They suggest three possible places to approximate:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The physics:&lt;/li&gt;
+  &lt;li&gt;the scene&lt;/li&gt;
+  &lt;li&gt;the probabilities&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;the-scope-and-limits-of-simulation-in-automated-reasoning-ernest-david-and-gary-marcus&quot;&gt;The Scope and Limits of Simulation in Automated Reasoning. Ernest David and Gary Marcus&lt;/h2&gt;
+
+&lt;p&gt;Claim simulation is deceptively appealing, works well in some situations, not at all in others, and not as effective as alternatives in many.
+They define simulation as
+1. Defining initial conditions
+2. Defining some dynamic fully specified laws
+3. The program simulates, i.e. executes a state after discrete state until a terminating condition is met&lt;/p&gt;
+
+&lt;p&gt;In fields which attempt to actually simulate reality, as opposed to emulate it to an aesthetically plausible result, it is widely known that accurate simulations are often unobtainable.
+Simulations contain many fine tuned parameters to get good results in the limited domains they are applicable.&lt;/p&gt;
+
+&lt;p&gt;Many theories of physics, especially more complex ones involving fluids and temperature are significantly incomplete.
+&lt;strong&gt;Zenna&lt;/strong&gt; I Am not sure what the argument here is. That because we don’t have a full formal theory of all of physics our brains can’t simulate it? This is as specious as claiming that defiencies in our knowledge in formal kinematics prevent us from walking.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Time Discretisation:&lt;/strong&gt; Poor discretisation can lead to problems of self intersection. &lt;strong&gt;Zenna:&lt;/strong&gt; &lt;em&gt;It is true that poor discretisation and bugs can lead to conclusions based on this data which are very unlikely to be seen in humans - e.g. increasing energy, objects passing through each other.  However, fundamentally this is a issue with the model of computation (von neumann machine with floating point numbers) and/or approximations used - the brains architecture is different and will suffer from different approximation problems.  Perhaps the interesting point to extract from this is that the brain’s physical models tend to be more robust, even if less precise.&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Dependendence on initial conditions&lt;/strong&gt;: i.c.s can strongly affect output.  Can not strongly.  &lt;strong&gt;Zenna&lt;/strong&gt;:* Same argument above AND this is also the nature of many physical systems.*&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Choosing idealisation&lt;/strong&gt;: Different physics engines vary, and within any one engine there are numerous parameters which change how a physical scene is modeled.  &lt;em&gt;I Suppose the argument here is that from a modelling perspective it is difficult to decide which one to choose?&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;How to rapidly draw easy inferences&lt;/strong&gt;: Simulations always produce precise (if not accurate) result.  Many tasks do not require precise simulation of dynamics.  Example: reasoning that after shaking marbles in box they are still in the box.  You can answer this question through application of a simple rule - That “An object in a closed container remains in the container”.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Extra-physical information&lt;/strong&gt;: We can reason about things which depend on things not thought of as physical, e.g. the mental states of other agents, mechanics, interfaces. &lt;strong&gt;Zenna&lt;/strong&gt;: &lt;em&gt;This is an important point that needs to be elaborated.  The difficult part seems to be how do we do this kind of symbolic (for lack of a better term) reasoning, and how to combine it with the subsymbolic representations (if this is something we actually do). Also under this heading are mechanisms. Much of our physical understanding comes from interacting with mechanisms - turning levels, pressing buttons, unscrewing caps, unfolding glasses, extending headphones, adjusting straps.  We do not need geometric knowledge of the mechanism in order to use reason about its use or function&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Incomplete Information&lt;/strong&gt; : Simulation engines require precise specifications, yet humans can reason with only partially or uncertainly specified information.  For instance we can reason that we cannot cycle with a dining table without knowing the particular geometry of the dining table. &lt;strong&gt;Zenna:&lt;/strong&gt; &lt;em&gt;Again an important point, partly related to the previous one. I can reason about objects without access to detailed geometric knowledge.&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Limits to Monte Carlo&lt;/strong&gt;: MC makes sense if we know the shape of an object and we just have some noise over in some standard form.  But what if we have imperfect knowledge of the &lt;em&gt;shape&lt;/em&gt;. No natural probability distribution over the class of all shapes. &lt;strong&gt;Zenna&lt;/strong&gt;: *this is just poorly informed. Secondly, it is hard to compute conditional probabiltiies given some conditions.  E.g. if I observe a nut in a bolt and have uncertain information about the occluded geometry.  If I want to compute some proposition about the dynamics conditioned on the bolt being in the nut, it will be very hard to satisfy this constraint. &lt;strong&gt;Zenna&lt;/strong&gt;: Or will it?&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Physical dynamics of unknown entities&lt;/strong&gt;: Things can have unknown dynamics..&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Irrelevant Information&lt;/strong&gt;: Humans are able to reason physically while ignoring information irrelevant to the task.  Pouring lemon at a theme park is no more than pouring it in a vacuum.  Etching some engravings onto the bolt does not make the reasoning task harder. &lt;strong&gt;Zenna&lt;/strong&gt;:&lt;em&gt;This seems to be a question of a attention.  Moreoever it point to a lack of generality in simulation model claims, i.e. what role does simulation play in the continuous existence of a human.  Is the brain continuously simulating everything a few steps ahead, is simulation a function to be called upon when necessary for a task?&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Polaris&lt;/strong&gt;: I don’t get the point here&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Non-applicabiltiy to many reasoning domains&lt;/strong&gt;: Simulation can’t for example infer physical properties/shape of an object from its physical behavior, e.g. bucket has hole from dripping. Or, be used in the design of objects. Can’t address all parts of design problem, where given some design spec a human derives physical constraints on solution before design and geometric dimensions. Can’t pose comparative questions, which can be answered without concrete knowledge, e.g. Suppose I make a hammer heavier will it cause more or less damage.&lt;strong&gt;Zenna&lt;/strong&gt;: &lt;em&gt;More general view of simulation as inference can account for inferring physical properties 2) Does not address all of constraint generation problem, but it never claimed to 3) Comparative questions are interesting: can these be framed as sigma program?&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Frame problem (or bastardisation of))&lt;/strong&gt;: Picture two towers far apart, two scenes with two towers far apart.  1) Human (and not simulators) could easily tell if towers are sufficiently far apart that they could not interact 2) Physics engine would have to keep simulating dynamics of tower B even though we are only interacting with tower A.  &lt;strong&gt;Zenna&lt;/strong&gt;: *1) Physics engines could tell this 2) This is not true even in current day physics engine.  *.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;slick-framework&quot;&gt;Slick Framework&lt;/h2&gt;
+
+&lt;p&gt;Objective is to tackle the egg-cracking problem, a common-sense reasoning problem:&lt;/p&gt;
+
+&lt;blockquote&gt;
+A cook is cracking a raw egg against a glass bowl. Properly performed, the impact of the egg against the edge of the bowl will crack the eggshell in half. Holding the egg over the bowl, the cook will then separate the two halves of the shell with his fingers, enlarging the crack, and the contents of the egg will fall gently into the bowl. The end result is that the entire contents of the egg will be in the bowl, with the yolk unbroken, and that the two halves of the shell are held in the cook's fingers.
+&lt;/blockquote&gt;
+
+&lt;p&gt;Variants: 
+What happens if: The cook brings the egg to impact very quickly? Very slowly? The cook lays the egg in the bowl and exerts steady pressure with his hand? The cook, having cracked the egg, attempts to peel it off its contents like a hard-boiled egg? The bowl is made of looseleaf paper? of soft clay? The bowl is smaller than the egg? The bowl is upside down? The cook tries this procedure with a hard-boiled egg? With a coconut? With an M &amp;amp; M?&lt;/p&gt;
+
+&lt;p&gt;Most approaches based on formalising this in terms of logic.
+Proposed framework Slick, is based on physical simulation.
+Slick outline
+1. Designed as sub component of larger host system
+2. Composed of i) Control language ii) Database 3) constraint solver
+3.&lt;/p&gt;
+
+&lt;h2 id=&quot;qualitative-physics-past-present-and-future---forbus&quot;&gt;Qualitative Physics, Past, Present, and Future - Forbus&lt;/h2&gt;
+&lt;p&gt;Physical theories allow creation of models with great explanatory power.
+They are often guided by drives to formalise common sense models and intuitions.
+The goal is to find a framework to express these intuitions&lt;/p&gt;
+
+&lt;p&gt;For common sense reasoning tasks which involve physics, an approach based on solving axiomatic physics is untenable, because&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Much of physics not axiomatised: there is no single (set of) equations to describe physical evolution&lt;/li&gt;
+  &lt;li&gt;Humans do not need explicit knowledge of equations to reason about the world&lt;/li&gt;
+  &lt;li&gt;Realistic equations rarely permit tractable or any closed-form analytic solutions&lt;/li&gt;
+  &lt;li&gt;Numerical solution is intractable (&lt;em&gt;this was the 70s&lt;/em&gt;), and required searching for correct values of unknown parameters&lt;/li&gt;
+  &lt;li&gt;Output of simulation needs interpretation&lt;/li&gt;
+  &lt;li&gt;Often we want to capture possible behaviours (rare-event challenge of sample based simulation)&lt;/li&gt;
+  &lt;li&gt;Often we want rough and rapid estimate of what is possible (not precise predictions of each time step).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Key task of qualitative physics is to represent continuous world with discrete symbols.
+Various (not equally good) quantisation approaches exist; but they should (and typically don’t) satisfy &lt;em&gt;relevance principle: The distinctions made by a quantisation must be relevant to the kind of reasoning performed&lt;/em&gt;. &lt;em&gt;&lt;strong&gt;Zenna: This seems to be related to my idea of guided approximation&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Qualitative models sought (in the context of many hand-build expert systems) domain models which had:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Wide-coverage: a single model covered a wide variety of systems, and could be concretised to any particular system through setting parameter values&lt;/li&gt;
+  &lt;li&gt;multi-purpose - could support a variety of inference questions.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Qualitative Reasoning History:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hayes &lt;em&gt;histories&lt;/em&gt;: events are spatially bounded but temporally extended pieces of space-time&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Qualitative dynamics roughly divided into three areas:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Qualitative dynamics&lt;/li&gt;
+  &lt;li&gt;qualitative kinematics&lt;/li&gt;
+  &lt;li&gt;styles of reasoning&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Qualitative Dynamics:&lt;/strong&gt; How physical systems change; qualitative representations of differential equations.
+&lt;em&gt;Numbers&lt;/em&gt; e.g. deriviatives can be abstracted as to signs (0/+ve/-ve), which are simple.  For instance knowing the sign&lt;/p&gt;
+
+&lt;h2 id=&quot;my-observations&quot;&gt;My Observations&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;What is simulation?:&lt;/strong&gt; Perhaps many of the purported challenges facing a simulation argument stem from a narrowness in scope of its definition.
+Simulation here is defined as a discrete time process which repeatedly computes a new state of the world as a function of the current state until some termination condition is met.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Shortcomings of physics engines:&lt;/strong&gt;
+Many of Marcus’s arguments can be phrased as ‘Physics engines are deficient at X’.  Exceptional, and physically incorrect behaviour can derive from the discretisation of time, bugs in the software.
+The relevance of this is not clear.  Perhaps the argument is that humans never make inferences that exhibit common errors found in physics engines, and hence are cannot be modelled by them.
+These problems are known issues in simulation and software engineering in general,  Many of the time discretisation problems can be mitigated or eliminated if sufficient computational resources are given through various approaches.  For example&lt;/p&gt;
+
+&lt;p&gt;Perhaps the argument is stronger - that these issues are fundamental to physical simulation (not current simulators)
+If the argument is that 
+At a basic level, von neumann based machines discretise all continuous values.&lt;/p&gt;
+
+&lt;h2 id=&quot;open-questions&quot;&gt;Open Questions&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;One model or many?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Is time special?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Are non-deterministic choices subsumed under probabilistic theory?&lt;/strong&gt;
+Imagine a simple puzzle, of two men, one is wearing a hat, the other is not. Man A is wearing a hat, is Man B?
+One could model this as a generative program, e.g.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-clojure&quot; data-lang=&quot;clojure&quot;&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;defn &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;whos-wearing-hat&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[]&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;flip&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;flip&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;0.5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;whos-wearing-hat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;and &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;= &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count-true&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+                                    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true? &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;first &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This reflects our question closely, the condition distribution will correctly put all the mass on man-b.
+But we’ve &lt;strong&gt;added&lt;/strong&gt; probabilistic information which did not exist in the problem formulation, we’ve defined a (uniform) distribution over whether any particular man has a hat.
+Since our choice gives non-zero probability to both choices the final distribution is correct, but somehow we have deviated from the problem.&lt;/p&gt;
+
+&lt;p&gt;Moreover suppose we had a slight variation on the problem:
+Imagine a simple puzzle of two men which can wear hats or not. Man B is wearing a hat, is Man A?
+A human can reason that the problem is unconstrained, there is no way to know whether man-a is wearing a hat or not; except that it is possible:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Often a human who asserts they don’t know but would still be surprised if the unobserved became observed.  This suggests in some cases a distribution may exist but be hidden&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Is lack of information subsumed under uncertainty?&lt;/strong&gt;
+Consider the mental representation of 3D geometry, when looking at a statue perhaps.  The following  statements have subjective qualitative differences:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I am uncertain over the geometry of the hidden side of image - I have a distribution over possible geometries&lt;/li&gt;
+  &lt;li&gt;I have no belief (uncertain or otherwise) over the occluded geometry&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Can/should/does stepwise simulation use/derive form/inherit the same model as that of logical reasoning&lt;/strong&gt;:
+A human can, from observing the dynamics of a system over time:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Predict, to an extent, future evolution of the system.&lt;/li&gt;
+  &lt;li&gt;Infer qualitative information about the system.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If we assume the human achieves this through manipulating a model of the system, we wish to know whether there is a single or multiple models, what form do these models come in, and whether these different tasks utilise different kind of models.  This leads to a few hypotheses over model types:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Dynamical system: a program which represents time &lt;em&gt;implicitly&lt;/em&gt;.  The system represents objects in the program and updates to attributes (e.g. position)&lt;/li&gt;
+  &lt;li&gt;A full logical specification of the problem&lt;/li&gt;
+  &lt;li&gt;Partial specification: e.g constraints&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;And:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;There is a single model, all inferences derive from this model&lt;/li&gt;
+  &lt;li&gt;There are multiple models which derive from and influence each other.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Assumptions:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Models are involved at all&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;General vs Specialised: Is the hypothesised Intuitive Physics Engine specialised (e.g. to different kinds of objects, different scenarios) or general?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;How to bridge symbolic with non-symbolic knowledge?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;examples-of-physical-reasoning-tasks&quot;&gt;Examples of Physical Reasoning Tasks&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Qualitative reasoning in ball motion task (Smith et al.)&lt;/strong&gt;
+The goal is to reason qualitatively that some proposition must or must not be true.
+In contrast (or in addition) to stepwise simulation, the reasoner should derive from the logical constraints of the model that the proposition must be true, or false.
+Domains would be two dimensional mazes with balls and rectangular obstacles, posed.  Examples of problems could be&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Imagine a long tunnel not much narrower than a ball moving down it, will it reach the end of the tunnel?&lt;/li&gt;
+  &lt;li&gt;Imagine a ball contained within a region, can it reach a region outside of the ball&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;What’s required:&lt;/strong&gt;
+- quasi physical 2D simulator
+-&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Infer object properties from dynamics&lt;/strong&gt;
+The goal is to demonstrate reasoning other than those based on prediction.Consider an object at rest and an unobserved* object supporting it. Infer the properties of the object supporting it.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Unobserved means we know the existence and number of points of an unmovable object, infer its location and position.&lt;/li&gt;
+  &lt;li&gt;Relax above assumptions (extra object may not even exist)&lt;/li&gt;
+  &lt;li&gt;Infer facts about A (constraints on its geometry)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Repeat above three now considering that object A is in motion across an object B.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Easy inference&lt;/strong&gt;
+- Infer that interacting with one towers will not cause the other to fall apart&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Reasoning with incomplete information&lt;/strong&gt;
+- Infer that a ball will remain within a container&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Model building&lt;/strong&gt;
+Learn model from data.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Interaction Task&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/simulation/physical/simulation/&quot;&gt;Simulation Review&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on March 31, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Probabilistic Programming Review]]></title>
+  <link rel="alternate" type="text/html" href="/probability/programming/probprog/" />
+  <id>/probability/programming/probprog</id>
+  <published>2014-03-31T16:30:18-04:00</published>
+  <updated>2014-03-31T16:30:18-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;h2 id=&quot;bayesian-inference-using-data-flow-anaylsis&quot;&gt;Bayesian Inference using Data Flow Anaylsis&lt;/h2&gt;
+&lt;p&gt;This paper explicitly shares our motivation for probabilstic programming: to define probabilstic models using programs and perform Bayesian inference.&lt;/p&gt;
+
+&lt;p&gt;The language &lt;em&gt;BernoulliProb&lt;/em&gt; a simple imperative language which contains&lt;/p&gt;
+
+&lt;h2 id=&quot;why&quot;&gt;Why?&lt;/h2&gt;
+&lt;p&gt;Probability theory provides tools to reason with - i.e. infer properties of, do calculations with - values which are uncertain.
+Uncertainty can stem from randomness; by definition, it is impossible to say with certainty what will result from a truly random physical process.
+Probability is not limited to true randomness however, it allows us to model processes which may be deterministic but for all intents and purposes behave randomly, such as rolling a die.
+Probability theory also allows us to model processes which we may not think of as random at all, but over which there may still be uncertainty due to our limited access to information, or limited resources to compute.&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-definitions&quot;&gt;Basic Definitions&lt;/h2&gt;
+&lt;p&gt;It can be difficult for non-mathematicians to get to grips with probability theory.
+While some of this difficulty surely stems from concepts which are counter intuitive or irreducibly difficult to grasp, more often confusing naming,  notation and an unspecified encroachment of interpretation are to blame.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;#&lt;/h2&gt;
+&lt;p&gt;We must first define some objects which will allow us to model a random process.
+We’ll say we run a random experiment to get some outcome outcome &lt;script type=&quot;math/tex&quot;&gt;\omega&lt;/script&gt;.
+&lt;script type=&quot;math/tex&quot;&gt;\Omega&lt;/script&gt;, the sample space, is the set of all possible outcomes.&lt;/p&gt;
+
+&lt;p&gt;Example
+&lt;code&gt;Haskell
+let omega = [1, 2, 3, 4, 5, 6]
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Often we will want to reason about sets of possible outcomes, for instance - how likely it is that a thrown die lands on an even number.
+Hence it will be useful to define a set of all subsets of omega, i.e. it’s power-set.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+events :: Num t =&amp;gt; [[t]]
+let events = power-set omega
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;A probability measure is a measurable function which assigns probabilities to events
+&lt;code&gt;
+measure :: Fractional a =&amp;gt; a -&amp;gt; a
+measure x = 1 / x
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;An E-valued random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; is a function from the sample space to &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt;.
+&lt;script type=&quot;math/tex&quot;&gt;X:\Omega \rightarrow E&lt;/script&gt;.
+Random variables are typically given uppercase characters, and are often seen in confusing notation.
+As stated, a random variable is a function, not a variable.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+num- :: Omega -&amp;gt; 
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-a-distribution-exactly&quot;&gt;What is a distribution, exactly?&lt;/h2&gt;
+&lt;p&gt;There are all kinds of distributions - uniform distributions, gaussian distributions, bernoulli distributions, and so on.
+But when we talk about &lt;em&gt;a&lt;/em&gt; distribution, what is that thing exactly, and is it different to something which &lt;em&gt;follows&lt;/em&gt; some distribution, e.g. the grades were uniformly distributed.&lt;/p&gt;
+
+&lt;p&gt;A probability distribution is simply the probability measure which assigns probabilities to events.&lt;/p&gt;
+
+&lt;h2 id=&quot;random-variables&quot;&gt;Random Variables&lt;/h2&gt;
+&lt;p&gt;Often we need&lt;/p&gt;
+
+&lt;h2 id=&quot;transformations-on-random-variables&quot;&gt;Transformations on Random Variables&lt;/h2&gt;
+&lt;p&gt;Often phenomena are best modeled by complex probability distributions.
+Complexity here derives from composing simpler distributions, which more formally we can think of as the result of applying functions or transformations to distributions.&lt;/p&gt;
+
+&lt;p&gt;Suppose &lt;script type=&quot;math/tex&quot;&gt;X:\Omega \to E&lt;/script&gt; is a random variable defined on some probability space &lt;script type=&quot;math/tex&quot;&gt;(\Omega, \mathcal{F}, \mathbb{P})&lt;/script&gt;.
+Our transformation &lt;script type=&quot;math/tex&quot;&gt;g:E \to F&lt;/script&gt; is a function and whose domain is the set which supports &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and range is an arbitrary set.
+Typically when one speaks of random variables they refer to real valued variables, and hence &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; are both &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sums-of-independent-random-variables&quot;&gt;Sums of Independent Random Variables&lt;/h3&gt;
+&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are independent random variables with distribution functions &lt;script type=&quot;math/tex&quot;&gt;\mathbb{P}_1(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbb{P}_2(x)&lt;/script&gt;, we want to determine the distribution function &lt;script type=&quot;math/tex&quot;&gt;Z = X + Y&lt;/script&gt;.  (Comment: What do we mean by determine, don’t we mean define?)&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/probability/programming/probprog/&quot;&gt;Probabilistic Programming Review&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on March 31, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Probability Theory]]></title>
+  <link rel="alternate" type="text/html" href="/probability/theory/probability/" />
+  <id>/probability/theory/probability</id>
+  <published>2014-03-31T16:30:18-04:00</published>
+  <updated>2014-03-31T16:30:18-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&gt;&lt;/script&gt;
+
+&lt;h1 id=&quot;probability-theory&quot;&gt;Probability Theory&lt;/h1&gt;
+
+&lt;h2 id=&quot;why&quot;&gt;Why?&lt;/h2&gt;
+&lt;p&gt;Probability theory provides tools to reason with - i.e. infer properties of, do calculations with - values which are uncertain.
+Uncertainty can stem from randomness; by definition, it is impossible to say with certainty what will result from a truly random physical process.
+Probability is not limited to true randomness however, it allows us to model processes which may be deterministic but for all intents and purposes behave randomly, such as rolling a die.
+Probability theory also allows us to model processes which we may not think of as random at all, but over which there may still be uncertainty due to our limited access to information, or limited resources to compute.&lt;/p&gt;
+
+&lt;h2 id=&quot;basic-definitionsa&quot;&gt;Basic Definitionsa&lt;/h2&gt;
+&lt;p&gt;It can be difficult for non-mathematicians to get to grips with probability theory.
+While some of this difficulty surely stems from concepts which are counter intuitive or irreducibly difficult to grasp, more often confusing naming,  notation and an unspecified encroachment of interpretation are to blame.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer 
+cd&lt;br /&gt;
+###
+We must first define some objects which will allow us to model a random process.
+We’ll say we run a random experiment to get some outcome outcome &lt;script type=&quot;math/tex&quot;&gt;\omega&lt;/script&gt;.
+&lt;script type=&quot;math/tex&quot;&gt;\Omega&lt;/script&gt;, the sample space, is the set of all possible outcomes.&lt;/p&gt;
+
+&lt;p&gt;Example
+&lt;code&gt;Haskell
+let omega = [1, 2, 3, 4, 5, 6]
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Often we will want to reason about sets of possible outcomes, for instance - how likely it is that a thrown die lands on an even number.
+Hence it will be useful to define a set of all subsets of omega, i.e. it’s power-set.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+events :: Num t =&amp;gt; [[t]]
+let events = power-set omega
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;A probability measure is a measurable function which assigns probabilities to events
+&lt;code&gt;
+measure :: Fractional a =&amp;gt; a -&amp;gt; a
+measure x = 1 / x
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;An E-valued random variable &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; is a function from the sample space to &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt;.
+&lt;script type=&quot;math/tex&quot;&gt;X:\Omega \rightarrow E&lt;/script&gt;.
+Random variables are typically given uppercase characters, and are often seen in confusing notation.
+As stated, a random variable is a function, not a variable.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+num- :: Omega -&amp;gt; 
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-a-distribution-exactly&quot;&gt;What is a distribution, exactly?&lt;/h2&gt;
+&lt;p&gt;There are all kinds of distributions - uniform distributions, gaussian distributions, bernoulli distributions, and so on.
+But when we talk about &lt;em&gt;a&lt;/em&gt; distribution, what is that thing exactly, and is it different to something which &lt;em&gt;follows&lt;/em&gt; some distribution, e.g. the grades were uniformly distributed.&lt;/p&gt;
+
+&lt;p&gt;A probability distribution is simply the probability measure which assigns probabilities to events.&lt;/p&gt;
+
+&lt;h2 id=&quot;random-variables&quot;&gt;Random Variables&lt;/h2&gt;
+&lt;p&gt;Often we need&lt;/p&gt;
+
+&lt;h2 id=&quot;transformations-on-random-variables&quot;&gt;Transformations on Random Variables&lt;/h2&gt;
+&lt;p&gt;Often phenomena are best modeled by complex probability distributions.
+Complexity here derives from composing simpler distributions, which msore formally we can think of as the result of applying functions or transformations to distributioInnferns.&lt;/p&gt;
+
+&lt;p&gt;Suppose &lt;script type=&quot;math/tex&quot;&gt;X:\Omega \to E&lt;/script&gt; is a random variable defined on some probability space &lt;script type=&quot;math/tex&quot;&gt;(\Omega, \mathcal{F}, \mathbb{P})&lt;/script&gt;.
+Our transformation &lt;script type=&quot;math/tex&quot;&gt;g:E \to F&lt;/script&gt; is a function and whose domain is the set which supports &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and range is an arbitrary set.
+Typically when one speaks of random variables they refer to real valued variables, and hence &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; are both &lt;script type=&quot;math/tex&quot;&gt;\mathbb{R}&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sums-of-independent-random-variables&quot;&gt;Sums of Independent Random Variables&lt;/h3&gt;
+&lt;p&gt;If &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; are independent random variables with distribution functions &lt;script type=&quot;math/tex&quot;&gt;\mathbb{P}_1(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbb{P}_2(x)&lt;/script&gt;, we want to determine the distribution function &lt;script type=&quot;math/tex&quot;&gt;Z = X + Y&lt;/script&gt;.  (Comment: What do we mean by determine, don’t we mean define?)&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/probability/theory/probability/&quot;&gt;Probability Theory&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on March 31, 2014.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[An Overview]]></title>
+  <link rel="alternate" type="text/html" href="/research/overview/overview/" />
+  <id>/research/overview/overview</id>
+  <published>2014-03-31T16:30:18-04:00</published>
+  <updated>2014-03-31T16:30:18-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Welcome to my humble page.  It is under construction so please excuse typos or mysteriously unfinished sentences, paragraphs or sections.&lt;/p&gt;
+
+&lt;p&gt;I currently spend my days as a graduate student in the Brain and Cognitive Sciences at MIT, I will share here the problems I find interesting, and intend to solve.  Specifically:&lt;/p&gt;
+
+&lt;blockquote&gt;If I am to write a computer program that practically and principally has the capacity for human level thought, what is the simplest set on primitives I must endow this program with, and in what language must I write it?&lt;/blockquote&gt;
+
+&lt;p&gt;Many clever people think this is in principle impossible. A larger group tell me it’s infeasible for the foreseeable future.  I prefer difficult.  My approach sits somewhere between cognitive science, computer science and engineering. The key words are program induction, intrinsic motivation, associative memory models of computation, computational complexity and meta-computation.&lt;/p&gt;
+
+&lt;h2 id=&quot;carrots-and-sticks&quot;&gt;Carrots and Sticks&lt;/h2&gt;
+
+&lt;p&gt;You are, it seems, able to influence the world through action.
+The actions you choose to take are also not entirely arbitrary.
+Instead, they often lead you towards some goal, or the reward from achieving a goal.  A number of people have taken mathematical precision to this idea, formulating the problem as how an agent should take actions in an environment so as to maximise some notion of cumulative reward.  The field has assumed the label &lt;i&gt;reinforcement learning&lt;/i&gt;, and both cognitive and neuro scientists have applied it to understanding behaviour, while engineers and computer scientists have built robots and chess players based on the principle.&lt;/p&gt;
+
+&lt;p&gt;There are a number of assumptions made in the original formulation of reinforcement learning that have since been relaxed to allow greater generality.
+The most prominent of which concerns the agent’s capacity for observation; instead of assuming that she has an omniscient and perfect knowledge of her environment, we can more feasibly suggest she can observe only partially and with uncertainty.  However another glaring assumption remains, false in almost any realistic problem, is that rewards are numerical values, embedded in the environment.
+It is akin to suggesting that consuming an apple or graduating from university results in some fundamental reward stuff being transferred from the universe into you.&lt;/p&gt;
+
+&lt;p&gt;But assumptions often exist for a reason; if the rewards are not intrinsic to the environment, then where do they come from?  Or from the practictioners point of view, if I don’t tell my agent that something is good, why will it do anything at all, let alone something useful?
+A trivial, but apparently not obvious explanation is that you define your own goals, and derive, or compute the reward from achieving them (or not).
+This is an incomplete solution however, since whether defined intrinsically or extrinsically there must be some fundamental motivation for useful behaviour.
+I hope to stay an inch above, in terms of computability, one obvious evolutionary argument - you do stuff to avoid death and pass on your genes - but acknowledge that it is likely unavoidable that evolution has led to some primitive desires, which have no fundamental basis other than that they have proved themselves useful.  Take hunger for example, it invariably modulates several hours of your behaviour every day.  Yet you could forgo eating for some objective you deem more imperative given the circumstances, such as catching a falling baby.
+You are able to create goals across a continuum of precision, from fine grained hand movements to New Year’s resolutions of self improvement.
+You can also abstract this process away from the real world to another domain, such as proving a mathematical theorem, or not falling down holes in Super Mario Land 2: 6 Golden Coins.
+This leads to my next hypothesis:&lt;/p&gt;
+
+&lt;blockquote&gt;
+		There are are number of primitive goals, and a program which with consideration to these primitives, the world, the agent, and itself, dynamically manages the creation, modification and deletion of goals.
+&lt;/blockquote&gt;
+
+&lt;p&gt;Note the the framing in terms of goals, which is not new; in the similar problem of &lt;i&gt;planning&lt;/i&gt; one seeks a sequence of actions which will lead to a goal state.  In one respect rewards are a generalisation of goals, where a goal is a special case where one particular class of states has reward 1, and everything else 0.
+However it is not clear this generalisation expands in the correct dimension.  We want a system with.  consider a square grid world.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Collect the maximal number of coins within a given time frame&amp;lt;/li&amp;gt;&lt;/li&gt;
+  &lt;li&gt;Move on a circle trajectory until the original position and stop at hte original position.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The system: must defin goals in a structured form
+From this form it must derive subgoals and select an active:
+From subgoals it must derive actions&lt;/p&gt;
+
+&lt;p&gt;Assuming each x, y position of our agent represents one state in the statespace, it becomes very troublesome to translate this objective into a reward function, since if we reward moving from the current position we will never be able to stop there on return.  Of course we could reformulate the state space to be the set of all possible finite paths on our grid, making a reward function interpretation possible in principle, yet wildly impractical.  But even this approach breaks down if we make our grid world infinitely sized, despite the objective remaining tractable.  More importantly it shouldn’t be up to us (the programmer) to be making these decisions.  make the reward function be dynamic If we abandon a classical RL state-reward framework for a declarative language of objectivesEvidently we already many in the form of human language&lt;/p&gt;
+
+&lt;p&gt;We need a langauge capable of expressing any objective.  It needs to be declarative.  If this is so the agent needs to be able to interpret this language.  This means translating these declarations into actions, much like a compiler.  Need the reward function be dynamic If we abandon a classical RL state-reward framework for a declarative language of objectivesEvidently we already many in the form of human language&lt;/p&gt;
+
+&lt;p&gt;This hypothesis is formulated to support what a human can do, and there are presumably many reasons why this may be not true for humans, or any animal.  It highlights a can-should dichotomy: can your observations be modelled this way, and should they?  Given a sufficiently general framework, the answer to the former is often yes.  The latter is more difficult, perhaps you should only if you believe your model is representing the true underlying phenomena or (as in my case) it may be useful.  Hence my objective is to formalise the above hypothesis into a computational form, that is one precise enough to execute on a computer.&lt;span&gt; which is difficult.  So before let’s take a simpler chunk, and explore what I think might be one of those primitives, curiosity&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;If we pretend for the moment that we’ve figured out what the rewards are and where they come from, we are still left with finding that program.  In the interests of parsimony, we may want a single program precise enough that goals are unambiguously translated down to actions in the real world.
+Alternatively we might have two programs, the hypothesised one for generating the goals, and another for inferring the required actions for these goals.
+Whether one or two, I will hence forth refer to this particular program as the policy, and still need to find out what they are.
+&lt;i&gt;Find&lt;/i&gt; here is an appropriate word, as it leads to my next point:&lt;/p&gt;
+
+&lt;blockquote&gt;
+The agent's policy should be a program in a universal model of computation, and we should find it by searching through the space of possible program.
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;But before we get to searching, I should address what may have been a niggling question thus far: what is a program?&lt;/p&gt;
+
+&lt;h2&gt;Computation&lt;/h2&gt;
+&lt;p&gt;In the 1950s Turing told there is more than one way to do computation, and when you get to a certain point no one way can do more than another.
+Somewhat surprsingly, it doesn’t take much to reach this point, and there are radically different forms of computation that do.
+Considering the original problem of finding that reward/goal/action generating program; I need to choose what kind of program, that is, what &lt;i&gt;model of computation.&lt;/i&gt;
+I could of course use a conventional programming language such as C++ or javascript.  But here are some reasons as to why that might not be a good idea.  Firstly is existential evidence, despite has ever.  Secondly, and as a likely cause of the first argument, common programming languages are very brittle, make one small change and the whole thing collapses.&lt;/p&gt;
+
+&lt;p&gt;Here’s a model I devised based on simple networks of elements which propagate information between themselves, and transform it along the way.
+I devised it based on (simplistic) principles of how subatomic particles interact, and it bears a passing resemblence to neurons in the brain.
+It turns out that in many ways its a generalisation of a well studied model of computation, known as the cellular automata. TODO: Add infon pictures&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A number of particles, where each particle has a fixed length string from a finite alphabet
+&lt;/li&gt;
+&lt;li&gt;
+	Particles can influence one anotehr by the exchange of virtual particles
+&lt;/li&gt;
+&lt;li&gt;
+	Virtual particles act as functions, taking one source particle as an argument and placing the transformed output on another
+&lt;/li&gt;
+&lt;li&gt;
+	The transformation that occurs, depends on the body of the virtual particle.
+&lt;/li&gt;
+&lt;li&gt;
+	Virtual particles can be influenced just like any other normal particle.
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We can demonstate this system doing something useful.
+The following networks are instantations of a conjunction, that is a function of two binary variables, where the output is 1 only if both the inputs are 1, and 0 in all other cases.&lt;/p&gt;
+
+&lt;p&gt;TODO: add AND infons&lt;/p&gt;
+
+&lt;div&gt;
+GO
+&lt;/div&gt;
+
+&lt;p&gt;Now we have a representation that contains our solution, we need to find the solution.
+Most people think this search problem is hard.
+So we need to address too more questions, what is search anyway? and what about this (and any) problem, makes it hard rather than easy?&lt;/p&gt;
+
+&lt;p&gt;&amp;lt;/span&amp;gt;&lt;/p&gt;
+
+&lt;h2&gt;What makes a problem hard?&lt;/h2&gt;
+
+&lt;p&gt;Why some problems are easy and some are hard keeps many a poor soul awake at night.  The theoretical computer scientist ponders whether problems for which candidate solutions can be verified in practical time, can also be solved in practical time.  It’s easy for example to check that a  timetable assigned to you has no clashes, but much more difficult create a timetable with no clashes.  Is this disparity in difficulty due to your lack of imagination, or are these fundamentally different problems?  So important is this problem, that solving it will &lt;a href=&quot;http://www.claymath.org/millennium/&quot;&gt;land you a million dollars&lt;/a&gt;, and there’s even a film in the works fictionialising the reprocussions of a proof.&lt;/p&gt;
+
+&lt;p&gt;I’ll consider what makes a narrower class of problems - local search - easy or difficult.  In local search, you have a problem to which you can easily generate candidate solutions, and check how good these solutions are.&lt;/p&gt;
+
+&lt;p&gt;One metaphor to understand local search is that you (the searching algorithm) are situated in a rugged mountaneous landscape.  Every patch of this landscape represents a solution to your problem, and its altitude represents the quality of the solution. Your goal, as an adventure seeking exhilarist, is to find the tallest mountain in the land (the globally optimal solution).  Unfortunately for you, there is a pervasive fog so dense, you can only see as far as one step away.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://www.wunderground.com/data/wximagenew/p/pjpix/406.jpg&quot; /&gt;&amp;lt;/img&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;One approach would be to continuously look around yourself and take steps in the most uphill direction until no more can be taken. 
+This problem with this heuristic, is that it may lead you to the top of a small mound, and lead you to think you’ve reached the top of the world.
+This problem, getting stuck in a local maximum, is the bane of many algorithms.
+I’ll talk more about how to circumvent it in just a moment, but what we are interested in, is how the shape of this landscape affects how difficult it is to climb.&lt;/p&gt;
+
+&lt;p&gt;Mathematical formalisation of the landscape metaphor has given new explanatory power in fields diverse as molecular dynamics and evolutionary biology.  We may apply a similar line of thinking to search; much in the same way the difficulty of surmounting the greatest peak in a mountain range could be evaluated by properties such as the height or area of the tallest mountain, the number of smaller mountains, or even their spatial arrangement, many have hypothesised that the geometry of the landscape is a determinant of the difficulty in finding optimal solutions to a problem.&lt;/p&gt;
+
+&lt;p&gt;However a flaw in this method emerges when abstract from a fixed spatial topology such as three dimensions of the real world, and think in terms of abstract problems.  It suggests that explanatory success seen in molecular dynamics may not, at least naively, be applicable to search problems.
+The difference is that in computational.
+To take an extreme example, we may define a search algorithm where the local changes lead to a random solution, leading to a random landscape clearly completely uninformative of the difficulty of a problem.  Hence we may only sensibly make draw conclusions from a landscape defined by a search algorithm. that is:&lt;/p&gt;
+
+&lt;blockquote&gt;
+The landscape is induced entirely by the local search algorithm, and its topology determines how difficult the search problem will be.
+&lt;/blockquote&gt;
+
+&lt;p&gt;To demonstrate this, the following boxes are visualisations of two landscapes from a common search problem.  As described, each point represents a solution to the problem, their colour represents the quality from red(good) to blue (poor), and the lines connect solutions which can be reached within one step of the search algorithm.&lt;/p&gt;
+
+&lt;div&gt;
+TODO: GO - Add landscape box
+&lt;/div&gt;
+
+&lt;p&gt;We can see that these landscapes are very different, reitterating the point above.  In addition it demonstrates some of the qualities which easyness of a problem, for example a local smoothness, connectivity of the graph.
+And while the above point is certainly depressing in delaying us from making few universal statements about problems (independent of search algorithms), it reveals possibilities: Equiped with an understanding of what landscape properties allow the discovery of better solutions, we can design of our search algorithm to induce landscapes with such properties.  Perh&lt;/p&gt;
+
+&lt;h2&gt;Searching for programs&lt;/h2&gt;
+
+&lt;p&gt;Having decided what we’re searching for (a policy in a universal model of computation) in a representation we’ve decided may be suitable, we finally need to figure out how to search for it.
+The local gradient ascent as noted above, is myopic; we’re far too likely to get stuck in local maxima.
+One powerful feature is that we can use reinforcement learning for both taking actions in the world, and for searching through program space to find new policies&lt;/p&gt;
+
+&lt;p&gt;This unification is elegant in my opinion, but in of itself it provides no qualitative differences to using a separate algorithm for policy search, like gradient ascent for example.
+We can make a stronger statement however, that does change the game:&lt;/p&gt;
+
+&lt;blockquote&gt;
+The policy and search policy can be the same program.
+&lt;/blockquote&gt;
+
+&lt;p&gt;This implies that every time I find an new policy determining how to act in the world, I have a new search process of how to act in the world.
+We want this new policy to be an improvement, so that not only is the agent a slightly better chess player for example, but also has a greater capacity for finding better policies.
+One metaphor is to imagine a vast maze sparsely littered with treasure chests.  In addition to a few gold coins, each treasure chest contains a piece of advice about how to better search for treasure chests.&lt;/p&gt;
+
+&lt;blockquote&gt;
+The search algorithm must be replaced by a better search algorithm.  Where better reflects its ability to find better search algorithm.
+&lt;/blockquote&gt;
+
+&lt;p&gt;The recursive nature of this statement should trouble you.  At risk of appearing ungrateful, when granted three wishes by the genie, the most opportunitist of you would surely not emulate Alladin. More wishes would instead be wished for.  You’d be similarly astute enough not to ask for a single extra wish.  Somehow you’re easily able to reason about the potential for infinite growth, without infinite mental resources.  To give a more practical example, .  Understanding how we are able to make decisions&lt;/p&gt;
+
+&lt;p&gt;For difficult problems, the .  We must abaondon the idea that we have discovered the best search algorithm and open up our ideas to modification.&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/research/overview/overview/&quot;&gt;An Overview&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on March 31, 2014.&lt;/p&gt;
   </content>
 </entry>
 
