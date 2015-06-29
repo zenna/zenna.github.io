@@ -1,0 +1,687 @@
+<!--
+Google IO 2012/2013 HTML5 Slide Template
+
+Authors: Eric Bidelman <ebidel@gmail.com>
+         Luke Mahé <lukem@google.com>
+
+URL: https://code.google.com/p/io-2012-slides
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">-->
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+  <!--This one seems to work all the time, but really small on ipad-->
+  <!--<meta name="viewport" content="initial-scale=0.4">-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" media="all" href="theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="theme/css/phone.css">
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->
+  <script data-main="js/slides" src="js/require-1.0.8.min.js"></script>
+  
+  
+  <script type="text/javascript"
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+
+</head>
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+    <!-- <aside class="gdbar"><img src="images/google_developers_icon_128.png"></aside> -->
+    <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p><b>Zenna Tavares</b> <br/> <br/> Computer Assisted Programming Group (PI: Armando Solar Lezama) <br> Department of Brain and Cognitive Sciences <br> CSAIL <br> <br> JuliaCon 6/25/2015</p> 
+
+    </hgroup>
+  </slide>
+
+
+  <slide class = "nobackground">
+    <aside class="note">
+    </aside>
+
+    <hgroup>
+      <h2>What is Probabilistic Programming?</h2>
+    </hgroup>
+    <br/>
+    <br/>
+  <article class = "build">
+  <p> J Jara-Ettinger, L Schulz, JB Tenenbaum (2015). <br/></p> <br/>
+<img src="images/ortho.svg" style="max-width:100%; display:block; margin:auto;">
+</article>
+
+    <article>
+    </article>
+  </slide>
+
+
+
+
+  <slide class = "nobackground">
+    <aside class="note">
+    </aside>
+
+    <hgroup>
+      <h2>Example: Inverse Planning</h2>
+    </hgroup>
+<article class = "build">
+<img src="images/pathshort.svg" style="max-width:100%; float:left;">
+<img src="images/pathlong.svg" style="max-width:100%; float:left;">
+</article>
+  </slide>
+
+  <slide class = "nobackground">
+    <hgroup>
+      <h2>Parameter Estimation</h2>
+      <h3>Infer rate parameter of exponential distribution</h3>
+    </hgroup>
+
+<div>
+<img src="images/Exponential_pdf.svg" style="float:left;">
+
+<article  style="float:left;">
+  $$
+  \begin{split}
+  \lambda &\sim \mathrm{Uniform}(0, 2)\\
+  x_n &\sim \mathrm{Exponential}(λ)\\
+  observe \; \mathbf{x} &= [0.083, 0.55, 2.37]\\
+  \end{split}
+  $$
+</article>
+</div>
+  </slide>
+
+  <slide class = "nobackground">
+    <hgroup>
+      <h2>Conditional Samples</h2>
+      <h3><br/></h3>
+
+    </hgroup>
+
+<article class="flexbox">
+
+<div style = "display:block;margin:auto" class = "build">
+<div style = "float:left; margin:10px;">
+prior<br/>
+<img src="images/priorpdf.svg" style="max-width:100%;">
+</div>
+
+<div style = "float:left; margin:10px;">
+posterior<br/>
+<img src="images/largepdf.svg" style="max-width:100%;">
+</div>
+</div>
+</article>
+
+<!-- <article class="flexbox">
+
+<div style = "display:block;margin:auto;">
+<div style = "float:left; margin:10px;">
+dream<br>
+<img src="images/rejectsampleok.svg">
+</div>
+
+<div style = "float:left; margin:10px;">
+reality<br>
+<img src="images/rejectsampleimpossible.svg">
+</div>
+</div>
+    </article> -->
+
+
+</slide>
+
+  <slide class = "nobackground">
+    <hgroup>
+    <h2>Inference Queries</h2>
+    <h3>Conditional sampling with <b>rand</b></h3>
+    </hgroup>
+    <article>
+
+<!-- <pre class="prettyprint" data-lang="julia">
+rand(X::RandVar{T}, Y::RandVar{Bool}, n::Integer) = ...
+</pre>
+ -->
+<pre class="prettyprint" data-lang="julia">
+λ = uniform(0,2)
+x1 = exponential(λ)
+x2 = exponential(λ)
+x3 = exponential(λ)
+observations = (x1 == 0.083) & (x2 == 0.55) & (x3 == 2.37)
+
+<b>rand(λ, observations, 100)</b>
+</pre>
+    </article>
+  </slide>
+
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Conditional Sampling is Not Easy</h2>
+      <h3>probability of observation == true becomes vanishingly small</h3>
+    </hgroup>
+<article class="flexbox">
+
+<div style = "display:block;margin:auto;">
+<div style = "float:left; margin:10px;">
+dream<br>
+<img src="images/rejectsampleok.svg">
+</div>
+
+<div style = "float:left; margin:10px;">
+reality<br>
+<img src="images/rejectsampleimpossible.svg">
+</div>
+</div>
+    </article>
+  </slide>
+
+
+
+<!-- 
+    <slide class = "nobackground">
+    <hgroup>
+      <h2>Random Variables are not Samples!</h2>
+    </hgroup>
+    <article>
+<pre class="prettyprint" data-lang="julia">
+λ = uniform(0,1)
+x1 = exponential(λ)
+x2 = exponential(λ)
+x3 = exponential(λ)
+observations = (x1 == 0.083) & (x2 == 0.55) & (x3 == 2.37)
+</pre>
+<br/>
+
+<article class = "build">
+
+<article>
+
+<p>use <b>rand</b> to sample a value of type T from a RandVar{T}:</p>
+<pre class="prettyprint"λ data-lang="julia">
+typeof(λ)
+=> RandVar{Float64}
+sample = rand(λ)
+=> 0.558916471627316
+</pre>
+
+</article>  
+
+</article>
+
+    </article>
+  </slide> -->
+
+<slide class = "nobackground">
+    <hgroup>
+      <h2>Random Variables are not Random!</h2>
+      <h3>They are functions</h3>
+    </hgroup>
+    <article>
+
+
+<pre class="prettyprint" data-lang="julia">
+λ = uniform(0,2)
+typeof(λ) => RandVar{Float64}
+</pre>
+
+<pre class="prettyprint" data-lang="julia">
+function λ(ω) = ω * 2 end  # input ω ∈ [0, 1]
+</pre>
+
+<pre class="prettyprint" data-lang="julia">
+λ(0.1) => 0.2  # x is just a function
+</pre>
+
+<pre class="prettyprint" data-lang="julia">
+λ = randunif()
+λ(ω) => 0.6923295214 # to sample: call with uniformly sampled input 
+</pre> 
+
+</article>
+
+    </article>
+  </slide>
+
+    <slide class = "nobackground">
+    <hgroup>
+      <h2>Pointwise Random Variable Algebra</h2>
+    </hgroup>
+    <article>
+$$
+\begin{split}
+Z &= X + Y\\
+Z(\omega) &= X(\omega) + Y(\omega)
+\end{split}
+$$
+<br/>
+<img src="images/pointwise.svg" style="max-width:60%;display:block;margin:auto;">
+    </article>
+  </slide>
+
+  <slide class = "nobackground">
+    <hgroup>
+      <h2>Pointwise Random Variable Algebra</h2>
+    </hgroup>
+    <article>
+<pre class="prettyprint" data-lang="julia">
+a = exponential(0.5); b = exponential(0.5)
+c = a + b
+typeof(c) => RandVar{Float64}
+rand(c, 5) => [3.425, 2.990, 9.670, 0.45759, 3.6357] 
+</pre>
+<article class = "build">
+
+<pre class="prettyprint" data-lang="julia">
+d = c + 100
+typeof(d) => RandVar{Float64}
+rand(d, 5) => [104.883, 103.50, 100.50, 100.485, 100.549]
+</pre>
+
+<pre class="prettyprint" data-lang="julia">
+e = exponential(d)
+typeof(e) => RandVar{Float64}
+rand(e, 5) => [0.020, 0.0043, 0.00108, 0.0041, 0.0052] 
+</pre>
+</article>
+
+    </article>
+  </slide>
+
+
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Single Sample Space</h2>
+      <h3>Random Variables are dependent through \(\Omega\) (Euclidean unit cube)</h3>
+    </hgroup>
+    <article>
+<img src="images/onespaceconda.svg" style="max-width:70%;display:block;margin:auto;">
+
+    </article>
+  </slide>
+
+
+  <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Single Sample Space</h2>
+      <h3>Random Variables are dependent through \(\Omega\) (Euclidean unit cube)</h3>
+    </hgroup>
+    <article>
+<img src="images/onespacecondb.svg" style="max-width:70%;display:block;margin:auto;">
+
+    </article>
+  </slide>
+
+  <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Single Sample Space</h2>
+      <h3>Random Variables are dependent through \(\Omega\) (Euclidean unit cube)</h3>
+    </hgroup>
+    <article>
+<img src="images/onespacecondc.svg" style="max-width:70%;display:block;margin:auto;">
+
+    </article>
+  </slide>
+
+
+
+<!-- 
+<slide class = "nobackground">
+<hgroup>
+  <h2>Inference Queries</h2>
+  <h3>(conditional) probability queries with <b>prob</b></h3>
+</hgroup>
+<article>
+
+<pre class="prettyprint" data-lang="julia">
+prob(X::RandVar{Bool})
+prob(λ > 0)
+=> [0.4999999999999999 0.4999999999999999]
+</pre>
+
+<article class = "build">
+
+<pre class="prettyprint" data-lang="julia">
+prob(X::RandVar{Bool}, Y::RandVar{Bool})
+prob(λ > 0, x == [-1.0,0.0,3.0])
+=> ...
+</pre>
+
+</article>
+</article>
+  </slide>
+ -->
+<!-- <slide class = "nobackground">
+<hgroup>
+  <h2>Inference Queries</h2>
+  <h3>(conditional) sampling with <b>rand</b></h3>
+</hgroup>
+<article>
+
+<pre class="prettyprint" data-lang="julia">
+rand{T<:Real}(X::RandVar{T}, n::Integer)
+rand(λ)
+=> 0.8736796299364706
+</pre>
+
+<article class = "build">
+
+<pre class="prettyprint" data-lang="julia">
+rand{T<:Real}(X::RandVar{T}, Y::RandVar{Bool}, n::Integer)
+rand(λ, x == [0.083, 0.55, 2.37])
+=> 0.346677287421081
+</pre>
+</article>
+</article>
+  </slide>
+ -->
+<slide class = "nobackground">
+    <hgroup>
+      <h2>Complete Example using Random Arrays</h2>
+      <h3>are arrays of RandVars</h3>
+    </hgroup>
+    <article>
+
+<pre class="prettyprint" data-lang="julia">
+rand(X::RandVar{T}, Y::RandVar{Bool}, n::Integer) = ...
+</pre>
+
+<pre class="prettyprint" data-lang="julia">
+type RandArray{T,N} <: DenseArray{RandVar{T},N} ...
+</pre>
+
+  <pre class="prettyprint" data-lang="julia">
+λ = uniform(0,2)
+x = mvexponential(λ, 3)
+observations = x == [0.083, 0.55, 2.37]
+
+rand(x, observations, 100)
+</pre>
+</article>
+    </article>
+  </slide>
+
+<slide class="segue dark nobackground">
+  <hgroup class="auto-fadein">
+    <h2>Demo</h2>
+  </hgroup>
+</slide>
+
+<slide class="segue dark nobackground">
+  <hgroup class="auto-fadein">
+    <h2>Under The Hood</h2>
+    <h3>Conditional Inference by Constraint Solving</h3>
+  </hgroup>
+</slide>
+
+<!-- <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Single Sample Space</h2>
+      <h3>Random Variables are dependent through \(\Omega\) (Euclidean unit cube)</h3>
+    </hgroup>
+    <article>
+<img src="images/onespace.svg" style="max-width:40%;display:block;margin:auto;">
+
+    </article>
+  </slide> -->
+
+  <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Single Sample Space</h2>
+      <h3>Random Variables are dependent through \(\Omega\) (Euclidean unit cube)</h3>
+    </hgroup>
+    <article>
+<img src="images/onespacecond.svg" style="max-width:40%;display:block;margin:auto;">
+
+    </article>
+  </slide>
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Conditional Sampling is Easy</h2>
+      <h3>Guess (probabilistically) and check until condition is satisfied</h3>
+    </hgroup>
+    <article>
+
+$$
+P(A|B) = \frac{P(A \cap B)}{P(B)}
+$$
+
+<pre class="prettyprint" data-lang="julia">
+<b>function rand(X::RandVar, Y::RandVar{Bool})</b>
+  while true
+    ω = rand_unif_vector()
+    if Y(ω)
+      return X(ω)
+    end
+  end
+end
+</pre>
+    </article>
+  </slide>
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Conditional Sampling is Easy</h2>
+      <h3>Guess (probabilistically) and check until condition is satisfied</h3>
+    </hgroup>
+    <article>
+
+$$
+P(A|B) = \frac{P(A \cap B)}{P(B)}
+$$
+
+<pre class="prettyprint" data-lang="julia">
+function rand(X::RandVar, Y::RandVar{Bool})
+  while true
+    <b>ω = rand_unif_vector()</b>
+    if Y(ω)
+      return X(ω)
+    end
+  end
+end
+</pre>
+    </article>
+  </slide>
+
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Conditional Sampling is Not Easy</h2>
+      <h3>probability Y(ω) == true becomes vanishingly small</h3>
+    </hgroup>
+<article class="flexbox">
+
+<div style = "display:block;margin:auto;">
+<div style = "float:left; margin:10px;">
+dream<br>
+<img src="images/rejectsampleok.svg">
+</div>
+
+<div style = "float:left; margin:10px;">
+reality<br>
+<img src="images/rejectsampleimpossible.svg">
+</div>
+</div>
+    </article>
+  </slide>
+
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Consider sets instead of single points</h2>
+      <h3>and let an Oracle (constraint solver) do the hard work</h3>
+    </hgroup>
+    <article>
+
+<article class="flexbox centered flex-center-center">
+
+<div style = "display:block;margin:auto;">
+<div style = "float:left; margin:20px;">
+<img src="images/oraclearbitrary.svg">
+</div>
+
+<div style = "float:left; margin:20px;">
+$$
+\mathcal{O}_Y(A) = \left\{
+  \begin{array}{lr}
+    T & : A \subseteq Y\\
+    F & : A \cap Y = \varnothing\\
+    TF & : Otherwise\\
+  \end{array}
+\right.
+$$
+</div>
+</div>
+</article>
+
+    </article>
+  </slide>
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Play a game with the Oracle</h2>
+      <h3>Split and randomly choose one side</h3>
+    </hgroup>
+    <article class = "build">
+    <img src="images/refine1.svg">
+    <img src="images/refine2.svg">
+    <img src="images/refine3.svg">
+    <img src="images/refine4.svg">
+
+
+    </article>
+  </slide>
+
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>δ-Relaxation</h2>
+      <h3>Make thin lines thick - (S Gao, J Avidad, EM Clarke - 2012)</h3>
+    </hgroup>
+<article class="flexbox">
+
+<div style = "display:block;margin:auto;">
+<div style = "float:left; margin:30px;">
+\(Y=X\)<br>
+<img src="images/thin.svg">
+</div>
+
+<div style = "float:left; margin:30px;">
+\(Y-X<\delta\)<br>
+<img src="images/thick.svg">
+</div>
+</div>
+    </article>
+  </slide>
+
+<!-- <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Example: Constrained Parameter Estimation</h2>
+      <h3></h3>
+    </hgroup>
+    <article>
+    </article>
+  </slide>
+ -->
+<slide class = "nobackground  ">
+    <hgroup>
+      <h2>Example: Geometric Sampling</h2>
+      <h3>Sample from surface/interior of geometric objects</h3>
+    </hgroup>
+    <article>
+    <img src="images/geom1a.png" style="max-width:26%;padding:15px;">
+    <img src="images/geom2a.png" style="max-width:26%;padding:15px;">
+    <img src="images/geom3a.png" style="max-width:26%;padding:15px;">
+    </article>
+  </slide>
+
+  <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Sigma and Julia</h2>
+    </hgroup>
+<article class = "build">
+<article>
+<p>The Good</p>
+<ul class="build">
+  <li><b>simplicity</b>: model-algorithm separated</li>
+  <li><b>type hierarchy</b>: use RandVars in existing code</li>
+  <li><b>runtime compilation</b></li>
+</ul>
+</article>
+
+<article>
+<p>The Ugly</p>
+<ul class="build">
+  <li><b>types</b>: RandVar{Float64} <: FloatingPoint ?</li>
+  <li><b>control flow breaks things</b>: if, while, for, &, |, ...</li>
+</ul>
+</article>
+</article>
+</slide>
+
+  <slide class = "nobackground  ">
+    <hgroup>
+      <h2>Conclusion</h2>
+    </hgroup>
+<article class = "build">
+<article>
+<p><b>What is Probabilistic Programming?</b></p>
+<ul class="build">
+  <li>Bayesian and Conditional Inference are same-same but different</li>
+  <li>Sigma is requires complete model - no black boxes</li>
+  <li>One algorithm to rule them all?</li>
+</ul>
+</article>
+
+<article>
+<br>
+<p><b>Do we need new languages?</b></p>
+<ul class="build">
+  <li>Not really, no</li>
+  <li>Maybe... Uncertain type Inference? Probabilistic parsing?</li>
+</ul>
+</article>
+</article>
+</slide>
+
+  <slide class="thank-you-slide segue nobackground">
+    <article class="flexbox vleft auto-fadein">
+      <h2>Thank You!</h2>
+      <p>Contributors Welcome! - https://github.com/zenna/Sigma.jl</p>
+    </article>
+    <p class="auto-fadein" data-config-contact>
+      <!-- populated from slide_config.json -->
+    </p>
+  </slide>
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-XXXXXXXX-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!--[if IE]>
+  <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
+  <script>CFInstall.check({mode: 'overlay'});</script>
+<![endif]-->
+</body>
+</html>
