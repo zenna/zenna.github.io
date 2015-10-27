@@ -16,9 +16,13 @@ comments: true
 
 # Software Tools
 
-## dReal
+## DReal.jl
 
-[dReal.jl](https://github.com/zenna/dReal.jl) is a Julia interface to the [dreal nonlinear SMT solver](http://dreal.github.io/).
+[DReal.jl](https://github.com/dreal/DReal.jl) is a Julia interface to the [dreal nonlinear SMT solver](http://dreal.github.io/).
+
+## Z3.jl
+
+[Z3.jl](https://github.com/zenna/Z3.jl) is a Julia interface to the [Z3 theorem prover](http://rise4fun.com/z3).
 
 ## AbstractDomains
 

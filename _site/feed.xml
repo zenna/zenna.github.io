@@ -4,13 +4,301 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-05-03T20:15:51-04:00</updated>
+<updated>2015-09-21T14:26:20-04:00</updated>
 <id>/</id>
 <author>
   <name>Zenna Tavares</name>
   <uri>/</uri>
   <email>zenna@mit.edu</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Probabilistic Programs Which Make (Common) Sense]]></title>
+  <link rel="alternate" type="text/html" href="/2015-9-21-sense/" />
+  <id>/2015-9-21-sense</id>
+  <published>2015-09-21T14:25:54-04:00</published>
+  <updated>2015-09-21T14:25:54-04:00</updated>
+  <author>
+    <name>Zenna Tavares</name>
+    <uri></uri>
+    <email>zenna@mit.edu</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Whaa&lt;/p&gt;
+
+&lt;h2 id=&quot;abstact&quot;&gt;Abstact&lt;/h2&gt;
+&lt;p&gt;In 18 54 George Boole published The Laws of Thought, and established Boolean algebra. Less well known is that half of this book was devoted to probabilistic inference. Boole dreamed of a “general method in probabilities”: an algorithm which given probabilities of any system of events, could determine the consequent probability of any other logically connected event. Like Boole, Alan Turing laid down the fundamentals of computer science, and also turned his attention to automated reasoning. Turing presented the “imitation game” (now, the Turing Test) - a task which could only be passed by a machine which understood the world with all its ambiguities, uncertainty and complexities; i.e., a machine with common-sense.&lt;/p&gt;
+
+&lt;p&gt;In this talk I present probabilistic programming as the modern realisation of Boole’s general method, and a significant step towards Turing’s thinking machine. I will introduce Sigma, a language in which probabilistic models are functional programs. Sigma programs can be run forward, to for example render a 3D scene (known only with uncertainty) to a 2D image. More interestingly, Sigma’s inference algorithms can run functions conditionally, or in reverse; so that the most probable 3D scene can be automatically inferred from a 2D image. Through examples, I shall explain how this is possible through the combination of functional programming and methods from statistical inference, program analysis and constraint solving. And, if successful, how probabilistic programming will unify several ideas in logic, artificial intelligence and cognitive science.&lt;/p&gt;
+
+&lt;h2 id=&quot;logic-and-common-sense&quot;&gt;Logic and Common Sense&lt;/h2&gt;
+
+&lt;p&gt;The common in common sense indicates that it’s something we all share; it is common.
+regardless of how learned or ignorant you may be, how brilliant or how footling in inteligence; you should have common sense.
+How do you know that if you were to drop a glass on the ground it would break.
+Children have common sense, even many animals appear to have common sense&lt;/p&gt;
+
+&lt;p&gt;It’s undoubtedly true that experience, and memory plays a large part in informing your common sense; this can’t be the whole picture.
+For one, we can use our common sense to figure out things which have never existed or could never exist.
+Moreover saying experience is not an answer, how do we use this experience and what is that experience.&lt;/p&gt;
+
+&lt;p&gt;Rather than just ask questions, I”ll tell you the answer: common sense reasoning is what you get when you have
+an rich structured models of the world, and general inference algorithms to reason with these models.
+In this talk I will cover these two things precisely: representation and inference.
+My claim, which I will try to convince you of, is that programming languages are the best model we have
+as representation of models of the world.&lt;/p&gt;
+
+&lt;h2 id=&quot;probability-and-logic&quot;&gt;Probability and Logic&lt;/h2&gt;
+
+&lt;p&gt;How should we even begin to understand common sense?  One way, would be to study how humans employ their common sense.  That is, we could use the scientific method to attempt to discover what
+are the natural principles of common sense.  This exists; it’s the discipline of psychology.&lt;/p&gt;
+
+&lt;p&gt;Another approach is to figure out the normative processes of common sense.  Instead of asking how we reason, we can ask how we &lt;strong&gt;should&lt;/strong&gt; reason.  In Edwin. Jaynes’ words:&lt;/p&gt;
+
+&lt;p&gt;“The question of the reasoning process used by actual human brains is charged with emotion and grotesque misunderstandings. It is hardly possible to say anything about this without becoming involved in debates over issues that are not only undecidable in our present state of knowledge, but are irrelevant to our purpose here. Obviously, the operation of real human brains is so complicated that we can make no pretense of explaining its mysteries; and in any event we are not trying to explain, much less reproduce, all the aberrations and inconsistencies of human brains. That is an interesting and important subject; but it is not the subject we are studying here. Our topic is the &lt;em&gt;normative principles of logic&lt;/em&gt;, and not the principles of psychology or neurophysiology. To emphasize this, instead of asking, ‘Howcan we build a mathematical model of human common sense?’, let us ask, ‘How could we build a machine which would carry out useful plausible reasoning, following clearly defined principles expressing an idealized common sense?’”&lt;/p&gt;
+
+&lt;p&gt;This still leaves us with the problem of understanding the normative principles of logic.
+If we are not to base our understanding of common sense on a mathematial model of human common sense, then on what should it be defined?
+Or to put it another way, suppose you suggested a model of common sense.  On what grounds could I embrace it as a sound theory, or reject it as incorrect, or inconsistent.&lt;/p&gt;
+
+&lt;p&gt;to understand common sense reasoning it makes sense to start with logic.&lt;/p&gt;
+
+&lt;p&gt;Or as stated by Cox:&lt;/p&gt;
+
+&lt;p&gt;“Modern logic was created to account for mathematical reasoning, and the logicist projects
+of Frege and Russell were attempts to formalize mathematics (or at least analysis) as a
+definitional extension of logic. But there is much reasoning that is not mathematical, and
+you would hope that logic would be helpful in dealing with that. The mathematical logicians
+are the ones who concentrated on the logic that is needed to formalize mathematics, with
+growing attention to the mathematical properties and uses of this logic”&lt;/p&gt;
+
+&lt;p&gt;So we need a new kind of logic, one for the real world.&lt;/p&gt;
+
+&lt;p&gt;“The philosophical For instance, Cox (1946) showed that if numerical values are used to represent degrees of belief, then a simple set of axioms encoding common sense properties of such beliefs leads uniquely to a set of rules for manipulating degrees of belief that are equivalent to the sum and product rules of probability. This provided the first rigorous proof that probability theory could be regarded as an extension of Boolean logic to situations involving uncertainty (Jaynes, 2003). Numerous”&lt;/p&gt;
+
+&lt;p&gt;Cox stated three desiderata for any system of probabilty, which may be stated broadly as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Representation of degrees of plausibility by real numbers&lt;/li&gt;
+  &lt;li&gt;Qualitative correspondence with common sense&lt;/li&gt;
+  &lt;li&gt;Consistency.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;During the same period, Kolmogovo axiomatised probability theory.  Kolmogorov’s motivations were similar to ours in the sense that he sought
+a set of axioms which were inconsistent and corresponded to the essense of probabilistic behaviour.  He says:&lt;/p&gt;
+
+&lt;p&gt;“The theory of probability, as a discipline of mathematics, can and should be developed from axioms in exactly the same way as Geometry and Algebra”&lt;/p&gt;
+
+&lt;p&gt;Although the mathematics Kolmogorov defined has no real notion of randomness (it is based on pure functions and sets), his goal was as a model of random processes.&lt;/p&gt;
+
+&lt;h3 id=&quot;probability-as-logic&quot;&gt;Probability as Logic&lt;/h3&gt;
+
+&lt;p&gt;Laplace “Probability theory is nothing but common sense reduced to calculation.”
+Laplace, 1819&lt;/p&gt;
+
+&lt;p&gt;Probability is logic, in the most basic of senses.  Probability is logic for the real world.
+Probability is what you get when you acknowledge that our knowledge is imperfect.  Probability is not about randomness; even if the world were a deterministic machine, we would still have probability, because there are limits to what we know, and what we can know, and how much information can propagate in general.&lt;/p&gt;
+
+&lt;p&gt;Probability is a very general kind of logic.  Probability asks not only that you determine whether something is true, you have to determine the probability its true.  TO answer such questions you have to enumerate over the set of possible worlds where the proposition is true.  If the world is continuous you must integrate.  We can think of both as finding out the size of this space, e.g. &lt;em&gt;measuring&lt;/em&gt; it.  It’s generally true that figuring out if this set is empty  (the satisfiability problem) is easier than figure out the size of the set - since the latter contains the former.&lt;/p&gt;
+
+&lt;p&gt;Or as Cox puts it:&lt;/p&gt;
+
+&lt;p&gt;“A very original and thoroughgoing development of the theory of probability, which does not depend on the concept of frequency in an ensemble, has been given by Keynes.  In his view,
+the theory of probability is an extended logic, the logic of probable inference.
+Probability is a relation between a hypothesis and a conclusion, corresponding ot hte degree of rational belief and limited by the extreme relations of certainty and impossibility.
+Classical deductive logic, which deals with these limiting relations only, is a special
+case in this more general development.  &lt;strong&gt;Hence it follows in general that the theory of probability cannot be based entirely on concepts of classical logic.&lt;/strong&gt;”.&lt;/p&gt;
+
+&lt;h2 id=&quot;logic-and-programs&quot;&gt;Logic and Programs&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;WHATS THE POINT: Computation and Logic are intertwined.  All computers compute by logical operations - NAND GATES&lt;/li&gt;
+  &lt;li&gt;Whats the point: At a higher level, much (but not all) of Programming can be viewed as a kind of inference.  It so happens that inference in a particular direction (forward inference) is easier.&lt;/li&gt;
+  &lt;li&gt;WHATS THE POINT: Programs are extended what we mean by logic and by extension extending what we mean by common sense.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;common-sense&quot;&gt;Common Sense&lt;/h2&gt;
+
+&lt;p&gt;Jaynes Says&lt;/p&gt;
+
+&lt;p&gt;“Thus, in our reasoning we depend very much on prior information to help us in evaluating
+the degree of plausibility in a new problem. This reasoning process goes on unconsciously, almost instantaneously, and we conceal how complicated it really is by calling it common sense.”&lt;/p&gt;
+
+&lt;p&gt;In my view, the heart of all this is non-determinism.  Sometimes people use non-determinism to mean random; this is false.  Non-determinism is the word we use for possibilities, in particular the existence of multiple possiblities.  If there’s no no notion of non-determinism then there’s no means to make argument.  For instance, I might say that all black swans live to 80.  Sally is 85 year old, is she
+a swan?  Regardless of the answer, to even entertian the question we need to be able to consider the possibility of sally being a swan or not being a swan two possiblities.  And of sally being over than 80 or not over than 80, another two possibles.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Learning is Conditional Inference&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Inference is actually an umbrella term.  We can think of inference as some process which takes some probability distribution, which could be arbitrarily complex, and some proposition, and tells us properties of the conditioal distribution.
+This leaves open two questions, and I argue that the several different probabilsitic programming languages are separated by their answers
+to these two questions.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;How should we represent a probability distribution&lt;/li&gt;
+  &lt;li&gt;What is our question? What property of the conditional are we interested in.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;representations-of-a-distribution&quot;&gt;Representations of a distribution&lt;/h3&gt;
+
+&lt;p&gt;We can think of a distribution as some kind of variable which can “become” or which nature can force into some instance.  But how to formulate this precisely; how to represent distributions in a concise manner so that we can reason about them mathematically, or even automatically in a machine?&lt;/p&gt;
+
+&lt;p&gt;It turns out there are a small number of reasonable ways to do this; some more general, some more abstract, and the choice has large ramifications for how you view probability and inference.&lt;/p&gt;
+
+&lt;h3 id=&quot;distribution-as-sampling-procedure&quot;&gt;Distribution as sampling procedure&lt;/h3&gt;
+&lt;p&gt;Perhaps the least conventional way to think about a random variable, but also the most natural if one has ever wrote code, is a as a random procedure can generate values according to that distribution.  That is, a distribution can be represented by the program itself.  These values, also referred to as samples, should be distributed according to the distribution.&lt;/p&gt;
+
+&lt;p&gt;The advantage of this perspective is that probability has a simple frequentist interpretation.  The probability that some condition holds with respect to a random variable can be found just by counting.  If we executed this random variable an infinite number of times, how many times would the condition hold.
+Similarly conditioning has a simple inference.  To condition on some event, we simply execute our random variable, and only consider scenarios where the condition holds, otherwise we try again.&lt;/p&gt;
+
+&lt;p&gt;Many of the probabilistic programming languages are doing just this.  But, they’re doing it in smarter, often approximate ways.&lt;/p&gt;
+
+&lt;p&gt;But what have we lost?  For one, we’ve become more concrete than perhaps we need to be.  There are many random variables which behave identically with respect to the questions we’re interested in (e.g. the probability of some condition holding), but have very different “code”.  For instance if you take a program that generates samples from a normal distribution, and just negate the output, we still have a normally distributed random variable.
+In most programming, if I arbitrarily added a minus sign to your functions, it would break your code, but not so with thees random procedures.  Why not?  Well when we use these procedures we care about the distribution, now the individual values, and the distribution is invariant under many transformations.&lt;/p&gt;
+
+&lt;p&gt;The second thing we’ve lost is that we’ve tied randomness to our understanding of a random variable.  Perhaps that
+doesn’t seem so bad, they are named random after all.  However, excising randomness from the notion of a random variable frees us to consider it in any way.  Some people say a random variable is neither random nor a variable.
+This is true, it is a function and functions are not random.  But, in spirit it is like a variable, it’s formalisation as a function is simply the best way to make that idea of a variable precise.  But in spirit it is not random.&lt;/p&gt;
+
+&lt;h3 id=&quot;distribution-as-purely-functional-random-variable&quot;&gt;Distribution as purely functional random variable&lt;/h3&gt;
+&lt;p&gt;What happens if we take the randomness out of a random variable.  We get Haskell’s random variables (without Monads).  A random variable is a pure function which maps some input to some output.  When I say “is”,&lt;/p&gt;
+
+&lt;h2 id=&quot;sigma&quot;&gt;Sigma&lt;/h2&gt;
+
+&lt;p&gt;There’s at least one more prominent view, perhaps the most prominent view in many circles of how you should represent a random variable.  It’s also as a function, but a function of a more specific kind - a density.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f:X \to \mathbb{R}^+&lt;/script&gt;
+
+&lt;p&gt;such that&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\i {x}&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Why is it called a density?&lt;/li&gt;
+  &lt;li&gt;Energy Models: Normalization is hard (so let’s not do it) -&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;distribution-as-density-energy-based-learning&quot;&gt;Distribution as density Energy Based Learning&lt;/h3&gt;
+
+&lt;p&gt;Energy-Based Models (EBMs) capture dependencies by associating a scalar energy (a measure of compatibility) to each configuration of the variables. Inference, i.e.,making a prediction or decision, consists in setting the value of observed variables
+1
+and finding values of the remaining variables that minimize the energy. Learning con- sists in finding an energy function that associates low energies to correct values of the remaining variables, and higher energies to incorrect values.&lt;/p&gt;
+
+&lt;h2 id=&quot;do-we-need-probabilistic-languages&quot;&gt;Do we need probabilistic languages?&lt;/h2&gt;
+
+&lt;h2 id=&quot;my-ramblings&quot;&gt;My ramblings&lt;/h2&gt;
+&lt;p&gt;I think I am getting a general sense of what I want to write.  It’s a bunch of different things, but it could be
+summarised as: Common-sense reasoning is a large part of what we might call intelligence, and common-sense reasoning is really just
+probabilistic inference with a sufficiently rich representation of probabilistic model and sufficieintly powerful inference procedures.&lt;/p&gt;
+
+&lt;p&gt;But in terms of expressiveness I think we’re in some respects already there.  Programming languages are hugely expressive, they have complex combinations of variables of mixed types.  They have hierarhcies to represent the hierarchies we percieve in nature.  Programming
+languages are annoying for many reasons, but expressiveness has never been one of them.&lt;/p&gt;
+
+&lt;p&gt;So in the same way in probabilistic inference we derived the rules for how to conduct inference and we got the laws of probability
+that we already knew and loved, in the case of programs we may gt th&lt;/p&gt;
+
+&lt;p&gt;– There’s a history of the most important people in your field turning their attention to artificial intelligence
+- Turing
+- Von Neumann
+- McCarthy
+- Boole&lt;/p&gt;
+
+&lt;p&gt;For me there’s three components of intelligence what are crucial.  There may we be many others.  These are
+inference, representation and interaction.  Really there’s only two, inference and representation.
+Learning comes under inference.  So does interaction.&lt;/p&gt;
+
+&lt;p&gt;There are many notions that aren’t so well defined, and their relations less well defined still.
+For instance program.  What’s a program?  You might say its a sequence of instructions to a machine, that’s one view.
+Another view is that in a program you set up a model and you do inference.  It just happens to be the case that the kind of inferences
+that we are good at, or I should say efficient at, are deductive inferences.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+A = 10
+B = A + 10
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The machine can infer the value of B directly through simple commands.  Also it’s deductive;
+there’s only a single value of B (20) that is possible, i.e. consistent with the meaning of + and = and our language in general.&lt;/p&gt;
+
+&lt;p&gt;But what about something like&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+println()
+send_msg(TCPPort(100),11)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;What are we modelling here? What’s the relational model here?  Well it’s not!  I don’t believe all programmin is modelling,
+some programming is just intended for its side effect.  But there is an awful lot in there that is modelling.&lt;/p&gt;
+
+&lt;p&gt;When we look at modern languages we realise they’ve morphed into this hybrid of a few concepts.&lt;/p&gt;
+
+&lt;p&gt;Most provide:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Means to interact with the world through devices connected to the machine&lt;/li&gt;
+  &lt;li&gt;Perform calculations&lt;/li&gt;
+  &lt;li&gt;Model concepts&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Take Julia for example, I can do&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+println(&quot;Hello&quot;)
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Which is unambiguously an instruction to the machien to affect the world.&lt;/p&gt;
+
+&lt;p&gt;Alternatively I have&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;
+type Dog &amp;lt;: Animal
+  name::String
+  age::Int
+end
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;I’m using types.  Using types in this way allows me to reuse code, but it’s also serving as a modelling language for concepts.
+It’s not a particularly good modelling structure.  The world contains a lot of hierarchies, but the world is not purely hierarchial.
+Anyone who’s programs in this way knows this.  It fits until it doesn’t and you end up making a compromise to fit within the sytem.&lt;/p&gt;
+
+&lt;p&gt;So how should we structure concepts in programming languages?  It’s kind of hard to think about.  Because the real world is so messy and our
+concepts are comparably messy.  Do we even want to model the world in its true form.  Maybe our simplyfying assumptions are useful.&lt;/p&gt;
+
+&lt;p&gt;Meaning&lt;/p&gt;
+
+&lt;p&gt;The other area where I think languages are lacking is in meaning.&lt;/p&gt;
+
+&lt;p&gt;In progrmaming languages we use bits to represent things.  We construct representations.
+What does that mean?  An example: We want to represent a binary image, we can represent it as
+an array of bits.  We can represenet it as a linear sequeence of bits and some numbers to represent its height and its width.  We could represent it as a boolean combination of primitive shapes: circle - square, etc.  All these things are used to represent an image.
+But there’s no connection between these two things in the langauge.  This places severe  limitations on our ability reason in the language.
+It’s hard to think about, think about a sphere for example represented as a center and radius, 4 numbers.  You might say that represents a set in Euclidean space.  You might say that represents a circle in the real world.&lt;/p&gt;
+
+&lt;p&gt;This is another point that needs fleshing out.&lt;/p&gt;
+
+&lt;p&gt;But what else about logic&lt;/p&gt;
+
+&lt;p&gt;There’s this idea that has come up in many forms.  Here from Kowalski:&lt;/p&gt;
+
+&lt;p&gt;“An algorithm can be regarded as consisting of a logic component, which specifies the knowledge to be. used in solving problems, and a control component, which determines the problem-solving strategies by means of which that knowledge is used.”&lt;/p&gt;
+
+&lt;p&gt;“Logic in all its varieties is concerned with formalising the laws of
+thought. Along with related fields such as Law and Management Science, it
+focuses on the formulation of normative theories, which prescribe how
+people ought to think”&lt;/p&gt;
+
+&lt;p&gt;Cognitive Psychology is also concerned with thinking,
+15 but it focuses almost exclusively on descriptive theories, which study how
+people actually think in practice, whether correctly or not. For the most part,
+the two kinds of theories have been developed in isolation, and bear little
+relationship with one another&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/2015-9-21-sense/&quot;&gt;Probabilistic Programs Which Make (Common) Sense&lt;/a&gt; was originally published by Zenna Tavares at &lt;a href=&quot;&quot;&gt;Zenna's Site&lt;/a&gt; on September 21, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
