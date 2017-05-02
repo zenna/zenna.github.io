@@ -9,9 +9,10 @@ I am a Ph.D candidate in the both the department of Brain and Cognitive Sciences
 I am from London. I have two big brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://vimeo.com/user19682881).
 
 # What do I do
-I work primarily on algorithms for inference in probabilistic programs using formal methods from program analysis and constraint solving.  These ideas are embodied in a probabilistic programming language [Sigma.jl](https://github.com/zenna/Sigma.jl).
+I work primarily at the intersection of (Bayesian) probabilistic modeling, deep-learning, and computaitonal logic.
+I like to design little programming languages that synthesize these ideas, such as [Sigma.jl](https://github.com/zenna/Sigma.jl).
 
-More recently I have been trying to connect ideas in supervised learning with that of [program synthesis](http://homes.cs.washington.edu/~bornholt/post/synthesis-for-architects.html); afterall, both are concerned with finding programs given some specification of what it should do.
+More recently I have been trying to connect the idea of probabilistic inference with [synthesizing](http://homes.cs.washington.edu/~bornholt/post/synthesis-for-architects.html) an inverse program.  I have a [tool](https://github.com/wacabanga/reverseflow) which claims to do just that.
 
 I am generally interested in how to represent knowledge about the world, in all its complexity and uncertainty, and how to efficiently derive conclusions and inferences from such knowledge.
 
