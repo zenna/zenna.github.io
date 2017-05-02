@@ -6,13 +6,13 @@ modified: 2015-04-15T09:29:05-04:00
 comments: true
 ---
 
+# ReverseFlow
+
+[ReverseFlow](https://github.com/wacabanga/reverseflow) is a python library for parametrically inverting a tensorflow program
+
 # Sigma
 
 [Sigma.jl](https://github.com/zenna/Sigma.jl) is a probabilistic programming language implemented in Julia.
-
-# Ouroborus
-
-[Ouroborus.jl](https://github.com/zenna/Ouroboros.jl) is a reinforcement learning algorithm which learns to learn.
 
 # Software Tools
 
