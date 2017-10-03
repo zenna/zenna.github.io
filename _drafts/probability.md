@@ -8,6 +8,8 @@ categories: probability theory
 
 # Probability Theory
 
+Uncertainty is a strange thing.  It's pervasive.  Like air we rarely notice
+
 ## Why?
 Probability theory provides tools to reason with - i.e. infer properties of, do calculations with - values which are uncertain.
 Uncertainty can stem from randomness; by definition, it is impossible to say with certainty what will result from a truly random physical process.
@@ -15,10 +17,13 @@ Probability is not limited to true randomness however, it allows us to model pro
 Probability theory also allows us to model processes which we may not think of as random at all, but over which there may still be uncertainty due to our limited access to information, or limited resources to compute.
 
 ## Basic Definitionsa
-It can be difficult for non-mathematicians to get to grips with probability theory.
-While some of this difficulty surely stems from concepts which are counter intuitive or irreducibly difficult to grasp, more often confusing naming,  notation and an unspecified encroachment of interpretation are to blame.
+It can be difficult to get to grips with probability theory.
+Some of this difficulty surely stems from concepts which are counter intuitive.
+More often than not however, confusing naming, notation and multiple inconsistent interpretations of the same thing are to blame.
 
-Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer 
+Here I will argue that the basic principles of probability theory are simple.
+
+Fortunately, we can eliminate many of these problems by depending upon a language which is formal to the extent it must satisfy a computer
 cd  
 ###
 We must first define some objects which will allow us to model a random process.
@@ -31,7 +36,7 @@ let omega = [1, 2, 3, 4, 5, 6]
 ```
 
 Often we will want to reason about sets of possible outcomes, for instance - how likely it is that a thrown die lands on an even number.
-Hence it will be useful to define a set of all subsets of omega, i.e. it's power-set. 
+Hence it will be useful to define a set of all subsets of omega, i.e. it's power-set.
 
 ```
 events :: Num t => [[t]]
@@ -50,7 +55,7 @@ Random variables are typically given uppercase characters, and are often seen in
 As stated, a random variable is a function, not a variable.
 
 ```
-num- :: Omega -> 
+num- :: Omega ->
 ```
 
 ##What is a distribution, exactly?
