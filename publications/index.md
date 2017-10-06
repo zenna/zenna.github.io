@@ -2,7 +2,6 @@
 layout: page
 title: Projects
 tags: [about]
-modified: 2017-10-15T09:29:05-04:00
 comments: true
 ---
 
