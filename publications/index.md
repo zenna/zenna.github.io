@@ -11,7 +11,7 @@ comments: true
 - __Inverse Simulation of Non-Invertible Programs__ - *PLDI 2018  (Under Submission)*
 
 ## Past
-- __Adversarial Inversion for Amortized Inference__ - *ICML 2017, Implicit Models Workshop* [pdf](https://drive.google.com/open?id=0B8q_pH0A65VEdWl3SmNoazJtS3c)
+- __Adversarial Inversion for Amortized Inference__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
 
 - __Smooth Nondeterministic Arrows__ - *NIPS 2015, Black-Box Inference Workshop (Best Paper)* [pdf](http://www.blackboxworkshop.org/pdf/nips2015blackbox_zenna.pdf)
 
