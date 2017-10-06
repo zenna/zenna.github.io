@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Projects
-tags: [about]
+title: Publications
+tags: [publications]
 comments: true
 ---
 

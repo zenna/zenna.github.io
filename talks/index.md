@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Projects
-tags: [about]
+title: Talks
+tags: [talks]
 comments: true
 ---
 
