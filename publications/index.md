@@ -7,9 +7,9 @@ comments: true
 
 ## Current
 
-- __Soft Constraints for Inference with Declarative Knowledge__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
+- __Soft Constraints for Inference with Declarative Knowledge__ - *ICML 2017, Implicit Models Workshop* [pdf](http://www.zenna.org/publications/icmlsoft.pdf)
 
-- __The Random Conditional Distribution__ - *(Under Submission* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
+- __The Random Conditional Distribution__ - *(Under Submission* 
 
 - __Inverse Simulation of Non-Invertible Programs__ - *(Under Submission)*
 
