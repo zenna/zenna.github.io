@@ -6,9 +6,15 @@ comments: true
 ---
 
 ## Current
-- __Algebraic Structure Learning__ - *ICLR 2018 (Under Preparation)*
 
-- __Inverse Simulation of Non-Invertible Programs__ - *PLDI 2018  (Under Submission)*
+- __Soft Constraints for Inference with Declarative Knowledge__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
+
+- __The Random Conditional Distribution__ - *(Under Submission* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
+
+- __Inverse Simulation of Non-Invertible Programs__ - *(Under Submission)*
+
+<!-- - __Algebraic Structure Learning__ - *ICLR 2018 (Under Preparation)* -->
+
 
 ## Past
 - __Adversarial Inversion for Amortized Inference__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
