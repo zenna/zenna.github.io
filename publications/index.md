@@ -7,7 +7,7 @@ comments: true
 
 ## Current
 
-- __Soft Constraints for Inference with Declarative Knowledge__ - *Under submission* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
+- __Soft Constraints for Inference with Declarative Knowledge__ - *(Under submission)* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
 
 - __The Random Conditional Distribution__ - *(Under Submission* 
 
