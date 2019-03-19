@@ -9,7 +9,9 @@ comments: true
 
 - __Soft Constraints for Inference with Declarative Knowledge__ - *(Under submission)* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
 
-- __The Random Conditional Distribution__ - *(Under Submission* 
+- __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
+
+- __A Language for Counterfactual Generative Models__ - [preprint](http://www.zenna.org/publications/causal.pdf) 
 
 - __Inverse Simulation of Non-Invertible Programs__ - *(Under Preparation)*
 
