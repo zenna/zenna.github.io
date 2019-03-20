@@ -10,11 +10,11 @@ comments: true
 
 ## Omega
 
-[Omega](https://github.com/wacabanga/reverseflow) is a library for Causal, Higher-Order, Probabilistic Programming
+[Omega](https://github.com/wacabanga/Omega.jl) is a library for Causal, Higher-Order, Probabilistic Programming
 
 ## Arrows: Parametric Inversion
 
-[Arrows](https://github.com/wacabanga/reverseflow) is a library for parametric inversion of programs
+[Arrows](https://github.com/wacabanga/Arrows.jl) is a library for parametric inversion of programs
 
 ## RayTrace
 
