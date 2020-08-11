@@ -5,9 +5,8 @@ tags: [publications]
 comments: true
 ---
 
-## Current
+## Under Preparation
 
-- __Soft Constraints for Inference with Declarative Knowledge__ - *(Under submission)* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
 
 - __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
 
@@ -19,6 +18,8 @@ comments: true
 
 
 ## Past
+- __Predicate Exchange: Inference with Declarative Knowledge__ - *(Under submission)* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
+
 - __Adversarial Inversion for Amortized Inference__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
 
 - __Smooth Nondeterministic Arrows__ - *NIPS 2015, Black-Box Inference Workshop (Best Paper)* [pdf](http://www.blackboxworkshop.org/pdf/nips2015blackbox_zenna.pdf)

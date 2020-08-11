@@ -10,15 +10,15 @@ comments: true
 
 ## Omega
 
-[Omega](https://github.com/wacabanga/Omega.jl) is a library for Causal, Higher-Order, Probabilistic Programming
+[Omega](https://github.com/zenna/Omega.jl) is a library for Causal, Higher-Order, Probabilistic Programming
 
-## Arrows: Parametric Inversion
+## Parametric Inversion
 
-[Arrows](https://github.com/wacabanga/Arrows.jl) is a library for parametric inversion of programs
+[Parametric Inversion](https://github.com/zenna/ParametricInversion.jl) is a library for parametric inversion of programs
 
-## RayTrace
+## Causal Discovery 
 
-[RayTrace.jl](https://github.com/zenna/RayTrace.jl) is a simple raytracer in Julia
+[CausalDiscovery.jl](https://github.com/zenna/CausalDiscovery.jl) is a library for discovery of reactive programs
 
 # Software Tools
 
@@ -33,6 +33,11 @@ comments: true
 ## Lens
 
 [Lens.jl](https://github.com/zenna/Lens.jl) is a simple Julia package to dynamically inspect and extract values deep within your program, with minimal interference to the program itself.
+
+## RayTrace
+
+[RayTrace.jl](https://github.com/zenna/RayTrace.jl) is a simple raytracer in Julia
+
 
 # Ports and Wrappers
 
