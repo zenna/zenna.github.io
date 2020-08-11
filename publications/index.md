@@ -7,25 +7,21 @@ comments: true
 
 ## Under Preparation
 
-
 - __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
 
 - __A Language for Counterfactual Generative Models__ - [preprint](http://www.zenna.org/publications/causal.pdf) 
 
-- __Inverse Simulation of Non-Invertible Programs__ - *(Under Preparation)*
+## Publications
+- __Synthesizing Programmatic Policies that Inductively Generalize__ - Jeevana Priya Inala, Osbert Bastani, Zenna Tavares, Armando Solar-Lezama - *ICLR 2020* [pdf](https://openreview.net/pdf?id=S1l8oANFDH)
 
-<!-- - __Algebraic Structure Learning__ - *ICLR 2018 (Under Preparation)* -->
+- __Predicate Exchange: Inference with Declarative Knowledge__ - Zenna, Tavares, Javier Burroni, Edgar, Minasyan, Armando Solar-Lezama, Rajesh Ranganath - *ICML 2019* [pdf](http://proceedings.mlr.press/v97/tavares19a/tavares19a.pdf)
 
+- __Adversarial Inversion for Amortized Inference__ - Zenna Tavares, Edgar Minasyan, Armando Solar-Lezama - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
 
-## Past
-- __Predicate Exchange: Inference with Declarative Knowledge__ - *(Under submission)* [preprint](http://www.zenna.org/publications/icmlsoft.pdf)
+- __Smooth Nondeterministic Arrows__ - Zenna Tavares, Armando Solar-Lezama - *NIPS 2015, Black-Box Inference Workshop (Best Paper)* [pdf](http://www.blackboxworkshop.org/pdf/nips2015blackbox_zenna.pdf)
 
-- __Adversarial Inversion for Amortized Inference__ - *ICML 2017, Implicit Models Workshop* [pdf](https://www.dropbox.com/s/nomcb3vhikihkw3/zennaadversarial.pdf?dl=0)
+- __Parametric Inverse Simulation__ - Zenna Tavares, Armando Solar-Lezama - *NIPS 2016, Advances in Approximate Bayesian Inference*
 
-- __Smooth Nondeterministic Arrows__ - *NIPS 2015, Black-Box Inference Workshop (Best Paper)* [pdf](http://www.blackboxworkshop.org/pdf/nips2015blackbox_zenna.pdf)
+- __Learning Distribution Sensitive Data Structures__ - Zenna Tavares, Armando Solar-Lezama -  *AAAI Spring Symposium 2017*
 
-- __Parametric Inverse Simulation__ - *NIPS 2016, Advances in Approximate Bayesian Inference*
-
-- __Learning Distribution Sensitive Data Structures__ - *AAAI Spring Symposium 2017*
-
-- __Probabilistic Programming by Abstraction Refinement__ - *NIPS 2014, Probabilistic Programming Workshop*
+- __Probabilistic Programming by Abstraction Refinement__ - Zenna Tavares, Armando Solar-Lezama - *NIPS 2014, Probabilistic Programming Workshop*

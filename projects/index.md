@@ -18,7 +18,7 @@ comments: true
 
 ## Causal Discovery 
 
-[CausalDiscovery.jl](https://github.com/zenna/CausalDiscovery.jl) is a library for discovery of reactive programs
+[CausalDiscovery.jl](https://github.com/zenna/CausalDiscovery.jl) is a library for causal discovery of reactive programs
 
 # Software Tools
 
@@ -37,7 +37,6 @@ comments: true
 ## RayTrace
 
 [RayTrace.jl](https://github.com/zenna/RayTrace.jl) is a simple raytracer in Julia
-
 
 # Ports and Wrappers
 
