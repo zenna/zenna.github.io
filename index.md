@@ -4,7 +4,7 @@ title: "Who Am I"
 tags: [Me, Intro]
 ---
 
-I am a Ph.D candidate in the both the department of Brain and Cognitive Sciences and the Computer Science and Artificial Intelligence Lab at MIT.  I work in the [Computer Aided Programming Group](http://groups.csail.mit.edu/cap/) under supervision of [Armando Solar Lezama](http://people.csail.mit.edu/asolar/).
+I am a postdoctoral researcher working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/), and am associated with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I recently completed my Ph.D in the same group.
 
 I am from London. I have two big brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://warp.net/artists/gaika/).
 
