@@ -3,7 +3,8 @@ layout: page
 title: Research Statement
 tags: [statement]
 comments: true
----
+----
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 How can we build machines that can reason coherently about the real
 world, in all of its complexity and ambiguity? Machines that are both
@@ -61,7 +62,7 @@ factors, and methods that intervene on the causal structure of programs
 to automate counter-factual "what-if" reasoning. Below, I elaborate on
 these and other projects, followed by my plans for future work.
 
-### Inference With Declarative Knowledge {#inference-with-declarative-knowledge .unnumbered}
+### Inference With Declarative Knowledge
 
 Much of human knowledge is *declarative* -- we believe and communicate
 facts, such as that the stove is on, that Barack Obama was the 44th
@@ -110,7 +111,7 @@ propositions. Formally, they are used as a quasi-likelihood in a Markov
 Chain Monte Carlo process, yielding an inference procedure that is both
 efficient and asymptotically exact.
 
-### Parametric Inversion of Non-Invertible Programs {#parametric-inversion-of-non-invertible-programs .unnumbered}
+### Parametric Inversion of Non-Invertible Programs
 
 I have taken this approach of inference-through-program-transformation
 further, motivated by the observation that every inference problem
@@ -190,7 +191,7 @@ effect on patient $B$?". We can even infer the *distribution over
 interventions* that is likely to bring about a desired outcome, such as
 the patient surviving.
 
-### Distributional Inference {#distributional-inference .unnumbered}
+### Distributional Inference
 
 I formalised another non-standard form of inference that I call
 **distributional inference** [@tavares2019random]. Distributional
@@ -236,7 +237,7 @@ be posed against the same model, and (iii) different algorithms can be
 used to perform distributional inference, which is often even more
 computationally challenging than conventional inference.
 
-## Future Directions {#future-directions .unnumbered}
+## Future Directions
 
 Plainly put, the development of automatic probabilistic inference
 methods able to handle the diversity of problems expressible within
@@ -322,7 +323,7 @@ causality, and hence suffers from the problems of preemption mentioned
 above. Developing better methods to compute actual causality will
 therefore yield better definitions of fairness.
 
-#### Polystructural Models: From Reasoning to Understanding {#polystructural-models-from-reasoning-to-understanding .unnumbered}
+#### Polystructural Models: From Reasoning to Understanding 
 
 Human knowledge is broad, spanning a multitude of different domains, and
 deep, describing phenomena from multiple perspectives and degrees of
@@ -349,7 +350,7 @@ from automated reasoning towards a form of understanding and meaning,
 whereby the meaning of a concept is a function of the conceptual role it
 plays in all the different models within the network.
 
-## Broader Vision {#broader-vision .unnumbered}
+## Broader Vision
 
 As is true for many, I am driven both by a basic curiosity to uncover
 the workings of cognition -- particularly in reasoning, knowledge, and
