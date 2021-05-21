@@ -3,7 +3,7 @@ layout: page
 title: Research Statement
 tags: [statement]
 comments: true
-----
+---
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 How can we build machines that can reason coherently about the real
@@ -153,8 +153,6 @@ and is applicable to any program. While several technical hurdles remain
 promising initial results inverting programs of rendering-level
 complexity provides evidence in support of radically different
 approaches to inference that necessarily exploit programmatic structure.
-
-![Parametric Inversion](){#fig:my_label}
 
 ### Counterfactual Generative Models {#counterfactual-generative-models .unnumbered}
 
