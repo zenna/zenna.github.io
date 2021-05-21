@@ -9,7 +9,7 @@ comments: true
 
 - __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
 
-- __A Language for Counterfactual Generative Models__ - [preprint](http://www.zenna.org/publications/causal.pdf) 
+- __A Language for Counterfactual Generative Models__ - [preprint - to appear ICML 2021](http://www.zenna.org/publications/causal.pdf) 
 
 ## Publications
 - __Synthesizing Programmatic Policies that Inductively Generalize__ - Jeevana Priya Inala, Osbert Bastani, Zenna Tavares, Armando Solar-Lezama - *ICLR 2020* [pdf](https://openreview.net/pdf?id=S1l8oANFDH)
