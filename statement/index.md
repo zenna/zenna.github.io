@@ -154,7 +154,7 @@ promising initial results inverting programs of rendering-level
 complexity provides evidence in support of radically different
 approaches to inference that necessarily exploit programmatic structure.
 
-### Counterfactual Generative Models {#counterfactual-generative-models .unnumbered}
+### Counterfactual Generative Models
 
 There are several kinds of query that are not conventional probabilistic
 inference queries. One powerful example of this is the counterfactual.
