@@ -138,10 +138,10 @@ inversion is an answer to the question of what it means to invert a
 non-invertible function. A parametric inverse is a kind of generalized
 inverse function that parametrically represents the set of all inputs
 that a function maps to a particular output. In other words, given a
-function $f$ that maps $x$ to $y$, its parametric inverse $f^{-1}$ maps
-$y$ and some parameter $\theta$ to $x$, such that (i) $f(x) = y$, and
-(ii) changing $\theta$ yields a different input $x'$ that also maps to
-$y$.
+function $$f$$ that maps $$x$$ to $$y$$, its parametric inverse $$f^{-1}$$ maps
+$$y$$ and some parameter $$\theta$$ to $$x$$, such that (i) $$f(x) = y$$, and
+(ii) changing $$\theta$$ yields a different input $$x'$$ that also maps to
+$$y$$.
 
 To invert a complex program, parametric inversion uses a program
 transformation that first replaces each primitive function in the
@@ -162,12 +162,12 @@ There are several kinds of query that are not conventional probabilistic
 inference queries. One powerful example of this is the counterfactual.
 Counterfactuals are statements such as "If colonial powers hadn't
 invaded, the Americas would be very different". More generally, they
-take the form: "Given that $X$ is true, what if $Y$ were the case?".
+take the form: "Given that $$X$$ is true, what if $$Y$$ were the case?".
 
 I developed counterfactual reasoning within universal probabilistic
 programming [@tavares2018language]. Counterfactuals require both
-probabilistic conditioning ("Given that $X$ is true") and causal
-interventions ("what if $Y$ were the case?") Conventional probabilistic
+probabilistic conditioning ("Given that $$X$$ is true") and causal
+interventions ("what if $$Y$$ were the case?") Conventional probabilistic
 programming languages have, by definition, generic forms of
 conditioning, but lack operators for causal interventions. Using a
 programming languages concept called *lazy semantics*, I formulated
@@ -186,8 +186,8 @@ species now?
 Omega allows us to just as easily pose queries that are not strictly
 counterfactuals but are causal and useful nonetheless. For instance, we
 could ask "Suppose we were to give a medical treatment and subsequently
-patient $A$ recovers, what should we predict about the treatment's
-effect on patient $B$?". We can even infer the *distribution over
+patient $$A$$ recovers, what should we predict about the treatment's
+effect on patient $$B$$?". We can even infer the *distribution over
 interventions* that is likely to bring about a desired outcome, such as
 the patient surviving.
 
@@ -270,16 +270,16 @@ several remaining challenges.
 #### Causality Beyond Counterfactuals
 
 Humans routinely ask and answer questions of *actual causality*: whether
-some event $A$ that actually occurred (e.g., a vaccine was administered)
-actually caused some other event $B$ to occur (e.g., a patient was
+some event $$A$$ that actually occurred (e.g., a vaccine was administered)
+actually caused some other event $$B$$ to occur (e.g., a patient was
 immune). I propose to build a system that can answer questions of actual
 causality. Most formalisations of actual causality rely on
-counterfactuals: $A$ actually caused $B$ means had $A$ not occurred (the
-vaccine wasn't administered) neither would have $B$ (the patient
+counterfactuals: $$A$$ actually caused $$B$$ means had $$A$$ not occurred (the
+vaccine wasn't administered) neither would have $$B$$ (the patient
 wouldn't have been immune). This suffers from the problem of
-*preemption*: if some other event $C$ (e.g., the patient caught the
-virus) would have caused $B$ to occur in the absence of $A$, following
-this counterfactual definition leads us to erroneously conclude that $A$
+*preemption*: if some other event $$C$$ (e.g., the patient caught the
+virus) would have caused $$B$$ to occur in the absence of $$A$$, following
+this counterfactual definition leads us to erroneously conclude that $$A$$
 is not the actual cause. An alternative approach that I will develop
 will be based on analysing the primitive causal steps that occur in the
 execution of a simulation model of the domain, rather than on
@@ -301,7 +301,7 @@ intentions of its recipient, actual causality since causal explanations
 denote actual causes, optimal program synthesis to explore the space of
 causal explanations.
 
-#### Trustworthiness {#trustworthiness .unnumbered}
+#### Trustworthiness
 
 Machine learning models often are brittle, violate privacy, and unfairly
 replicate or exacerbate biases. Awareness of these failures has spurred
