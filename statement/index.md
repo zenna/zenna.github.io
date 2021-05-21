@@ -3,7 +3,7 @@ layout: page
 title: Research Statement
 tags: [statement]
 comments: true
-----
+---
 
 How can we build machines that can reason coherently about the real
 world, in all of its complexity and ambiguity? Machines that are both
