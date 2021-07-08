@@ -13,10 +13,11 @@ Also, I'm hiring:
 
 We're looking for a research software engineer eager to work in an academic environment at the cutting edge of probabilistic programming, causal inference, program synthesis and machine learning.
 
-__Role:__
+### __Role:__
+
 You will play an integral part in developing systems for automatic causal and probabilistic inference. Our goal is to build systems that can reason coherently about the real world, in all of its complexity and ambiguity. These systems should allow people to (semi-automatically) build sophisticated models of the world, determine causal effects, design experiments, and construct explanations. An immediate application is in algorithmic fairness.
 
-__Relevant areas:__
+### __Relevant areas:__
 - Probabilistic programming
 - Causal inference - Machine learning
 - Program synthesis
@@ -24,13 +25,13 @@ __Relevant areas:__
 - Automated theorem proving
 You’ll work with me and the DSI community.
 
-__Responsibilities:__
+### __Responsibilities:__
 - Programming language design/implementation
 - Performance engineering, scaling research code
 - Algorithm development
 - Application to real-world problems
 
-__Preferred Qualifications:__
+### __Preferred Qualifications:__
 - Strong coding ability. esp. Julia, Python, C++, ML-family
 - Comfortable digesting research e.g. from PLDI, POPL, NeurIPS or ICML
 - Good software engineering practices
