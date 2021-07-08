@@ -19,4 +19,4 @@ I have two goals. First, is to understand how humans reason, which is to say, ho
 # News
 
 - July/21 - Our paper *"Causal Probabilistic Programming Without Tears"* has been accepted at PROBPROG 2021.
-- July/21 Our paper __"A Language for Counterfactual Generative Models"__ is appearing at ICML 2021.
+- July/21 Our paper *"A Language for Counterfactual Generative Models"* is appearing at ICML 2021.
