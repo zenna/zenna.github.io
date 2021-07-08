@@ -15,3 +15,8 @@ I work to understand and mechanize the various forms of human reasoning.  This p
 # What do I do (with less the mumbo jumbo)
 
 I have two goals. First, is to understand how humans reason, which is to say, how they come to derive knowledge from observing and interacting with the world.  Second, I aim to construct tools that advance science, engineering and (hopefully) the humanities.  Perhaps surprisingly, there is a sizable chunk of fertile ground that allows me to do both more or less simultaneously.
+
+# News
+
+-- July/21 - Our paper "Causal Probabilistic Programming Without Tears" has been accepted at PROBPROG 2021
+-- July/21 Our paper "A Language for Counterfactual Generative Models" is appearing at ICML 2021.
