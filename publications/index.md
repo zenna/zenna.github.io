@@ -8,7 +8,8 @@ comments: true
 ## Under Preparation
 
 - __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
-
+- __Synthesis of Singular Causal Explanations__
+- __Machine Reasoning: Insights From the Copernican Revolution__
 
 ## Publications
 - __A Language for Counterfactual Generative Models__ - Zenna Tavares, James Koppel, Xin Zhang, Ria Das, Armando Solar-Lezama - [preprint - to appear ICML 2021](http://www.zenna.org/publications/causal.pdf) 
