@@ -9,9 +9,10 @@ comments: true
 
 - __The Random Conditional Distribution__ - [preprint](http://www.zenna.org/publications/rcd.pdf) 
 
-- __A Language for Counterfactual Generative Models__ - [preprint - to appear ICML 2021](http://www.zenna.org/publications/causal.pdf) 
 
 ## Publications
+- __A Language for Counterfactual Generative Models__ - Zenna Tavares, James Koppel, Xin Zhang, Ria Das, Armando Solar-Lezama - [preprint - to appear ICML 2021](http://www.zenna.org/publications/causal.pdf) 
+
 - __Synthesizing Programmatic Policies that Inductively Generalize__ - Jeevana Priya Inala, Osbert Bastani, Zenna Tavares, Armando Solar-Lezama - *ICLR 2020* [pdf](https://openreview.net/pdf?id=S1l8oANFDH)
 
 - __Predicate Exchange: Inference with Declarative Knowledge__ - Zenna, Tavares, Javier Burroni, Edgar, Minasyan, Armando Solar-Lezama, Rajesh Ranganath - *ICML 2019* [pdf](http://proceedings.mlr.press/v97/tavares19a/tavares19a.pdf)
