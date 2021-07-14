@@ -4,7 +4,7 @@ title: "Who Am I"
 tags: [Me, Intro]
 ---
 
-I am a postdoctoral researcher working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/), and am associated with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I recently completed my Ph.D in the same group.
+I'm a research associate and an Innovation Fellow at the Zuckerman Institute and Data Science Institute of Columbia University.  I came to Columbia from a postdoc position working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/) and with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I completed my Ph.D in the same group.
 
 I am from London. I have two big brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://warp.net/artists/gaika/).
 
@@ -18,5 +18,6 @@ I have two goals. First, is to understand how humans reason, which is to say, ho
 
 # News
 
+- July/21 - I have joined Columbia!
 - July/21 - Our paper *"Causal Probabilistic Programming Without Tears"* has been accepted at PROBPROG 2021.
 - July/21 - Our paper *"A Language for Counterfactual Generative Models"* is appearing at ICML 2021.
