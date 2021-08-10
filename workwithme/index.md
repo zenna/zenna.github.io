@@ -37,7 +37,7 @@ You’ll work with me and the DSI community.
 - Good software engineering practices
 - Able to progress with high degree of autonomy, and under uncertainty
 
-To apply, please write to <zt2297@columbia.edu>
+To apply, please write to <zt2297@columbia.edu> and/or apply directly at https://apply.interfolio.com/91828
 
 # (PT) Research Assistant
 I'm looking for a talented part-time research assistant.
