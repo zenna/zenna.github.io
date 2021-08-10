@@ -6,7 +6,7 @@ comments: false
 ---
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-If you're interesting in collaborating on research projects, please reach out.
+If you're interested in collaborating on research projects, please reach out.
 Also, I'm hiring:
 
 # Research Software Engineer
@@ -35,6 +35,28 @@ You’ll work with me and the DSI community.
 - Strong coding ability. esp. Julia, Python, C++, ML-family
 - Comfortable digesting research e.g. from PLDI, POPL, NeurIPS or ICML
 - Good software engineering practices
+- Able to progress with high degree of autonomy, and under uncertainty
+
+To apply, please write to <zt2297@columbia.edu>
+
+# (PT) Research Assistant
+I'm looking for a talented part-time research assistant.
+
+This position is ideal for someone eager to get involved in an exciting research environment on some of the most exciting research topics.
+
+You'll work largely with me but will be part of broader research at Columbia, specifically the Zuckerman Brain Mind Behaviour Institute and the Data Science Institute.
+
+### __Role:__
+Your time will be split between helping existing research within the group, pursuing your own research, helping to write grant proposals, and various kinds of administrative work.
+
+### __Preferred Qualifications:__
+I will consider all candidates, but the larger the subset of the following, the better.
+
+- Strong writing ability, especially in synthesizing and explaining technical topics
+- Fast and efficient writing and editing ability
+- Comfortable digesting academic research papers
+- Interest or have done work in  probabilistic programming, causal inference, program synthesis and machine learning or related areas
+- Technical expertise, broadly in mathematics and programming.
 - Able to progress with high degree of autonomy, and under uncertainty
 
 To apply, please write to <zt2297@columbia.edu>
