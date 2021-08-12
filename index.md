@@ -18,5 +18,9 @@ I have two goals. First, is to understand how humans reason, which is to say, ho
 
 # News
 
+- Our workshop *[Databases and AI](https://dbai-workshop.github.io)* has been accepted at Neurips 2021!
+- Our workshop *Out-of-distribution generalization and adaptation in natural and artificial intelligence* has been accepted at Neurips 2021!
+- I've joined the program committee for *Languages for Inference (LAFI) @POPL 2022*
+- I've [jointed Columbia](https://zuckermaninstitute.columbia.edu/innovation-scholar-zenna-tavares-wants-give-machines-common-sense) as an Innovation Fellow. Time to innovate!
 - Our paper *"Causal Probabilistic Programming Without Tears"* has been accepted at PROBPROG 2021.
 - Our paper *"A Language for Counterfactual Generative Models"* is appearing at ICML 2021.
