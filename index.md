@@ -18,6 +18,9 @@ I have two goals. First, is to understand how humans reason, which is to say, ho
 
 # News
 
+- I'm coorganizer and program chair of ICML workshop *[Beyond Bayes: Paths Towards Universal Reasoning](https://beyond-bayes.github.io/)*
+- I gave a talk at *[Canadian Applied and Industrial Mathematics Society (CAIMS) 2022](https://cmps.ok.ubc.ca/about/caims/)*
+- I gave a talk  coorganizer and program chair of ICML workshop *[Beyond Bayes: Paths Towards Universal Reasoning](https://beyond-bayes.github.io/)*
 - Our workshop *[Databases and AI](https://dbai-workshop.github.io)* has been accepted at Neurips 2021!
 - Our workshop *Out-of-distribution generalization and adaptation in natural and artificial intelligence* has been accepted at Neurips 2021!
 - I've joined the program committee for *Languages for Inference (LAFI) @POPL 2022*
