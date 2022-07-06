@@ -4,7 +4,7 @@ title: "Who Am I"
 tags: [Me, Intro]
 ---
 
-I am an associate research scientist and [Alan Kanzer Innovation Scholar](https://zuckermaninstitute.columbia.edu/innovation-scholar-zenna-tavares-wants-give-machines-common-sense) at the Zuckerman Institute and Data Science Institute of Columbia University.  I came to Columbia from a postdoc position working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/) and with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I completed my Ph.D in the same group.
+I am a co-founder and director of [Basis Research Institute](http://www.basis.ai); an associate research scientist and [Alan Kanzer Innovation Scholar](https://zuckermaninstitute.columbia.edu/innovation-scholar-zenna-tavares-wants-give-machines-common-sense) at the Zuckerman Institute and Data Science Institute of Columbia University.  I came to Columbia from a postdoc position working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/) and with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I completed my Ph.D in the same group.
 
 I am from London. I have two big brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://warp.net/artists/gaika/).
 
@@ -20,7 +20,6 @@ I have two goals. First, is to understand how humans reason, which is to say, ho
 
 - I'm coorganizer and program chair of ICML workshop *[Beyond Bayes: Paths Towards Universal Reasoning](https://beyond-bayes.github.io/)*
 - I gave a talk at *[Canadian Applied and Industrial Mathematics Society (CAIMS) 2022](https://cmps.ok.ubc.ca/about/caims/)*
-- I gave a talk  coorganizer and program chair of ICML workshop *[Beyond Bayes: Paths Towards Universal Reasoning](https://beyond-bayes.github.io/)*
 - Our workshop *[Databases and AI](https://dbai-workshop.github.io)* has been accepted at Neurips 2021!
 - Our workshop *Out-of-distribution generalization and adaptation in natural and artificial intelligence* has been accepted at Neurips 2021!
 - I've joined the program committee for *Languages for Inference (LAFI) @POPL 2022*
