@@ -4,7 +4,7 @@ title: "Who Am I"
 tags: [Me, Intro]
 ---
 
-I am a co-founder and director of [Basis Research Institute](http://www.basis.ai); an associate research scientist and [Alan Kanzer Innovation Scholar](https://zuckermaninstitute.columbia.edu/innovation-scholar-zenna-tavares-wants-give-machines-common-sense) at the Zuckerman Institute and Data Science Institute of Columbia University.  I came to Columbia from a postdoc position working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/) and with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I completed my Ph.D in the same group.
+I am a co-founder and director of [Basis Research Institute ](http://www.basis.ai); an associate research scientist and [Alan Kanzer Innovation Scholar](https://zuckermaninstitute.columbia.edu/innovation-scholar-zenna-tavares-wants-give-machines-common-sense) at the Zuckerman Institute and Data Science Institute of Columbia University.  I came to Columbia from a postdoc position working for [Armando Solar Lezama](http://people.csail.mit.edu/asolar/) and with the [Computational Cognitive Science group](http://cocosci.mit.edu) run by [Joshua Tenenbaum](http://web.mit.edu/cocosci/josh.html).  I completed my Ph.D in the same group.
 
 I am from London. I have two big brothers: [Kibwe](http://blog.ted.com/constructing-kinetic-worlds-the-futuristic-films-of-ted-fellow-kibwe-tavares/) who cofounded architecture/animation studio [Factory Fifteen](http://www.factoryfifteen.com/) and musician/designer/artist [Gaika](https://warp.net/artists/gaika/).
 

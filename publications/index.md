@@ -12,7 +12,11 @@ comments: true
 - __Machine Reasoning: Insights From the Copernican Revolution__
 
 ## Publications
-- __A Language for Counterfactual Generative Models__ - Zenna Tavares, James Koppel, Xin Zhang, Ria Das, Armando Solar-Lezama - [preprint - to appear ICML 2021](http://www.zenna.org/publications/causal.pdf) 
+- __Combining Functional and Automata Synthesis to Discover Causal Reactive Programs__ - Ria Das, Joshua B. Tenenbaum, Armando Solar-Lezama, Zenna Tavares - [under submission](http://www.zenna.org/publications/autumn2022.pdf)
+
+- __MetaCOG: Learning a metacognition to recover what objects are actually there__ - Marlene Berke, Zhangir Azerbayev, Mario Belledonne, Zenna Tavares, Julian Jara-Ettinger - [under submission](http://www.zenna.org/publications/metaCOG2022.pdf)
+
+- __A Language for Counterfactual Generative Models__ - Zenna Tavares, James Koppel, Xin Zhang, Ria Das, Armando Solar-Lezama - [ICML 2021](http://www.zenna.org/publications/causal.pdf) 
 
 - __Synthesizing Programmatic Policies that Inductively Generalize__ - Jeevana Priya Inala, Osbert Bastani, Zenna Tavares, Armando Solar-Lezama - *ICLR 2020* [pdf](https://openreview.net/pdf?id=S1l8oANFDH)
 
