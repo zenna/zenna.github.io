@@ -170,7 +170,7 @@ button:focus-visible,.row:focus-visible{outline:2px solid var(--cobalt);outline-
   <div class="skiphead" id="skiphead" style="display:none">Did not make the cut — tap to pin</div>
   <div id="skipped"></div>
 
-  <div class="foot">Fixed talks and workshops require their full window painted; poster sessions, the expo and dinner fit any free 45 minutes inside their span. Main-conference poster sessions are unthemed — just Poster Session 1–8 in Hall A; the sweep names here are our filters. Lines starting with a board number are confirmed posters at that session; lines under a "background reading" divider are context, not ICML papers. The ICML app stores the schedule offline — COEX wifi is unreliable in crowded halls. Keynotes are streamed to overflow rooms.</div>
+  <div class="foot">Fixed talks and workshops require their full window painted; poster sessions, the expo and dinner fit any free 45 minutes inside their span. Main-conference poster sessions are unthemed — just Poster Session 1–8 in Hall A; the sweep names here are our filters. Lines starting with a board number are confirmed posters at that session; lines under a "background reading" divider are context, not ICML papers. The ICML app stores the schedule offline — COEX wifi is unreliable in crowded halls. Keynotes are streamed to overflow rooms. Everything you set — painted hours, pins, pace, open summaries — is saved in this browser and survives refresh; on a new conference day the planner opens on that day but keeps your settings. <a href="#" style="color:var(--cobalt);text-decoration:none" onclick="try{localStorage.removeItem('icml26planner:v1')}catch(e){};location.reload();return false">Reset saved preferences</a>.</div>
 </div>
 
 <script>
@@ -271,6 +271,23 @@ const $=id=>document.getElementById(id);
 const ft=m=>Math.floor(m/60)+":"+String(m%60).padStart(2,"0");
 const fh=h=>(Math.round(h*100)/100)+"h";
 
+const LSK="icml26planner:v1";
+function kstToday(){try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul"}).format(new Date());}catch(e){return"";}}
+function saveState(){
+  try{localStorage.setItem(LSK,JSON.stringify({date:kstToday(),day:state.day,pins:state.pins,avail:state.avail,pace:state.pace,sumOpen:state.sumOpen}));}catch(e){}
+}
+function loadState(){
+  try{
+    const s=JSON.parse(localStorage.getItem(LSK)||"null");
+    if(!s)return;
+    if(s.pins)state.pins=s.pins;
+    if(s.sumOpen)state.sumOpen=s.sumOpen;
+    if(s.pace)DAYS.forEach(d=>{if(s.pace[d.id])state.pace[d.id]=s.pace[d.id];});
+    if(s.avail)DAYS.forEach(d=>{const a=s.avail[d.id];if(Array.isArray(a)&&a.length===N)state.avail[d.id]=a.map(Boolean);});
+    const valid=s.day&&DAYS.some(d=>d.id===s.day);
+    if(valid&&(s.date===kstToday()||!todayId))state.day=s.day;
+  }catch(e){}
+}
 function schedule(day){
   const cells=state.avail[day.id];
   const bar={light:7,balanced:5,packed:0}[state.pace[day.id]];
@@ -488,8 +505,9 @@ function renderPlan(){
   });
   lastSel=r.sel;
   renderMap(r.sel);
+  saveState();
 }
-renderTabs();renderStrip();renderPace();renderPlan();
+loadState();renderTabs();renderStrip();renderPace();renderPlan();
 </script>
 </body>
 </html>
