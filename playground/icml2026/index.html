@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ICML 2026 field planner — Z. Tavares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAFAF7; --ink:#1A1D21; --graphite:#5C6470; --faint:#8B9099;
+  --hairline:#E3E4DE; --hairline2:#CFD2C9;
+  --cellon:#DCE7F7; --cobalt:#2563C7;
+  --world:#6D5AE6; --robot:#0E8A6D; --bayes:#2563C7; --spark:#D4562B;
+  --team:#C43D6B; --wild:#C98A12; --meta:#7A8089;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:36px 20px 64px}
+.eyebrow{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite)}
+h1{font:600 27px/1.2 "Space Grotesk",sans-serif;margin:10px 0 4px;letter-spacing:-.01em}
+.sub{color:var(--graphite);font-size:14px;margin:0 0 26px}
+.card{border:1px solid var(--hairline2);border-left:3px solid var(--team);background:#fff;padding:16px 18px;margin:0 0 28px}
+.card h2{font:600 16px/1.35 "Space Grotesk",sans-serif;margin:0 0 6px}
+.card p{margin:0 0 10px;font-size:13.5px;color:var(--graphite)}
+.lnk{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--cobalt);text-decoration:none;border:1px solid var(--hairline2);border-radius:99px;padding:5px 11px;display:inline-block;margin:2px 6px 2px 0;background:#fff}
+.lnk:hover{border-color:var(--cobalt)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
+button{font:500 12px/1 "IBM Plex Mono",monospace;letter-spacing:.04em;background:#fff;border:1px solid var(--hairline2);border-radius:99px;padding:8px 14px;cursor:pointer;color:var(--ink)}
+button:hover{border-color:var(--graphite)}
+button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+button:focus-visible,.row:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+.ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px}
+.ctl .lab{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-right:2px}
+.ctl .sp{flex:1}
+.strip{display:flex;border:1px solid var(--hairline2);overflow:hidden;touch-action:none;user-select:none;background:#fff}
+.cell{flex:1;height:38px;border-right:1px solid var(--hairline);cursor:pointer;background:#fff}
+.cell:last-child{border-right:none}
+.cell.hr{border-right-color:var(--hairline2)}
+.cell.on{background:var(--cellon);box-shadow:inset 0 -3px 0 var(--cobalt)}
+.ruler{position:relative;height:16px;margin:4px 0 6px;font:400 10.5px/1 "IBM Plex Mono",monospace;color:var(--faint)}
+.ruler span{position:absolute;transform:translateX(-2px)}
+.sum{font:400 13px/1.5 "IBM Plex Mono",monospace;color:var(--graphite);margin:14px 0 8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#ics{padding:6px 11px}
+.mapwrap{margin:14px 0 2px;border:1px solid var(--hairline2);background:#fff;padding:10px 10px 4px}
+.maphead{font:500 10.5px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:0 0 8px}
+#map{width:100%;height:auto;display:block}
+#map .zone rect{fill:#FDFDFB;stroke:var(--hairline2)}
+#map .zone text{font:500 9.5px "IBM Plex Mono",monospace;fill:var(--faint);letter-spacing:.03em}
+#map .zone.active rect{fill:#EFF4FB;stroke:var(--cobalt)}
+#map .zone.active text{fill:var(--ink)}
+#map .zone.pulse rect{stroke:var(--ink);stroke-width:1.8}
+#map .fl{font:600 11px "Space Grotesk",sans-serif;fill:var(--graphite)}
+#map .swing{fill:#F0F1EB;stroke:var(--hairline)}
+#map .mall{fill:#3A3F46}
+#map .malltxt{font:500 8.5px "IBM Plex Mono",monospace;fill:#D8DAD2;letter-spacing:.08em}
+#map .cmp{font:500 9px "IBM Plex Mono",monospace;fill:var(--faint);letter-spacing:.05em}
+.sumtog{color:var(--cobalt);text-decoration:none;font:500 11px "IBM Plex Mono",monospace}
+.sumtog:hover{text-decoration:underline}
+.psum{margin:7px 0 12px;padding:11px 14px;border-left:2px solid var(--cobalt);background:#F7F8F3;font-size:12.5px;line-height:1.62;color:var(--ink)}
+.psum p{margin:0 0 8px}
+.psum p:last-child{margin-bottom:0}
+.psum ol{margin:0 0 8px 17px;padding:0}
+.psum li{margin:0 0 6px}
+.psum b{font-weight:600}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--graphite);margin:0 0 6px}
+.legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;font-style:normal}
+.plan{border-top:1px solid var(--hairline2)}
+.row{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:15px 6px 15px 10px;border-bottom:1px solid var(--hairline);cursor:pointer;border-left:3px solid transparent}
+.row:hover{background:#F2F3EC}
+.row.pinned{border-left-color:var(--ink);background:#F5F6F0}
+.row.skip{opacity:.62}
+.time{font:500 12.5px/1.6 "IBM Plex Mono",monospace;color:var(--graphite);padding-top:2px}
+.time small{display:block;color:var(--faint);font-size:10.5px}
+.tt{font:500 15px/1.4 "Space Grotesk",sans-serif;letter-spacing:-.005em}
+.meta1{font:500 10.5px/1.7 "IBM Plex Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:3px 0 5px}
+.meta1 b{font-weight:500}
+.note{font-size:13.5px;color:var(--graphite)}
+.papers{margin-top:8px;border-top:1px dashed var(--hairline2);padding-top:7px}
+.papers div{font-size:12.5px;color:var(--graphite);padding:2.5px 0;line-height:1.55}
+.papers a{color:var(--cobalt);text-decoration:none;font:500 11.5px "IBM Plex Mono",monospace}
+.papers a:hover{text-decoration:underline}
+.links{margin-top:8px}
+.gap{display:grid;grid-template-columns:96px 1fr;gap:14px;padding:10px 6px 10px 13px;border-bottom:1px solid var(--hairline);color:var(--faint);font-size:13px}
+.gap .time{color:var(--faint)}
+.skiphead{font:500 11px/1 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin:26px 0 6px}
+.foot{font-size:12.5px;color:var(--faint);margin-top:22px;border-top:1px solid var(--hairline2);padding-top:12px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:1px}
+@media(max-width:560px){
+  .row,.gap{grid-template-columns:76px 1fr;gap:10px}
+  h1{font-size:23px}
+  .cell{height:32px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">ICML 2026 · COEX, Seoul · Jul 7–11 · all times KST</div>
+  <h1>Field planner — Z. Tavares, Basis</h1>
+  <p class="sub">Paint the hours you will be on site. Talks and workshops need their full window; poster sessions flow around whatever is locked in. Tap any row to pin it.</p>
+
+  <div class="card">
+    <h2>Your poster — Benchmarking world-model learning with environment-level queries</h2>
+    <p>Warrier, Nguyen, Naim, Jain, Liang, Schroeder, Yang, Tenenbaum, Vollmer, Ellis, Tavares. <b>Tuesday Jul 7 · 14:00–15:45 KST · Hall A, board #4313 · Poster Session 2</b> — your arrival day; it is scheduled into Tuesday below. Bring the interactive Autumn demo.</p>
+    <a class="lnk" href="https://icml.cc/virtual/2026/poster/64404">ICML poster page</a><a class="lnk" href="https://arxiv.org/abs/2510.19788">arXiv 2510.19788</a><a class="lnk" href="https://www.basis.ai/projects/mara/">MARA project</a>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="ctl">
+    <span class="lab">Presets</span>
+    <button data-pre="all">All day</button>
+    <button data-pre="am">Morning</button>
+    <button data-pre="pm">Afternoon</button>
+    <button data-pre="none">Clear</button>
+    <span class="sp"></span>
+    <span class="lab">Pace</span>
+    <span id="pace"></span>
+  </div>
+
+  <div class="strip" id="strip"></div>
+  <div class="ruler" id="ruler"></div>
+
+  <div class="mapwrap">
+    <div class="maphead">COEX cross-section, after the official building diagram — south (Samsung Stn) left, north (Bongeunsa Stn) right · zones light up with the day's plan · hover a row to pulse its room · Hall A is directly below Hall C</div>
+    <svg id="map" viewBox="0 0 760 246" role="img" aria-label="COEX building cross-section with conference rooms">
+      <text class="fl" x="752" y="48" text-anchor="end">4F</text>
+      <text class="fl" x="752" y="90" text-anchor="end">3F</text>
+      <text class="fl" x="752" y="129" text-anchor="end">2F</text>
+      <text class="fl" x="752" y="170" text-anchor="end">1F</text>
+      <text class="fl" x="752" y="208" text-anchor="end">B1</text>
+      <g class="zone" id="z-R4"><rect x="20" y="26" width="128" height="36" rx="2"/><text x="28" y="48">CR 400-403</text></g>
+      <g class="zone" id="z-R3"><rect x="20" y="66" width="128" height="40" rx="2"/><text x="28" y="90">CR 300-328</text></g>
+      <g class="zone" id="z-C"><rect x="148" y="26" width="176" height="80" rx="2" data-dy="34"/><text x="156" y="44">HALL C · PLENARY</text></g>
+      <g class="zone" id="z-E14"><rect x="158" y="74" width="76" height="28" rx="2"/><text x="165" y="91">E1-E4</text></g>
+      <g class="zone" id="z-E56"><rect x="240" y="74" width="76" height="28" rx="2"/><text x="247" y="91">E5-E6</text></g>
+      <rect class="swing" x="324" y="66" width="32" height="40"/>
+      <g class="zone" id="z-D1"><rect x="356" y="66" width="110" height="40" rx="2"/><text x="364" y="90">HALL D1</text></g>
+      <g class="zone" id="z-D2"><rect x="470" y="66" width="110" height="40" rx="2"/><text x="478" y="90">HALL D2</text></g>
+      <g class="zone" id="z-AUD"><rect x="584" y="66" width="156" height="40" rx="2"/><text x="592" y="90">AUDITORIUM</text></g>
+      <g class="zone" id="z-ASEM"><rect x="584" y="110" width="156" height="28" rx="2"/><text x="592" y="127">ASEM · CR-N 201-211</text></g>
+      <g class="zone" id="z-A"><rect x="148" y="142" width="176" height="48" rx="2"/><text x="156" y="168">HALL A — POSTERS</text></g>
+      <rect class="swing" x="324" y="142" width="32" height="48"/>
+      <g class="zone" id="z-B2"><rect x="356" y="142" width="224" height="48" rx="2"/><text x="364" y="168">HALL B1-B2</text></g>
+      <g class="zone" id="z-GB101"><rect x="584" y="142" width="62" height="48" rx="2"/><text x="590" y="168">GB 101-2</text></g>
+      <g class="zone" id="z-GB103"><rect x="650" y="142" width="30" height="48" rx="2"/><text x="654" y="168">103</text></g>
+      <g class="zone" id="z-GB104"><rect x="684" y="142" width="56" height="48" rx="2"/><text x="690" y="168">104-5</text></g>
+      <rect class="mall" x="20" y="196" width="720" height="16" rx="2"/>
+      <text class="malltxt" x="380" y="207" text-anchor="middle">STARFIELD COEX MALL — B1</text>
+      <text class="cmp" x="20" y="236">← SOUTH · SAMSUNG STN (LINE 2)</text>
+      <text class="cmp" x="740" y="236" text-anchor="end">NORTH · BONGEUNSA STN (LINE 9) →</text>
+    </svg>
+  </div>
+
+  <div class="sum"><span id="sumtext"></span><button id="ics" title="Download the selected stops for this day as calendar events">⤓ day .ics</button></div>
+  <div class="legend" id="legend"></div>
+  <div class="plan" id="plan"></div>
+
+  <div class="skiphead" id="skiphead" style="display:none">Did not make the cut — tap to pin</div>
+  <div id="skipped"></div>
+
+  <div class="foot">Fixed talks and workshops require their full window painted; poster sessions, the expo and dinner fit any free 45 minutes inside their span. Main-conference poster sessions are unthemed — just Poster Session 1–8 in Hall A; the sweep names here are our filters. Lines starting with a board number are confirmed posters at that session; lines under a "background reading" divider are context, not ICML papers. The ICML app stores the schedule offline — COEX wifi is unreliable in crowded halls. Keynotes are streamed to overflow rooms.</div>
+</div>
+
+<script>
+const APP="https://icml.cc/virtual/2026/search";
+const WS="https://icml.cc/virtual/2026/events/workshop";
+const W=id=>"https://icml.cc/virtual/2026/workshop/"+id;
+const PP=id=>"https://icml.cc/virtual/2026/poster/"+id;
+const SESS=id=>"https://icml.cc/virtual/2026/session/"+id;
+const INV="https://icml.cc/virtual/2026/eventlistwithbios/invited%20talk";
+const ORAL="https://icml.cc/virtual/2026/events/oral";
+const AX=id=>"https://arxiv.org/abs/"+id;
+const CATS={
+  world:{l:"World models",c:"var(--world)"},
+  robot:{l:"Robots",c:"var(--robot)"},
+  bayes:{l:"Bayes + probprog",c:"var(--bayes)"},
+  spark:{l:"Curiosity + creativity",c:"var(--spark)"},
+  team:{l:"Basis + you",c:"var(--team)"},
+  wild:{l:"Wildcard",c:"var(--wild)"},
+  meta:{l:"General",c:"var(--meta)"}
+};
+const SUMS={
+wc:'<p><b>What it is.</b> A training recipe, not a new model — the artifacts are the recipe plus post-trained checkpoints of WorldPlay, the group&#39;s own open-source interactive video world model. That model is a video diffusion policy π<sub>θ</sub>(x<sub>n</sub> | x<sub>1:n−1</sub>, a<sub>n</sub>, c): it generates the next clip x<sub>n</sub> from the clips so far, a camera action a<sub>n</sub> issued by the user or agent (8 discrete translate/rotate moves), and a scene prompt c. WorldCompass adds an RL stage whose reward asks directly: <i>did x<sub>n</sub> do what a<sub>n</sub> said?</i></p><p><b>Why it exists.</b> Pixel-loss pretraining gives a gradient toward plausible video, not toward obedience. Judged strictly — every fourth frame checked against the commanded action — pretrained WorldPlay obeys composite action sequences about <b>20%</b> of the time.</p><p><b>The recipe, in order of novelty.</b></p><ol><li><i>Clip-level rollout.</i> One reward for a whole generated video averages away which clips obeyed; trained that way, accuracy lands at <b>12 — below the 20 it started from</b>. So: generate one shared history x<sub>1:n−1</sub>, then G=16 candidates for the single clip x<sub>n</sub>, each rewarded. Per-clip credit, rollout cost O(N+G) instead of O(N·G), and less exposure bias, since the history is the model&#39;s own imperfect output. A curriculum walks n from 1 to 16 (≈256 frames).</li><li><i>A reward pair that polices itself.</i> r<sub>IF</sub>: a 3D pose estimator reads the camera trajectory back off the generated pixels and checks it against a<sub>n</sub>. r<sub>VQ</sub>: an aesthetic score (HPSv3). Either alone reward-hacks — r<sub>IF</sub> collapses the visuals, r<sub>VQ</sub> makes attractive video in which the camera stops moving. The pair is the regularizer.</li><li><i>An optimizer diagnosis.</i> GRPO-for-diffusion explores by re-noising the same seed, which varies texture but not the camera path — no exploration in the rewarded dimension. Negative-aware fine-tuning (DiffusionNFT) over different seeds fixes that; keeping only each group&#39;s top-3 and bottom-3 halves iteration cost at equal accuracy.</li></ol><p><b>Evidence.</b> Composite actions <b>20→55</b>; basic ~60→mid-70s; visual quality rises too. Holds on two backbones (HunyuanVideo-1.5-8B, Wan2.2-5B) out to 381 frames, for 3 days on 64 H20s and 4k unlabeled images. The residual failures are switching <i>latency</i>, not disobedience.</p><p><b>Why it matters for MARA.</b> This lineage&#39;s “world model” is controllable video — no persistent state, no objects, no beliefs. The telling part is the evaluation they were forced to build: correctness as interventional consistency — <i>did the world respond correctly to the action?</i> — verified by a second model inferring what happened from pixels alone. That is AutumnBench&#39;s question restated without an environment to query, and the sharpest pixel-space foil for environment-level evaluation in the program.</p>'
+};
+const DAYS=[
+{id:"tue",tab:"Tue 7",date:"2026-07-07",events:[
+{id:"t1",s:510,e:570,fx:1,t:"Invited talk — Pascale Fung: Towards AI agents in the real world",v:"Plenary hall (streamed to overflow rooms)",c:"world",p:9,n:"The world-modeling manifesto keynote: agents grounded in physical and mental world models. Her group wrote the companion position paper below.",L:[["talk + bio",INV],["embodied AI agents paper",AX("2506.22355")]]},
+{id:"t2",s:600,e:660,fx:1,t:"Oral 1E — Interpretability and cognition",v:"Grand Ballroom 101-105",c:"wild",p:6,n:"Cognition-adjacent wildcard; parallel with 1D below.",P:[["10:00 position: a science of AI must study learning dynamics",0],["10:15 behavioral cloning for scientific data annotation",0],["10:30 AI Engram: in search of memory traces in AI",0],["10:45 guaranteed optimal compositional explanations for neurons",0]],L:[["session page","https://icml.cc/virtual/2026/session/68639"]]},
+{id:"t3",s:600,e:660,fx:1,t:"Oral 1D — Representations and distributions",v:"Hall D1",c:"bayes",p:5,n:"Density estimation and active sensing; parallel with 1E above.",P:[["10:00 DiScoFormer: plug-in density and score estimation with transformers",0],["10:15 LASER: learning active sensing for continuum field reconstruction",0],["10:30 multimodal nested learning",0],["10:45 Riemannian metric matching",0]],L:[["session page","https://icml.cc/virtual/2026/session/68638"]]},
+{id:"t4",s:630,e:735,fx:0,t:"Poster session 1 — your curated hit-list, boards confirmed",v:"Hall A · 10:30–12:15",c:"team",p:10,n:"Nine flagged boards, all in this one session. The Schmidhuber one is the curiosity-theory fight of the week. FIRE-Bench is in the program but still unscheduled.",P:[["#4107 — Interestingness as an inductive heuristic for future compression progress — Herrmann, Schmidhuber",AX("2605.14831")],["#108 — WorldCompass: RL post-training recipe for video world models",AX("2602.09022"),SUMS.wc],["#412 — MindZero: online mental reasoning with zero annotations — Shu lab",AX("2606.00240")],["#2411 — GraphPFN: a prior-data fitted graph foundation model",AX("2509.21489")],["#1608 — Verbalized Sampling: mode collapse and LLM diversity",AX("2510.01171")],["#2202 — Agent World Model: infinity synthetic environments",AX("2602.10090")],["#1614 — DDP-WM: disentangled dynamics prediction for efficient world models","https://icml.cc/virtual/2026/poster/62480"],["#1509 — Temporal straightening for latent planning — LeCun lab","https://icml.cc/virtual/2026/poster/64904"],["#2701 — Calibrated test-time guidance for Bayesian inference — Mandt lab","https://icml.cc/virtual/2026/poster/64440"],["#2117 — WebWorld: large-scale world model for web agents",PP(65352)],["#4310 — From shortcuts to reasoning: theory-of-mind post-training with RL",PP(64668)],["FIRE-Bench: rediscovering scientific insights — no slot assigned yet",PP(61975)]],L:[["session page",SESS(68685)]]},
+{id:"t5",s:780,e:840,fx:0,t:"Expo hall + hallway track",v:"COEX exhibit floor",c:"meta",p:4,n:"Short jet-lag-friendly block before your own poster session.",L:[["exhibitors","https://icml.cc/virtual/2026/sponsor_list"]]},
+{id:"t9",s:840,e:945,fx:1,t:"YOUR POSTER — AutumnBench world-model benchmarking",v:"Hall A · board #4313 · Poster Session 2",c:"team",p:10,n:"Benchmarking world-model learning with environment-level queries, 14:00–15:45. Set the interactive Autumn demo up early. Same-session boards worth a lull-sweep below — the express-your-doubts position paper is bait made for you.",P:[["— same session, sweep during lulls —",0],["#1709 — position: probabilistic world modeling (express your doubts)",PP(67197)],["#509 — hippocampus-entorhinal inspired world model",PP(65751)],["#2704 — factored latent action world models",PP(61299)],["#4000 — SCOPE: evolving symbolic worlds, open-ended planning",PP(64265)],["#2617 — boosting world models via latent-space value alignment",PP(66589)]],L:[["poster page","https://icml.cc/virtual/2026/poster/64404"],["arXiv 2510.19788",AX("2510.19788")],["session page",SESS(68686)]]},
+{id:"t7",s:810,e:870,fx:1,t:"Oral 2F — robotics and multi-agent RL",v:"Auditorium · 13:30–14:30",c:"robot",p:7,n:"Collides with your poster: RoboMME (memory for robot generalist policies) is at 14:00, exactly when your session starts. Catch the first half, then run to Hall A. Oral 2E (RL theory) is parallel in the Grand Ballroom. There is no 16:00 oral block on Tuesday.",P:[["13:30 human-robot collaboration via heterogeneous-agent Lyapunov policies",0],["13:45 optimal and scalable MAPF via multi-marginal optimal transport",0],["14:00 RoboMME: benchmarking memory for robotic generalist policies",0],["14:15 unsupervised partner design enables robust ad-hoc teamwork",0]],L:[["session page","https://icml.cc/virtual/2026/session/68647"]]},
+{id:"t8",s:1110,e:1230,fx:0,t:"Opening-week socials",v:"Various — see socials list",c:"meta",p:3,n:"Affinity and community socials cluster early in the week.",L:[["socials list","https://icml.cc/virtual/2026/events/social"]]}]},
+{id:"wed",tab:"Wed 8",date:"2026-07-08",events:[
+{id:"w1",s:510,e:570,fx:1,t:"Invited talk — Sham Kakade",v:"Plenary hall",c:"wild",p:7,n:"Learning theory meets frontier scale.",L:[["talk + bio",INV]]},
+{id:"w2",s:600,e:660,fx:1,t:"Morning orals — 3B is the pick (10:00–11:00)",v:"Hall B2 (3B) · Hall C (3A)",c:"bayes",p:6,n:"3B opens with Bayesian non-negative reward modeling against reward hacking and closes with optimal-transport preference RL. 3A diffusion in Hall C is the alternative.",P:[["3B 10:00 mitigating reward hacking in RLHF via Bayesian non-negative reward modeling",0],["3B 10:15 RL with evolving rubrics for deep research",0],["3B 10:45 video-based optimal transport for preference-based RL",0],["3A 10:00 any-order GPT as masked diffusion — Hall C",0]],L:[["session 3B","https://icml.cc/virtual/2026/session/68650"],["session 3A","https://icml.cc/virtual/2026/session/68649"]]},
+{id:"w3",s:630,e:735,fx:0,t:"Poster session 3 — world-model sweep",v:"Hall A · 10:30–12:15",c:"world",p:8,n:"Confirmed hits below; filter the app for more.",P:[["#1315 — FUSE: FK-steered flow-matching posterior estimation (SBI)",PP(62622)],["EmWorld: emotion world model with latent state evolution",PP(62080)],["Robot policy evaluation with discrete diffusion world models",PP(65898)],["MVISTA-4D: view-consistent 4D world models for robotics",PP(65571)],["LABO: LLM-accelerated Bayesian optimization",PP(64679)],["Search boards in the app",APP],["— background reading, not presented at ICML —",0],["World models for robot learning — survey",AX("2605.00080")],["Hallucination in world models is predictable and preventable",AX("2606.27326")],["What-If World: a causal benchmark for embodied world models",AX("2605.27589")],["Awesome world models — running literature list","https://github.com/leofan90/awesome-world-models"]],L:[["session page",SESS(68687)]]},
+{id:"w4",s:810,e:870,fx:1,t:"Invited talk — Aviv Regev",v:"Plenary hall",c:"wild",p:6,n:"AI for biology at frontier scale — kin to the Basis science mission.",L:[["talk + bio",INV]]},
+{id:"w5",s:870,e:900,fx:1,t:"Test of Time award talk",v:"Plenary hall",c:"meta",p:7,n:"Thirty minutes, reliably a highlight.",L:[["award page","https://icml.cc/virtual/2026/test-of-time-award"]]},
+{id:"w6",s:870,e:975,fx:0,t:"Poster session 4 — robot + world-model sweep",v:"Hall A · 14:30–16:15",c:"robot",p:8,n:"Confirmed hits below — the LLM-based model discovery one is core Basis territory. Benchmark everything against your Droid stack.",P:[["#815 — building social world models with LLMs",PP(63462)],["#3512 — a probabilistic framework for LLM-based model discovery",PP(66508)],["WorldPlay: long-term geometric consistency (WorldCompass's base model)",PP(65111)],["NOMAD: Bayesian memory-adaptive diffusion planning",PP(62636)],["Search boards in the app",APP],["— background reading, not presented at ICML (ExoPredicator is yours; VisualPredicator was ICLR 25) —",0],["ExoPredicator: abstract models of dynamic worlds for robot planning — Liang, Tavares et al",AX("2509.26255")],["VisualPredicator: neuro-symbolic predicates for robot planning",AX("2410.23156")],["DROID: in-the-wild robot manipulation dataset",AX("2403.12945")],["SLAP: shortcut learning for abstract planning",AX("2511.01107")]],L:[["session page",SESS(68688)]]},
+{id:"w7",s:960,e:1020,fx:1,t:"Orals 4B / 4D / 4E — the week's strongest oral hour",v:"Hall B2 (4B) · Hall D1 (4D) · Grand Ballroom (4E) · 16:00–17:00",c:"robot",p:8,n:"Three relevant parallels: 4B robotics VLA (abstraction-to-instantiation behavioral representations, latent action supervision, XR-1), 4D causal + probabilistic (Bayesian hypergraph inference, latent confounders), 4E dynamical systems closing with training-free Bayesian filtering via generative emulators.",P:[["4B 16:00 from abstraction to instantiation: behavioral representations for VLA — Hall B2",0],["4B 16:15 pixels to tokens: latent action supervision for VLA",0],["4D 16:30 disentangling latent risk pathways via Bayesian hypergraph inference — Hall D1",0],["4E 16:45 training-free Bayesian filtering with generative emulators — Grand Ballroom",0]],L:[["session 4B","https://icml.cc/virtual/2026/session/68657"],["session 4D","https://icml.cc/virtual/2026/session/68659"],["session 4E","https://icml.cc/virtual/2026/session/68660"]]},
+{id:"w8",s:1020,e:1125,fx:0,t:"Poster session 5 — the robot world-model motherlode",v:"Hall A · 17:00–18:45",c:"robot",p:7,n:"The densest robot-world-model cluster of the week hides in the evening slot. Worth staying for.",P:[["#3815 — DreamDojo: real-time robot world model from human videos",PP(65193)],["#1601 — DiLA: disentangled latent action world models",PP(65662)],["#2811 — Olaf-World: latent actions for video world modeling",PP(66245)],["#1009 — do diffusion models dream of electric planes? (SBI)",PP(66800)],["RoboTwin 2.0: data generator and benchmark",PP(62192)],["Debate2Create: robot co-design via LLM debate",PP(66635)],["Plan-in-sandbox: physics-grounded abstraction",PP(63554)]],L:[["session page",SESS(68689)]]}]},
+{id:"thu",tab:"Thu 9",date:"2026-07-09",events:[
+{id:"h1",s:510,e:570,fx:1,t:"Invited talk — Verena Rieser",v:"Plenary hall",c:"wild",p:5,n:"Responsible multimodal dialogue.",L:[["talk + bio",INV]]},
+{id:"h2",s:600,e:660,fx:1,t:"Oral 5D — evaluation and methodology (10:00–11:00)",v:"Hall D1 (5D) · Hall D2 (5C)",c:"wild",p:7,n:"5D opens with a position talk — there are futures that benchmark-driven AI cannot see — then CausalGame on causal thinking of LLM agents. Made for the AutumnBench worldview, and perfect prep for Narayanan at 13:30. 5C RL (distributional IRL) is next door in Hall D2.",P:[["5D 10:00 position: there are futures that benchmark-driven AI cannot see",0],["5D 10:15 CausalGame: benchmarking causal thinking of LLM agents in games",0],["5D 10:45 rare event analysis of large language models",0],["5C 10:00 distributional inverse reinforcement learning — Hall D2",0]],L:[["session 5D","https://icml.cc/virtual/2026/session/68666"],["session 5C","https://icml.cc/virtual/2026/session/68665"]]},
+{id:"h3",s:630,e:735,fx:0,t:"Poster session 6 — Bayes + probprog sweep",v:"Hall A · 10:30–12:15",c:"bayes",p:8,n:"Confirmed boards below; filter the app for more amortized-inference work.",P:[["#3612 — LILO: Bayesian optimization with natural-language feedback",PP(60511)],["#2604 — LIVE: long-horizon interactive video world modeling",PP(62249)],["#1800 — ToMAP: opponent-aware LLM persuaders with theory of mind",PP(65704)],["Amortized neural symbolic regression",PP(64015)],["GIFT: image-to-CAD program synthesis",PP(64635)],["Stein diffusion guidance: posterior correction",PP(64586)],["— background reading, NOT at ICML (verified against all 6,796 accepted papers) —",0],["BayesFlow 2: amortized Bayesian inference in Python",AX("2602.07098")],["Incremental computation for programmable inference — Mansinghka lab",AX("2606.05348")]],L:[["session page",SESS(68690)]]},
+{id:"h4",s:810,e:870,fx:1,t:"Invited talk — Arvind Narayanan",v:"Plenary hall",c:"wild",p:8,n:"The evaluation skeptic. A whetstone for how you frame AutumnBench claims.",L:[["talk + bio",INV]]},
+{id:"h5",s:870,e:930,fx:1,t:"ICML town hall",v:"Plenary hall",c:"meta",p:3,n:"Community business; skippable.",L:[["thursday program","https://icml.cc/virtual/2026/day/7/9"]]},
+{id:"h6",s:870,e:975,fx:0,t:"Poster session 7 — curiosity sweep, two confirmed boards",v:"Hall A · 14:30–16:15",c:"spark",p:7,n:"Two boards confirmed for this session: iWorld-Bench #3605 and A2RBench #2107 (auto-generated, formally verifiable ARC-style benchmarks). Then filter exploration, intrinsic, diversity, creative.",P:[["#3605 — iWorld-Bench: interactive world models benchmark",PP(63894)],["#2107 — A2RBench: formally verifiable ARC-style benchmark generation",PP(61871)],["#1008 — Causal-JEPA: world models via object-level latent interventions",PP(63623)],["#314 — policy-driven world-model adaptation for offline model-based RL",PP(62695)],["#3504 — Decrypto: multi-agent reasoning and theory-of-mind benchmark",PP(62135)],["— background reading, not presented at ICML —",0],["Intrinsically motivated humans and agents in open-world exploration",AX("2503.23631")],["Open-endedness is essential for artificial superhuman intelligence",AX("2406.04268")],["Regularity as intrinsic reward for free play — Martius lab",AX("2312.01473")],["CURIOUS: intrinsically motivated multi-goal RL — Oudeyer lab",AX("1810.06284")]],L:[["session page",SESS(68691)]]},
+{id:"h8",s:960,e:1020,fx:1,t:"Oral 6B — agentic systems",v:"Hall B2 · 16:00–17:00",c:"world",p:7,n:"Agent evaluation in the wild to close the main conference. In 6A (Hall C): how much can language models memorize, and procedural pretraining on abstract data.",P:[["16:00 tau2-Bench: evaluating conversational agents in a dual-control environment",0],["16:15 characterizing agents in production",0],["16:45 OMAC: optimization framework for LLM multi-agent collaboration",0],["6A 16:45 procedural pretraining: warming up LMs with abstract data — Hall C",0]],L:[["session 6B","https://icml.cc/virtual/2026/session/68671"],["session 6A","https://icml.cc/virtual/2026/session/68670"]]},
+{id:"h9",s:1020,e:1125,fx:0,t:"Poster session 8 — evening sweep",v:"Hall A · 17:00–18:45",c:"spark",p:5,n:"Last main-conference poster block; runs right up to dinner.",P:[["Grounding LLMs for scientific discovery in embodied settings",PP(62124)],["Knapsack RL: exploration budget allocation",PP(60948)],["JADE: open-ended professional task evaluation",PP(63884)],["SphericalDreamer: navigable 3D worlds",PP(62181)]],L:[["session page",SESS(68692)]]},
+{id:"h7",s:1110,e:1200,fx:0,t:"Dinner with the MARA orbit",v:"Off-site, Gangnam",c:"team",p:6,n:"Tenenbaum, Ellis and Silver orbits are all in town — lock a dinner before workshop-day chaos. Paint the evening cells to schedule it."}]},
+{id:"fri",tab:"Fri 10",date:"2026-07-10",events:[
+{id:"f1",s:540,e:720,fx:1,t:"Structured probabilistic inference + generative modeling — AM",v:"Hall D1 · opening 9:20",c:"bayes",p:10,n:"Home turf. The flagship probprog and structured-inference day; its framing of ML as uncertainty, latent structure and decisions under noise reads like a Basis manifesto.",P:[["09:30 invited — Mingyuan Zhou",0],["10:20 invited — Jiatao Gu",0],["11:10 invited — Pilar Cossio (cryo-EM inference)",0],["11:40 poster session + lunch",0]],L:[["workshop page",W(54089)]]},
+{id:"f2",s:810,e:1020,fx:1,t:"Structured probabilistic inference — PM",v:"Hall D1",c:"bayes",p:7,n:"Panel then two more invited talks; closes with a poster session.",P:[["13:30 panel discussion",0],["14:30 invited — Jona Balle",0],["15:30 invited — Soojung Yang",0],["16:10 closing poster session",0]],L:[["workshop page",W(54089)]]},
+{id:"f3",s:480,e:720,fx:1,t:"RLxF: RL from world feedback — AM",v:"Grand Ballroom 101-102 · 8:00 start",c:"robot",p:8,n:"World-grounded reward signals for RL and robotics — maps onto objective design for the physical robot.",P:[["08:10 Benjamin Eysenbach + Cathy Ji — the geometry of empowerment",0],["08:40 Jerry Tworek — fifty shades of self-improvement",0],["10:30 invited — Brian Zhan",0],["11:00 poster session 1",0]],L:[["workshop page",W(54067)]]},
+{id:"f4",s:780,e:1020,fx:1,t:"RLxF: RL from world feedback — PM",v:"Grand Ballroom 101-102",c:"robot",p:9,n:"Chelsea Finn at 13:30 and Raileanu on superhuman scientific discovery at 15:30 — the strongest robot-learning afternoon of the week.",P:[["13:00 Jesse Zhang — beyond human feedback: synthetic rewards",0],["13:30 Chelsea Finn",0],["14:00 poster session 2",0],["15:30 Roberta Raileanu — superhuman scientific discovery",0],["16:00 panel",0]],L:[["workshop page",W(54067)]]},
+{id:"f5",s:540,e:720,fx:1,t:"Epistemic intelligence: unknown unknowns — AM",v:"Room E5-E6, 3rd floor · opening 9:00",c:"world",p:7,n:"Belief updating under unknown unknowns — the exact axis where humans beat frontier models on AutumnBench. Bring the paper.",P:[["10:00 Jeremie Houssineau — computing with ignorance: a possibilistic view",0],["10:50 Fazl Barez — understanding model behaviour in the age of AGI",0],["11:28 paper talk — diffusion as prior construction, a Bayesian approach",0]],L:[["workshop page",W(54075)],["AutumnBench",AX("2510.19788")]]},
+{id:"f6",s:780,e:1020,fx:1,t:"Epistemic intelligence — PM",v:"Room E5-E6",c:"world",p:7,n:"A paper talk on the posterior-prior gap when world-model imagination fails — directly on the AutumnBench axis.",P:[["13:50 paper talk — the posterior-prior epistemic gap: when world model imagination fails",0],["14:05 Belinda Li — solving the specification problem through interpretability",0],["15:30 panel discussion",0]],L:[["workshop page",W(54075)]]},
+{id:"f7",s:480,e:720,fx:1,t:"Continual adaptation at scale — AM",v:"Room 327 · 8:00 start",c:"bayes",p:6,n:"Emtiyaz Khan organizing; a Bayesian lens on continually adapting foundation models.",P:[["08:05 Continual Learning Bench — frontier systems on stateful tasks",0],["10:40 Tinne Tuytelaars",0],["11:20 toward continually improving long-horizon agents",0]],L:[["workshop page",W(54079)],["EvolvingAgent: continual world model",AX("2502.05907")]]},
+{id:"f8",s:780,e:1020,fx:1,t:"Culture x AI — PM",v:"Room 307",c:"spark",p:6,n:"AI as cultural technology — a constructive vision of machine creativity. (AM had Lauren Klein 10:30 and the what-do-we-want panel 11:00.)",P:[["13:15 Ted Underwood",0],["13:50 Maria Antoniak",0],["14:25 Joel Leibo",0],["15:30 respondents discussion",0]],L:[["workshop page",W(54085)]]},
+{id:"f9",s:480,e:720,fx:1,t:"DL4C: human-centered coding agents — AM",v:"Hall B2",c:"wild",p:5,n:"Wen-Ding Li, your ARC co-author, co-organizes; program-synthesis energy. Hour-by-hour program not posted yet — check the page.",L:[["workshop page",W(54074)]]},
+{id:"f10",s:780,e:1020,fx:1,t:"Generative + agentic AI for biology — PM",v:"Hall D2",c:"wild",p:5,n:"Their topics include world models for multi-scale biology. Program not posted yet.",L:[["workshop page",W(54073)]]},
+{id:"f11",s:480,e:720,fx:1,t:"Mechanistic interpretability — AM",v:"Hall C · opening 9:30",c:"wild",p:4,n:"Pragmatic vs ambitious interpretability debate.",P:[["10:00 keynote",0],["10:30 spotlight talks",0],["11:00 poster session 1",0]],L:[["workshop page",W(54071)]]}]},
+{id:"sat",tab:"Sat 11",date:"2026-07-11",events:[
+{id:"s1",s:480,e:720,fx:1,t:"AI for Science: AI Scientists — AM",v:"Hall C · 8:00 start",c:"team",p:10,n:"MARA is everyday science. Welling, Zitnik and Mengdi Wang on the tool, co-author, founder spectrum for AI-driven discovery.",P:[["08:15 Peter Clark — opening invited talk",0],["rest of the hour-by-hour program not posted yet",0]],L:[["workshop page",W(54099)]]},
+{id:"s2",s:780,e:1020,fx:1,t:"AI for Science: AI Scientists — PM",v:"Hall C",c:"team",p:7,n:"Evaluation standards and governance for autonomous discovery.",L:[["workshop page",W(54099)]]},
+{id:"s3",s:480,e:720,fx:1,t:"LM4Plan: planning in the era of LMs — AM",v:"Grand Ballroom 101-102 · 8:00 start",c:"world",p:9,n:"Planning with LMs: what they contribute, what can be guaranteed — the reasoning end of world models.",P:[["08:05 reasoning with LLMs — challenges and opportunities",0],["08:50 LLM planning success",0],["10:00 (how) do LLMs plan? a sober look",0],["10:45 towards causal artificial intelligence",0],["11:40 oral presentations",0]],L:[["workshop page",W(54095)],["LAW: language, agent and world models",AX("2312.05230")],["text world models for LLM agents",AX("2606.09032")]]},
+{id:"s4",s:780,e:1020,fx:1,t:"LM4Plan — PM",v:"Grand Ballroom 101-102",c:"world",p:8,n:"Model collapse and test-time compute through a planning lens; poster session closes the day.",P:[["13:00 model collapse and its implications on planning with LLMs",0],["13:45 implications of large-scale test-time compute",0],["14:40 oral presentations",0],["16:00 poster session",0]],L:[["workshop page",W(54095)],["Qwen-AgentWorld: language world models",AX("2606.24597")]]},
+{id:"s5",s:480,e:720,fx:1,t:"Human-AI co-creativity — AM",v:"Room 401 · 8:00 start",c:"spark",p:8,n:"Design fixation, idea homogeneity, authorship — your creativity thread, plus the classic below for ammunition.",P:[["08:15 Ben Zhao — challenges facing generative-AI users",0],["08:45 Luba Elliott — the search for originality in the age of mainstream AI",0],["10:00 panel discussion",0],["10:45 Hwajung Hong — beyond the average: orchestrating human-AI co-creation",0],["11:15 John Chung — diversified and explorative language models",0]],L:[["workshop page",W(54083)],["Driven by compression progress — Schmidhuber 2008",AX("0812.4360")]]},
+{id:"s6",s:780,e:1020,fx:1,t:"Human-AI co-creativity — PM",v:"Room 401",c:"spark",p:7,n:"Creativity-as-learning and language-as-vehicle talks, then lightning talks into the poster session.",P:[["13:00 Pronita Mehrotra — creativity as learning: designing AI to explore",0],["13:30 Lonneke van der Plas — modelling language as a vehicle for creativity",0],["14:00 poster lightning talks",0],["15:45 poster session",0]],L:[["workshop page",W(54083)]]},
+{id:"s7",s:540,e:720,fx:1,t:"Foundation models for structured data — AM",v:"Grand Ballroom 103 · opening 9:00",c:"bayes",p:8,n:"The PFN and tabular-FM crowd — the nearest thing here to a Bayesian-foundation-models venue. PM highlights if you stay: what tabular FMs learn 13:00, TabICLv2 15:00.",P:[["09:15 invited — multimodal time-series foundation models",0],["09:45 industry spotlights — AWS Chronos-2, SAP, Layer6 TabDPT, Prior Labs",0],["10:25 SurvivalPFN — in-context Bayesian survival prediction",0],["11:05 poster session",0]],L:[["workshop page",W(54066)],["PFN literature list","https://github.com/Cloudy1225/Awesome-Prior-Data-Fitted-Networks"]]},
+{id:"s8",s:780,e:1020,fx:1,t:"Statistical uncertainty in agentic systems — PM",v:"Room E1-E4, 3rd floor",c:"bayes",p:7,n:"Anytime-valid inference, e-values, risk bounds for agent pipelines. The heavyweights are in the AM block (Ying Jin 8:15, Yarin Gal 10:00, Romano 10:35, Fisch 11:20) if you want to defect from a morning pick.",P:[["13:00 panel discussion",0],["13:35 Seong Joon Oh invited talk",0],["14:25 Andreas Vlachos invited talk",0]],L:[["workshop page",W(54054)]]},
+{id:"s9",s:480,e:720,fx:1,t:"Philosophy meets ML — AM",v:"Room 308 · opening 8:20",c:"wild",p:7,n:"Schoelkopf, Icard and Fortuin on what counts as trustworthy — epistemology for ML. Deeply your kind of wildcard.",P:[["08:30 surrogate-metric evaluation is a causal-inference problem",0],["09:05 75 years of Turing's AGI",0],["10:00 a Bayesian epistemology for LLM evaluation",0],["10:35 thinking about humans in the era of AI",0]],L:[["workshop page",W(54060)]]},
+{id:"s10",s:780,e:1020,fx:1,t:"Compositional learning — PM",v:"Auditorium",c:"spark",p:6,n:"Compositional generalization for agents — PoE-World adjacent. (AM opener at 8:30, learning to theorize the world from observation, is the most Basis-shaped title of the day.)",P:[["13:25 reasoning with LLMs — challenges and opportunities",0],["14:00 discovering interpretable cognitive models from animal and human behavior",0],["14:35 mechanistic interpretability for scientific data",0],["15:10 panel discussion",0]],L:[["workshop page",W(54096)]]},
+{id:"s11",s:540,e:720,fx:1,t:"Hypothesis testing workshop — AM",v:"Room 318 · opening 9:00",c:"bayes",p:6,n:"Your agents literally run hypothesis tests; e-values could formalize the experiment loop.",P:[["09:05 keynote 1",0],["10:05 keynote 2",0],["11:20 keynote 3",0]],L:[["workshop page",W(54092)]]},
+{id:"s12",s:780,e:1020,fx:1,t:"Decision-making: offline to online — PM",v:"Room via app · 8:00 start",c:"wild",p:5,n:"Bayesian optimization, bandits and closed-loop experiment design. AM is defect-worthy: Sergey Levine 8:15, Aarti Singh 8:45, Jacob Gardner 10:30, BayesOpt-for-LLM-training orals 11:00.",P:[["13:30 orals — the three regimes of offline-to-online RL",0],["14:30 poster + coffee",0],["15:30 Clara Wong-Fannjiang invited talk",0],["16:00 Wen Sun invited talk",0]],L:[["workshop page",W(54062)]]}]}];
+
+const N=25,T0=480,S=150;
+const defAvail={tue:[4,16],wed:[1,18],thu:[1,18],fri:[0,17],sat:[0,17]};
+let state={day:"tue",pins:{},avail:{},pace:{},sumOpen:{}};
+DAYS.forEach(d=>{
+  const a=Array(N).fill(false);
+  for(let i=defAvail[d.id][0];i<=defAvail[d.id][1];i++)a[i]=true;
+  state.avail[d.id]=a;state.pace[d.id]="balanced";
+});
+let todayId=null;
+try{
+  const kst=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul"}).format(new Date());
+  const hit=DAYS.find(d=>d.date===kst);if(hit)todayId=hit.id;
+  if(todayId)state.day=todayId;
+}catch(e){}
+const $=id=>document.getElementById(id);
+const ft=m=>Math.floor(m/60)+":"+String(m%60).padStart(2,"0");
+const fh=h=>(Math.round(h*100)/100)+"h";
+
+function schedule(day){
+  const cells=state.avail[day.id];
+  const bar={light:7,balanced:5,packed:0}[state.pace[day.id]];
+  const eligible=e=>state.pins[e.id]||e.p>=bar;
+  const order=arr=>arr.sort((a,b)=>(state.pins[b.id]?1:0)-(state.pins[a.id]?1:0)||b.p-a.p||a.s-b.s);
+  const sel=[],skip=[],win=[];
+  const overlaps=(s,e)=>win.some(w=>w[0]<e&&s<w[1]);
+  const need=ev=>{
+    const r=[];
+    for(let i=0;i<N;i++){
+      const cs=T0+i*30;
+      const ov=Math.min(cs+30,ev.e)-Math.max(cs,ev.s);
+      if(ov>=20)r.push(i);
+    }
+    return r;
+  };
+  for(const e of order(day.events.filter(x=>x.fx))){
+    if(!eligible(e)){skip.push([e,"below pace bar"]);continue;}
+    if(!need(e).every(i=>cells[i])){skip.push([e,"outside painted hours"]);continue;}
+    if(overlaps(e.s,e.e)){skip.push([e,"clashes with a pick"]);continue;}
+    sel.push({e:e,s:e.s,en:e.e});win.push([e.s,e.e]);
+  }
+  const free=()=>{
+    const f=Array(S).fill(false);
+    for(let i=0;i<S;i++){
+      const m=T0+i*5;
+      if(cells[Math.floor((m-T0)/30)]&&!win.some(w=>m>=w[0]&&m<w[1]))f[i]=true;
+    }
+    return f;
+  };
+  for(const e of order(day.events.filter(x=>!x.fx))){
+    if(!eligible(e)){skip.push([e,"below pace bar"]);continue;}
+    const f=free();let bs=-1,bl=0,cs=-1;
+    for(let i=0;i<=S;i++){
+      const m=T0+i*5;
+      const ok=i<S&&f[i]&&m>=e.s&&m<e.e;
+      if(ok&&cs<0)cs=i;
+      if((!ok||i===S)&&cs>=0){const len=i-cs;if(len>bl){bl=len;bs=cs;}cs=-1;}
+    }
+    if(bl*5>=45){
+      const ws=T0+bs*5,we=Math.min(T0+(bs+bl)*5,e.e);
+      sel.push({e:e,s:ws,en:we});win.push([ws,we]);
+    }else{
+      skip.push([e,cells.some(x=>x)?"no free 45 min window":"outside painted hours"]);
+    }
+  }
+  const f=free();const gaps=[];let cs=-1;
+  for(let i=0;i<=S;i++){
+    const ok=i<S&&f[i];
+    if(ok&&cs<0)cs=i;
+    if((!ok||i===S)&&cs>=0){const len=i-cs;if(len*5>=60)gaps.push([T0+cs*5,T0+i*5]);cs=-1;}
+  }
+  sel.sort((a,b)=>a.s-b.s);
+  return{sel:sel,skip:skip,gaps:gaps};
+}
+
+function paperHTML(e){
+  if(!e.P)return"";
+  return '<div class="papers">'+e.P.map((p,i)=>{
+    if(p[1]===0)return "<div>"+p[0]+"</div>";
+    const u=p[1]||APP;
+    const lbl=p[1]?(p[1].indexOf("arxiv")>-1?"arXiv":"page"):"app";
+    const k=e.id+"-"+i,open=state.sumOpen[k];
+    return "<div>"+p[0]+' — <a href="'+u+'" target="_blank" rel="noopener">'+lbl+"</a>"+
+      (p[2]?' · <a href="#" class="sumtog" data-k="'+k+'">'+(open?"summary ▾":"summary ▸")+"</a>":"")+
+      "</div>"+(p[2]&&open?'<div class="psum">'+p[2]+"</div>":"");
+  }).join("")+"</div>";
+}
+function linkHTML(e){
+  if(!e.L)return"";
+  return '<div class="links">'+e.L.map(l=>'<a class="lnk" href="'+l[1]+'" target="_blank" rel="noopener">'+l[0]+"</a>").join("")+"</div>";
+}
+function rowHTML(it,mode,reason){
+  const e=(it.e&&it.e.id)?it.e:it;const cat=CATS[e.c];const pin=state.pins[e.id];
+  const time=mode==="skip"?ft(e.s)+"–"+ft(e.e):ft(it.s)+"–"+ft(it.en);
+  const clipped=(!e.fx&&mode!=="skip"&&(it.s>e.s||it.en<e.e))?"<small>of "+ft(e.s)+"–"+ft(e.e)+"</small>":"";
+  return '<div class="row '+(mode==="skip"?"skip":"")+(pin?" pinned":"")+'" data-id="'+e.id+'" data-z="'+(venueZone(e.v)||"")+'" role="button" tabindex="0" aria-pressed="'+(pin?"true":"false")+'">'+
+  '<div class="time">'+time+clipped+"</div>"+
+  "<div>"+
+  '<div class="tt"><span class="dot" style="background:'+cat.c+'"></span>'+e.t+"</div>"+
+  '<div class="meta1">'+e.v+" · "+cat.l+(pin?" · pinned":"")+(reason?" · "+reason:"")+"</div>"+
+  '<div class="note">'+e.n+"</div>"+
+  (mode==="skip"?"":paperHTML(e)+linkHTML(e))+
+  "</div></div>";
+}
+function gapHTML(g){
+  return '<div class="gap"><div class="time">'+ft(g[0])+"–"+ft(g[1])+'</div><div>Open block — lunch, meetings, hallway track</div></div>';
+}
+function renderTabs(){
+  $("tabs").innerHTML=DAYS.map(d=>'<button data-day="'+d.id+'" class="'+(d.id===state.day?"on":"")+'">'+d.tab+(d.id===todayId?" · today":"")+"</button>").join("");
+  document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>{
+    state.day=b.getAttribute("data-day");
+    renderTabs();renderStrip();renderPace();renderPlan();
+  });
+}
+function renderPace(){
+  const p=state.pace[state.day];
+  $("pace").innerHTML=["light","balanced","packed"].map(k=>'<button data-pace="'+k+'" class="'+(k===p?"on":"")+'" style="margin-left:4px">'+k+"</button>").join("");
+  document.querySelectorAll("#pace button").forEach(b=>b.onclick=()=>{
+    state.pace[state.day]=b.getAttribute("data-pace");
+    renderPace();renderPlan();
+  });
+}
+let painting=false,paintTo=true;
+function renderStrip(){
+  const cells=state.avail[state.day];
+  $("strip").innerHTML=cells.map((on,i)=>'<div class="cell '+(on?"on ":"")+(i%4===3?"hr":"")+'" data-i="'+i+'" aria-hidden="true"></div>').join("");
+  $("ruler").innerHTML=[0,4,8,12,16,20,24].map(k=>'<span style="left:'+(Math.round(k/N*1000)/10)+'%">'+(8+k/2)+":00</span>").join("");
+  document.querySelectorAll(".cell").forEach(el=>{
+    const i=+el.getAttribute("data-i");
+    el.onpointerdown=ev=>{ev.preventDefault();painting=true;paintTo=!state.avail[state.day][i];apply(el,i);};
+    el.onpointerenter=()=>{if(painting)apply(el,i);};
+  });
+}
+function apply(el,i){
+  state.avail[state.day][i]=paintTo;
+  el.classList.toggle("on",paintTo);
+}
+document.addEventListener("pointerup",()=>{if(painting){painting=false;renderPlan();}});
+document.querySelectorAll("[data-pre]").forEach(b=>b.onclick=()=>{
+  const k=b.getAttribute("data-pre");const a=state.avail[state.day];
+  for(let i=0;i<N;i++)a[i]=k==="all"?true:k==="none"?false:k==="am"?i<=8:(i>=9&&i<=18);
+  renderStrip();renderPlan();
+});
+function togglePin(id){state.pins[id]=!state.pins[id];renderPlan();}
+function venueZone(v){
+  const s=v.toLowerCase();
+  if(s.indexOf("off-site")>-1||s.indexOf("various")>-1)return null;
+  if(s.indexOf("expo")>-1||s.indexOf("exhibit")>-1)return null;
+  if(s.indexOf("hall a")>-1)return "A";
+  if(s.indexOf("hall b")>-1)return "B2";
+  if(s.indexOf("hall c")>-1||s.indexOf("plenary")>-1)return "C";
+  if(s.indexOf("hall d1")>-1)return "D1";
+  if(s.indexOf("hall d2")>-1)return "D2";
+  if(s.indexOf("auditorium")>-1)return "AUD";
+  if(s.indexOf("asem")>-1)return "ASEM";
+  if(s.indexOf("101")>-1)return "GB101";
+  if(s.indexOf("103")>-1)return "GB103";
+  if(s.indexOf("104")>-1)return "GB104";
+  if(s.indexOf("e1")>-1)return "E14";
+  if(s.indexOf("e5")>-1)return "E56";
+  if(/room 4\d\d/.test(s))return "R4";
+  if(/room 3\d\d/.test(s))return "R3";
+  return null;
+}
+function renderMap(sel){
+  document.querySelectorAll("#map .zone").forEach(g=>{
+    g.classList.remove("active");
+    g.querySelectorAll("circle").forEach(c=>c.remove());
+  });
+  const by={};
+  sel.forEach(it=>{const z=venueZone(it.e.v);if(z)(by[z]=by[z]||[]).push(it.e);});
+  for(const z in by){
+    const g=$("z-"+z);if(!g)continue;
+    g.classList.add("active");
+    const r=g.querySelector("rect");
+    const x0=+r.getAttribute("x"),y0=+r.getAttribute("y"),h=+r.getAttribute("height"),w=+r.getAttribute("width");
+    const cy=r.hasAttribute("data-dy")?y0+ +r.getAttribute("data-dy"):y0+h-11;
+    const maxd=Math.max(1,Math.min(6,Math.floor((w-16)/12)));
+    by[z].slice(0,maxd).forEach((e,i)=>{
+      const c=document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("cx",x0+13+i*12);c.setAttribute("cy",cy);c.setAttribute("r",3.5);
+      c.setAttribute("style","fill:"+CATS[e.c].c);
+      g.appendChild(c);
+    });
+  }
+}
+let lastSel=[];
+function icsPad(n){return String(n).padStart(2,"0");}
+function icsEsc(s){return s.replace(/\\/g,"\\\\").replace(/[,;]/g,m=>"\\"+m);}
+$("ics").onclick=()=>{
+  const day=DAYS.find(d=>d.id===state.day);
+  if(!lastSel.length)return;
+  const d8=day.date.replace(/-/g,"");
+  const T=m=>d8+"T"+icsPad(Math.floor(m/60))+icsPad(m%60)+"00";
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Basis//ICML2026 planner//EN"];
+  lastSel.forEach(it=>{
+    L.push("BEGIN:VEVENT","UID:icml26-"+day.id+"-"+it.e.id+"@basis.ai",
+      "DTSTART;TZID=Asia/Seoul:"+T(it.s),"DTEND;TZID=Asia/Seoul:"+T(it.en),
+      "SUMMARY:"+icsEsc(it.e.t),"LOCATION:"+icsEsc(it.e.v),
+      "DESCRIPTION:"+icsEsc(it.e.n||""),"END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([L.join("\r\n")],{type:"text/calendar"}));
+  a.download="icml2026-"+day.id+".ics";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+};
+function renderPlan(){
+  const day=DAYS.find(d=>d.id===state.day);
+  const r=schedule(day);
+  const painted=state.avail[state.day].filter(Boolean).length/2;
+  const booked=r.sel.reduce((a,it)=>a+(it.en-it.s)/60,0);
+  $("sumtext").textContent=painted===0
+    ?"no hours painted — a rest day. Seoul has excellent naengmyeon."
+    :r.sel.length+" stops · "+fh(Math.round(booked*100)/100)+" booked of "+fh(painted)+" painted";
+  $("legend").innerHTML=Object.values(CATS).map(c=>"<span><i style=\"background:"+c.c+"\"></i>"+c.l+"</span>").join("");
+  const items=[...r.sel.map(it=>({s:it.s,h:rowHTML(it,"sel")})),...r.gaps.map(g=>({s:g[0],h:gapHTML(g)}))].sort((a,b)=>a.s-b.s);
+  $("plan").innerHTML=items.map(x=>x.h).join("");
+  r.skip.sort((a,b)=>b[0].p-a[0].p);
+  $("skiphead").style.display=r.skip.length?"block":"none";
+  $("skipped").innerHTML=r.skip.map(x=>rowHTML(x[0],"skip",x[1])).join("");
+  document.querySelectorAll(".row").forEach(el=>{
+    el.onclick=ev=>{if(ev.target.tagName==="A")return;togglePin(el.getAttribute("data-id"));};
+    el.onkeydown=ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();togglePin(el.getAttribute("data-id"));}};
+    const z=el.getAttribute("data-z");
+    if(z){
+      el.onmouseenter=()=>{const g=$("z-"+z);if(g)g.classList.add("pulse");};
+      el.onmouseleave=()=>{const g=$("z-"+z);if(g)g.classList.remove("pulse");};
+    }
+  });
+  document.querySelectorAll(".sumtog").forEach(a=>a.onclick=ev=>{
+    ev.preventDefault();ev.stopPropagation();
+    const k=a.getAttribute("data-k");state.sumOpen[k]=!state.sumOpen[k];renderPlan();
+  });
+  lastSel=r.sel;
+  renderMap(r.sel);
+}
+renderTabs();renderStrip();renderPace();renderPlan();
+</script>
+</body>
+</html>
