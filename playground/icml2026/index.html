@@ -432,7 +432,7 @@ function rowHTML(it,mode,reason){
   '<div class="tt"><span class="dot" style="background:'+cat.c+'"></span>'+e.t+"</div>"+
   '<div class="meta1">'+e.v+" · "+cat.l+(pin?" · pinned":"")+(reason?" · "+reason:"")+"</div>"+
   '<div class="note">'+e.n+"</div>"+
-  (mode==="skip"?"":paperHTML(e)+linkHTML(e))+
+  (mode==="skip"?paperHTML(e):paperHTML(e)+linkHTML(e))+
   "</div></div>";
 }
 function gapHTML(g){
