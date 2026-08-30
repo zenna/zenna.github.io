@@ -39,7 +39,7 @@ h2 { margin:0; font-size:17px; line-height:1.25 } .time { color:var(--sun); font
 <body>
 <header>
   <h1>Best events by day</h1>
-  <div class="summary">Scores first. Schedule conflicts are not resolved.</div>
+  <div class="summary">Scores first. Schedule conflicts are not resolved.<span id="offline-ready"> · Preparing offline…</span></div>
   <nav class="days" id="days" aria-label="Event day"></nav>
   <div class="tools">
     <input id="search" type="search" placeholder="Search events or camps…" aria-label="Search events">
@@ -89,6 +89,16 @@ $('search').addEventListener('input',render); $('sort').addEventListener('change
 document.querySelectorAll('.mode').forEach(button=>button.onclick=()=>{ floor=Number(button.dataset.floor); document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('active',x===button)); render(); });
 $('saved').onclick=()=>{onlySaved=!onlySaved; render();};
 render();
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js')
+      .then(()=>navigator.serviceWorker.ready)
+      .then(()=>{ $('offline-ready').textContent=' · Offline ready'; })
+      .catch(()=>{ $('offline-ready').textContent=' · Offline cache failed'; });
+  });
+} else {
+  $('offline-ready').textContent=' · Offline cache unsupported';
+}
 </script>
 </body>
 </html>
