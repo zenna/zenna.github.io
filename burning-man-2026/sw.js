@@ -1,4 +1,5 @@
-const CACHE_NAME = "burning-man-2026-v1";
+const CACHE_PREFIX = "burning-man-2026-";
+const CACHE_NAME = `${CACHE_PREFIX}v2`;
 const APP_SHELL = ["./", "./index.html"];
 
 self.addEventListener("install", (event) => {
@@ -17,7 +18,7 @@ self.addEventListener("activate", (event) => {
       .then((names) =>
         Promise.all(
           names
-            .filter((name) => name !== CACHE_NAME)
+            .filter((name) => name.startsWith(CACHE_PREFIX) && name !== CACHE_NAME)
             .map((name) => caches.delete(name)),
         ),
       )
