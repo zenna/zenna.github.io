@@ -2,11 +2,9 @@
 layout: page
 title: Projects
 tags: [about]
-modified: 2015-04-15T09:29:05-04:00
-comments: true
 ---
 
-# Active Projects
+# Projects
 
 ## Omega
 
@@ -22,10 +20,6 @@ comments: true
 
 # Software Tools
 
-## Spec
-
-[Spec.jl](https://github.com/dreal/Spec.jl) is simple library for writing specifications of code
-
 ## AbstractDomains
 
 [AbstractDomains.jl](https://github.com/zenna/AbstractDomains.jl) is a Julia package for abstract interpretation.
@@ -40,21 +34,16 @@ comments: true
 
 # Ports and Wrappers
 
-## TensorBoard.jl
-
-[TensorBoard.jl](https://github.com/dreal/TensorBoard.jl) is a Julia interface to the TensorBoard
-
 ## DReal.jl
 
-[DReal.jl](https://github.com/dreal/DReal.jl) is a Julia interface to the [dreal nonlinear SMT solver](http://dreal.github.io/).
+[DReal.jl](https://github.com/dreal/DReal.jl) is a Julia interface to the [dreal nonlinear SMT solver](https://dreal.github.io/).
 
 ## Z3.jl
 
-[Z3.jl](https://github.com/zenna/Z3.jl) is a Julia interface to the [Z3 theorem prover](http://rise4fun.com/z3).
+[Z3.jl](https://github.com/zenna/Z3.jl) is a Julia interface to the [Z3 theorem prover](https://github.com/Z3Prover/z3).
 
-# Deprecated Projects
+# Earlier Projects
 
 ## Sigma
 
 [Sigma.jl](https://github.com/zenna/Sigma.jl) is a probabilistic programming environment based in Julia.
-The functionality of Sigma is being transferred to Omega and Arrows
