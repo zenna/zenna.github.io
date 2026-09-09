@@ -1,6 +1,6 @@
 # Site wide configuration
 
-title:            Zenna's Site
+title:            Zenna Tavares
 locale:           en_US
 url:              "https://www.zenna.org"
 
@@ -13,48 +13,20 @@ highlighter: rouge
 sass:
   sass_dir: _sass
   style: compressed
-gems:
-  - jekyll-sitemap
-
 kramdown:
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
   toc_levels: 1..6
-  use_coderay: false
 
 
 # Site owner
 owner:
   name: Zenna Tavares
   avatar: zennabw.jpg
-  bio: "I'm a cofounder and codirector of Basis, formerly at MIT and Columbia.  I think about how to build computer programs that think as humans think.  You can contact me on zenna[at]basis[dot]ai"
+  bio: "I am the co-founder and president of Basis Research Institute. You can contact me on zenna[at]basis[dot]ai."
   email: zenna@basis.ai
-  disqus-shortname: 
   twitter: zennatavares
-  facebook: #username
-  google:
-    plus: #username
-    analytics: 
-    verify: 
-    ad-client: 
-    ad-slot: 
-  bing-verify: 
   github: zenna
-  stackoverflow: #http://stackoverflow.com/users/123456/username
-  linkedin: #username
-  xing: #username
-  instagram: #username
-  lastfm: #username
-  tumblr: #username
-  pinterest: #username
-  foursquare: #username
-  steam: #username
-  dribbble: #username
-  youtube: #username
-  soundcloud: #username
-  weibo: #username
-  flickr: #username
 
-include: [".htaccess"]
-exclude: ["lib", "config.rb", "Capfile", "config", "log", "Rakefile", "Rakefile.rb", "tmp", "less", "*.sublime-project", "*.sublime-workspace", "test", "spec", "Gruntfile.js", "package.json", "node_modules", "Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
+exclude: ["LICENSE"]

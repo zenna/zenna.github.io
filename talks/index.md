@@ -2,7 +2,6 @@
 layout: page
 title: Talks
 tags: [talks]
-comments: true
 ---
 
 # Learning Salon 2021
