@@ -6,11 +6,24 @@ tags: [publications]
 
 ## Preprints
 
+- __Pact: A Choreographic Language for Agentic Ecosystems__ - Kiran Gopinathan, Jack Feser, Michelangelo Naim, Zenna Tavares, Eli Bingham - [arXiv](https://arxiv.org/abs/2605.03143)
+
+- __Benchmarking World-Model Learning with Environment-Level Queries__ - Archana Warrier, Dat Nguyen, Michelangelo Naim, Moksh Jain, Yichao Liang, Karen Schroeder, Cambridge Yang, Joshua B. Tenenbaum, Sebastian Vollmer, Kevin Ellis, Zenna Tavares - [arXiv](https://arxiv.org/abs/2510.19788)
+
+- __Assessing Adaptive World Models in Machines with Novel Games__ - Lance Ying, Katherine M. Collins, Prafull Sharma, Cedric Colas, Kaiya Ivy Zhao, Adrian Weller, Zenna Tavares, Phillip Isola, Samuel J. Gershman, Jacob D. Andreas, Thomas L. Griffiths, Francois Chollet, Kelsey R. Allen, Joshua B. Tenenbaum - [arXiv](https://arxiv.org/abs/2507.12821)
+
+- __NeuroAI for AI Safety__ - Patrick Mineault, Niccolò Zanichelli, Joanne Zichen Peng, Anton Arkhipov, Eli Bingham, Julian Jara-Ettinger, Emily Mackevicius, Adam Marblestone, Marcelo Mattar, Andrew Payne, Sophia Sanborn, Karen Schroeder, Zenna Tavares, Andreas Tolias, Anthony Zador - [arXiv](https://arxiv.org/abs/2411.18526)
+
+- __How Does the Primate Brain Combine Generative and Discriminative Computations in Vision?__ - Benjamin Peters, James J. DiCarlo, Todd Gureckis, Ralf Haefner, Leyla Isik, Joshua Tenenbaum, Talia Konkle, Thomas Naselaris, Kimberly Stachenfeld, Zenna Tavares, Doris Tsao, Ilker Yildirim, Nikolaus Kriegeskorte - [arXiv](https://arxiv.org/abs/2401.06005)
+
+- __MetaCOG: A Hierarchical Probabilistic Model for Learning Meta-Cognitive Visual Representations__ - Marlene Berke, Zhangir Azerbayev, Mario Belledonne, Zenna Tavares, Julian Jara-Ettinger - [arXiv](https://arxiv.org/abs/2110.03105)
+
 - __The Random Conditional Distribution for Higher-Order Probabilistic Inference__ - Zenna Tavares, Xin Zhang, Edgar Minasyan, Javier Burroni, Rajesh Ranganath, Armando Solar-Lezama - [arXiv](https://arxiv.org/abs/1903.10556)
 
-- __MetaCOG: Learning a metacognition to recover what objects are actually there__ - Marlene Berke, Zhangir Azerbayev, Mario Belledonne, Zenna Tavares, Julian Jara-Ettinger - [preprint](https://www.zenna.org/publications/metaCOG2022.pdf)
-
 ## Publications
+
+- __ExoPredicator: Learning Abstract Models of Dynamic Worlds for Robot Planning__ - Yichao Liang, Dat Nguyen, Cambridge Yang, Tianyang Li, Joshua B. Tenenbaum, Carl Edward Rasmussen, Adrian Weller, Zenna Tavares, Tom Silver, Kevin Ellis - *ICLR 2026* - [paper](https://proceedings.iclr.cc/paper_files/paper/2026/hash/5140fb72e83da1383f79352ca101d0f5-Abstract-Conference.html)
+
 - __Combining Functional and Automata Synthesis to Discover Causal Reactive Programs__ - Ria Das, Joshua B. Tenenbaum, Armando Solar-Lezama, Zenna Tavares - *POPL 2023* - [paper](https://doi.org/10.1145/3571249)
 
 - __A Language for Counterfactual Generative Models__ - Zenna Tavares, James Koppel, Xin Zhang, Ria Das, Armando Solar-Lezama - *ICML 2021* - [paper](https://proceedings.mlr.press/v139/tavares21a.html)

@@ -4,8 +4,6 @@ layout: null
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>{{ site.url }}/</loc></url>
-  <url><loc>{{ site.url }}/projects/</loc></url>
   <url><loc>{{ site.url }}/publications/</loc></url>
-  <url><loc>{{ site.url }}/talks/</loc></url>
   <url><loc>{{ site.url }}/juliacon2015slides/</loc></url>
 </urlset>
